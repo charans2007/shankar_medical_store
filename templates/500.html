@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}500 Internal Server Error - {{ shop.name }}{% endblock %}
+
+{% block content %}
+<div class="container section" style="text-align: center; padding: 5rem 1rem;">
+  <span style="font-size: 4rem; display: block; margin-bottom: 1rem;">⚠️</span>
+  <h1 style="font-size: 2.5rem; color: var(--text-primary); margin-bottom: 0.5rem;">500 - Server Error</h1>
+  <p style="color: var(--text-secondary); max-width: 500px; margin: 0 auto 2rem; font-size: 1.05rem;">
+    An unexpected error occurred while processing your request. Please try again later or call our medical store directly.
+  </p>
+  <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+    <a href="{{ url_for('main.index') }}" class="btn btn-primary btn-lg">
+      🏠 Return to Home
+    </a>
+    <a href="{{ clean_phone }}" class="btn btn-outline btn-lg">
+      📞 Call Pharmacy Counter
+    </a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,194 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block title %}Shop Settings{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+  <h1 style="font-size: 1.75rem; color: #0f172a; font-weight: 800;">Central Shop Configuration</h1>
+  <p style="color: #64748b; font-size: 0.95rem;">
+    Update shop details, contact phone, WhatsApp, opening timings, and Google Maps location. All changes automatically update throughout the entire website.
+  </p>
+</div>
+
+<div class="admin-card admin-form" style="padding: 2.5rem;">
+  <form method="POST" action="{{ url_for('admin.settings') }}">
+    <h3 style="font-size: 1.2rem; color: #0f172a; margin-bottom: 1.25rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.5rem;">
+      1. Basic Information &amp; Branding
+    </h3>
+
+    <div class="form-grid-2">
+      <div class="form-group">
+        <label class="form-label" for="name">Shop Name *</label>
+        <input type="text" id="name" name="name" class="form-control" required value="{{ shop.name }}">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="tagline">Tagline / Subheading</label>
+        <input type="text" id="tagline" name="tagline" class="form-control" value="{{ shop.tagline or '' }}">
+      </div>
+    </div>
+
+    <div class="form-grid-2">
+      <div class="form-group">
+        <label class="form-label" for="owner_name">Owner / Registered Pharmacist Name</label>
+        <input type="text" id="owner_name" name="owner_name" class="form-control" value="{{ shop.owner_name or '' }}">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email">Public Store Email</label>
+        <input type="email" id="email" name="email" class="form-control" value="{{ shop.email or '' }}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="description">Store Description</label>
+      <textarea id="description" name="description" class="form-control" rows="3">{{ shop.description or '' }}</textarea>
+    </div>
+
+    <h3 style="font-size: 1.2rem; color: #0f172a; margin-top: 2rem; margin-bottom: 1.25rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.5rem;">
+      2. Contact &amp; Integration Numbers
+    </h3>
+
+    <div class="form-grid-2">
+      <div class="form-group">
+        <label class="form-label" for="phone">Calling Phone Number *</label>
+        <input type="text" id="phone" name="phone" class="form-control" required value="{{ shop.phone }}">
+        <div class="form-help">Displayed across Call buttons (e.g. +919876543210).</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="whatsapp">WhatsApp Number *</label>
+        <input type="text" id="whatsapp" name="whatsapp" class="form-control" required value="{{ shop.whatsapp }}">
+        <div class="form-help">Digits with country code without spaces (e.g. 919876543210).</div>
+      </div>
+    </div>
+
+    <div class="form-grid-2" style="margin-top: 1rem;">
+      <div class="form-group">
+        <label class="form-label" for="doctor_phone">Doctor Consultation Helpline Phone</label>
+        <input type="text" id="doctor_phone" name="doctor_phone" class="form-control" value="{{ shop.doctor_phone or '+91 95357 17958' }}">
+        <div class="form-help">Direct helpline for patient consultations (e.g. +91 95357 17958).</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="doctor_whatsapp">Doctor Consultation WhatsApp Number</label>
+        <input type="text" id="doctor_whatsapp" name="doctor_whatsapp" class="form-control" value="{{ shop.doctor_whatsapp or '919535717958' }}">
+        <div class="form-help">WhatsApp digits for instant doctor chats (e.g. 919535717958).</div>
+      </div>
+    </div>
+
+    <h3 style="font-size: 1.2rem; color: #0f172a; margin-top: 2rem; margin-bottom: 1.25rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.5rem;">
+      3. Physical Address &amp; Maps Location
+    </h3>
+
+    <div class="form-group">
+      <label class="form-label" for="address">Full Physical Address *</label>
+      <input type="text" id="address" name="address" class="form-control" required value="{{ shop.address }}">
+    </div>
+
+    <div class="form-grid-2">
+      <div class="form-group">
+        <label class="form-label" for="area">Area / Locality</label>
+        <input type="text" id="area" name="area" class="form-control" value="{{ shop.area or '' }}">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="landmark">Landmark</label>
+        <input type="text" id="landmark" name="landmark" class="form-control" value="{{ shop.landmark or '' }}">
+      </div>
+    </div>
+
+    <div class="form-grid-2">
+      <div class="form-group">
+        <label class="form-label" for="city">City *</label>
+        <input type="text" id="city" name="city" class="form-control" required value="{{ shop.city or '' }}">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="state">State</label>
+        <input type="text" id="state" name="state" class="form-control" value="{{ shop.state or '' }}">
+      </div>
+    </div>
+
+    <div class="form-grid-2">
+      <div class="form-group">
+        <label class="form-label" for="pincode">Pincode / Postal Code</label>
+        <input type="text" id="pincode" name="pincode" class="form-control" value="{{ shop.pincode or '' }}">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="google_maps_url">Google Maps Directions URL *</label>
+        <input type="url" id="google_maps_url" name="google_maps_url" class="form-control" required value="{{ shop.google_maps_url or '' }}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="google_maps_embed_url">Google Maps Embed URL</label>
+      <input type="url" id="google_maps_embed_url" name="google_maps_embed_url" class="form-control" value="{{ shop.google_maps_embed_url or '' }}">
+    </div>
+
+    <div class="form-grid-2">
+      <div class="form-group">
+        <label class="form-label" for="latitude">Latitude</label>
+        <input type="text" id="latitude" name="latitude" class="form-control" value="{{ shop.latitude or '' }}">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="longitude">Longitude</label>
+        <input type="text" id="longitude" name="longitude" class="form-control" value="{{ shop.longitude or '' }}">
+      </div>
+    </div>
+
+    <h3 style="font-size: 1.2rem; color: #0f172a; margin-top: 2rem; margin-bottom: 1.25rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.5rem;">
+      4. Opening Hours &amp; Dynamic Live Status Configuration
+    </h3>
+
+    <div class="form-group">
+      <label class="form-label" for="opening_hours">Display Hours Text *</label>
+      <input type="text" id="opening_hours" name="opening_hours" class="form-control" required value="{{ shop.opening_hours }}">
+    </div>
+
+    <div class="form-grid-2">
+      <div class="form-group">
+        <label class="form-label" for="weekly_closure">Weekly Holiday / Closure</label>
+        <input type="text" id="weekly_closure" name="weekly_closure" class="form-control" value="{{ shop.weekly_closure or 'None' }}">
+      </div>
+
+      <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem; margin-top: 2rem;">
+        <input type="checkbox" id="is_sunday_closed" name="is_sunday_closed" value="1" {% if shop.is_sunday_closed %}checked{% endif %}>
+        <label for="is_sunday_closed" style="font-weight: 600; cursor: pointer;">Store is fully closed on Sundays</label>
+      </div>
+    </div>
+
+    <div class="form-grid-2">
+      <div class="form-group">
+        <label class="form-label" for="weekday_open_time">Mon - Sat Opening Time (24-Hour format)</label>
+        <input type="time" id="weekday_open_time" name="weekday_open_time" class="form-control" value="{{ shop.weekday_open_time or '08:00' }}">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="weekday_close_time">Mon - Sat Closing Time (24-Hour format)</label>
+        <input type="time" id="weekday_close_time" name="weekday_close_time" class="form-control" value="{{ shop.weekday_close_time or '22:00' }}">
+      </div>
+    </div>
+
+    <div class="form-grid-2">
+      <div class="form-group">
+        <label class="form-label" for="sunday_open_time">Sunday Opening Time (24-Hour format)</label>
+        <input type="time" id="sunday_open_time" name="sunday_open_time" class="form-control" value="{{ shop.sunday_open_time or '09:00' }}">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="sunday_close_time">Sunday Closing Time (24-Hour format)</label>
+        <input type="time" id="sunday_close_time" name="sunday_close_time" class="form-control" value="{{ shop.sunday_close_time or '14:00' }}">
+      </div>
+    </div>
+
+    <div style="margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid #e2e8f0;">
+      <button type="submit" class="btn btn-primary btn-lg" style="padding: 0.85rem 2.5rem;">
+        💾 Save Shop Configuration
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}

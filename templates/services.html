@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+
+{% block title %}Our Services & Categories - {{ shop.name }}{% endblock %}
+
+{% block content %}
+<div class="container section">
+  <div class="section-header">
+    <span class="section-kicker">WHAT WE OFFER</span>
+    <h1 class="section-title">In-Store Pharmacy Services</h1>
+    <p class="section-description">
+      Authentic medicines, wellness products, and personalized in-person assistance at our physical store in {{ shop.city }}.
+    </p>
+  </div>
+
+  <!-- Wholesale & Retail Distributor Highlight Banner -->
+  <div style="background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border: 1.5px solid #a7f3d0; border-radius: var(--radius-lg); padding: 1.25rem 1.5rem; margin-bottom: 2rem; display: flex; align-items: flex-start; gap: 1rem; box-shadow: var(--shadow-sm);">
+    <div style="font-size: 1.75rem; color: #059669; flex-shrink: 0; line-height: 1;">🏢</div>
+    <div>
+      <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #047857; margin-bottom: 0.25rem;">
+        Authorized Distribution Network
+      </div>
+      <h3 style="font-size: 1.15rem; font-weight: 700; color: #065f46; margin: 0 0 0.35rem 0;">
+        20+ Years of Experience as Distributor in Retail and Wholesale of Homoeopathy Medicine
+      </h3>
+      <p style="margin: 0; color: #047857; font-size: 0.95rem; line-height: 1.5;">
+        As an established distributor with over two decades of trust, we supply genuine, factory-sealed homoeopathic remedies to individual retail patients as well as bulk wholesale supplies to clinics, practitioners, and pharmacies.
+      </p>
+    </div>
+  </div>
+
+  <!-- Physical Store Notice -->
+  <div class="medical-disclaimer" style="margin-bottom: 3rem;">
+    <div class="disclaimer-icon">🏬</div>
+    <div class="disclaimer-content">
+      <h4>Physical In-Store Services Only</h4>
+      <p>
+        Please note that all services and product dispensing occur exclusively at our physical premises. We do not provide home delivery, online ordering, or postal shipping.
+      </p>
+    </div>
+  </div>
+
+  <!-- Services Grid -->
+  <div class="features-grid">
+    <div class="feature-box" style="border: 2px solid #059669; background-color: #f0fdf4;">
+      <div class="feature-box-icon" style="color: #059669;">📦</div>
+      <h3 class="feature-box-title" style="color: #065f46;">Retail &amp; Wholesale Homoeopathy Distribution</h3>
+      <p class="feature-box-desc">
+        <strong>20+ years of experience as distributor in retail and wholesale of homoeopathy medicine.</strong> Direct stockist for Dr. Reckeweg, Dr. Willmar Schwabe, SBL, and other leading manufacturers. Bulk supply, authentic dilutions, mother tinctures, and wholesale pricing for doctors &amp; clinics.
+      </p>
+      <div style="margin-top: 1rem;">
+        <span style="display: inline-block; font-size: 0.8rem; font-weight: 600; color: #047857; background: #d1fae5; padding: 0.25rem 0.75rem; border-radius: 9999px;">
+          ✓ Retail &amp; Wholesale Supply Available
+        </span>
+      </div>
+    </div>
+
+    <div class="feature-box" style="border: 2px solid #0d9488; background-color: #f0fdfa;">
+      <div class="feature-box-icon" style="color: #0d9488;">🩺</div>
+      <h3 class="feature-box-title" style="color: #0f766e;">Dedicated B.H.M.S Doctors (Online &amp; Offline)</h3>
+      <p class="feature-box-desc">
+        We have certified B.H.M.S homoeopathic doctors for online and offline consultations: <strong>100% Free Online Doctor Consultation</strong> via WhatsApp/Phone, and <strong>In-Store Clinical Doctor Consultations</strong> for in-person evaluations at our Malleswaram clinic.
+      </p>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
+        <a href="{{ url_for('main.doctor_consultation') }}" class="btn btn-sm btn-primary" style="background-color: #0d9488; border-color: #0d9488;">
+          Doctor Consultation &rarr;
+        </a>
+        <a href="{{ clean_doctor_phone }}" class="btn btn-sm btn-outline" style="color: #0f766e; border-color: #0d9488;">
+          📞 Helpline: {{ doctor_phone }}
+        </a>
+      </div>
+    </div>
+
+    <div class="feature-box">
+      <div class="feature-box-icon">📋</div>
+      <h3 class="feature-box-title">Prescription Medicine Dispensing</h3>
+      <p class="feature-box-desc">
+        Accurate and professional dispensing of prescription medications strictly against valid doctor prescriptions, verified by our registered pharmacist.
+      </p>
+    </div>
+
+    <div class="feature-box">
+      <div class="feature-box-icon">💊</div>
+      <h3 class="feature-box-title">OTC Healthcare Essentials</h3>
+      <p class="feature-box-desc">
+        Over-the-counter remedies for fever, common cold, pain management, digestive issues, and general everyday health maintenance.
+      </p>
+    </div>
+
+    <div class="feature-box">
+      <div class="feature-box-icon">🩹</div>
+      <h3 class="feature-box-title">First Aid &amp; Wound Care</h3>
+      <p class="feature-box-desc">
+        Antiseptics, sterile cotton, gauze bandages, surgical tapes, burn dressings, and comprehensive emergency first aid box supplies.
+      </p>
+    </div>
+
+    <div class="feature-box">
+      <div class="feature-box-icon">🩺</div>
+      <h3 class="feature-box-title">Medical Devices &amp; Monitors</h3>
+      <p class="feature-box-desc">
+        Clinical digital thermometers, blood pressure monitors, fingertip pulse oximeters, vaporizers, and nebulizer kits for home monitoring.
+      </p>
+    </div>
+
+    <div class="feature-box">
+      <div class="feature-box-icon">🩸</div>
+      <h3 class="feature-box-title">Diabetes Care Supplies</h3>
+      <p class="feature-box-desc">
+        Digital glucometers, blood glucose test strips, sterile lancets, and skin-friendly diabetic foot care formulations.
+      </p>
+    </div>
+
+    <div class="feature-box">
+      <div class="feature-box-icon">🌿</div>
+      <h3 class="feature-box-title">Vitamins &amp; Wellness Supplements</h3>
+      <p class="feature-box-desc">
+        Doctor-recommended multivitamins, calcium and Vitamin D supplements, dietary minerals, and immunity boosters.
+      </p>
+    </div>
+
+    <div class="feature-box">
+      <div class="feature-box-icon">🍼</div>
+      <h3 class="feature-box-title">Infant &amp; Baby Care</h3>
+      <p class="feature-box-desc">
+        Pediatric dermatological cleansers, diaper rash relief creams, baby hygiene supplies, and pediatric feeding accessories.
+      </p>
+    </div>
+
+    <div class="feature-box">
+      <div class="feature-box-icon">🧴</div>
+      <h3 class="feature-box-title">Dermatology &amp; Personal Care</h3>
+      <p class="feature-box-desc">
+        Therapeutic skin cleansers, antiseptic hand rubs, dermatological moisturizers, and oral hygiene supplies.
+      </p>
+    </div>
+
+    <div class="feature-box">
+      <div class="feature-box-icon">💬</div>
+      <h3 class="feature-box-title">Stock Availability Enquiries</h3>
+      <p class="feature-box-desc">
+        Direct phone and WhatsApp assistance so you can verify if a specific medicine or brand is in stock before traveling to our store.
+      </p>
+    </div>
+  </div>
+
+  <!-- Bottom CTA -->
+  <div style="background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2.5rem; text-align: center; margin-top: 3.5rem; box-shadow: var(--shadow-sm);">
+    <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);">Need to check product availability?</h2>
+    <p style="color: var(--text-secondary); max-width: 600px; margin: 0 auto 1.5rem;">
+      Send us a quick WhatsApp message or call our pharmacy desk directly.
+    </p>
+    <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+      <a href="{{ header_whatsapp_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-lg">
+        💬 Ask on WhatsApp
+      </a>
+      <a href="{{ clean_phone }}" class="btn btn-outline btn-lg">
+        📞 Call {{ shop.phone }}
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{{ shop.name }} - Your Trusted Local Medical Store & Pharmacy{% endblock %}</title>
+  
+  <meta name="description" content="{% block meta_description %}Visit {{ shop.name }}, your reliable neighborhood medical store and pharmacy in {{ shop.city }}. In-store genuine medicines, first-aid, healthcare equipment, and wellness supplies.{% endblock %}">
+  <link rel="canonical" href="{{ request.base_url }}">
+  
+  <!-- Open Graph / Local SEO -->
+  <meta property="og:type" content="business.business">
+  <meta property="og:title" content="{{ shop.name }} - Local Medical Store">
+  <meta property="og:description" content="{{ shop.description }}">
+  <meta property="og:url" content="{{ request.base_url }}">
+  <meta property="og:image" content="{{ url_for('static', filename='images/logo.svg', _external=True) }}">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon/favicon.svg') }}">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=1.8">
+  {% block extra_css %}{% endblock %}
+
+  <!-- Schema.org Structured Data for Local Pharmacy / MedicalBusiness -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Pharmacy",
+    "name": "{{ shop.name }}",
+    "description": "{{ shop.description }}",
+    "telephone": "{{ shop.phone }}",
+    "email": "{{ shop.email }}",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "{{ shop.address }}",
+      "addressLocality": "{{ shop.city }}",
+      "addressRegion": "{{ shop.state }}",
+      "postalCode": "{{ shop.pincode }}",
+      "addressCountry": "IN"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": {{ shop.latitude }},
+      "longitude": {{ shop.longitude }}
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        "opens": "{{ shop.weekday_open_time }}",
+        "closes": "{{ shop.weekday_close_time }}"
+      }
+    ],
+    "priceRange": "$$",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.6",
+      "reviewCount": "105"
+    },
+    "hasMap": "{{ shop.google_maps_url }}"
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <div class="top-bar">
+    <div class="container top-bar-inner">
+      <div class="top-bar-notice">
+        <span class="store-badge-inline {{ store_status.status_class }}">
+          <span class="status-dot"></span>
+          {{ store_status.status_text }}
+        </span>
+        <span>• {{ store_status.today_hours_text }}</span>
+      </div>
+      <div class="top-bar-links">
+        <a href="{{ clean_phone }}" title="Call Pharmacy">
+          📞 <span>{{ shop.phone }}</span>
+        </a>
+        <a href="{{ shop.google_maps_url }}" target="_blank" rel="noopener noreferrer" title="Get Directions">
+          📍 <span>Store Directions</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Navigation Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <!-- Brand Logo -->
+      <a href="{{ url_for('main.index') }}" class="brand">
+        <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="{{ shop.name }} Logo" class="brand-logo-img">
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="main-nav" aria-label="Main Navigation">
+        <a href="{{ url_for('main.index') }}" class="nav-link {% if request.endpoint == 'main.index' %}active{% endif %}">Home</a>
+        <a href="{{ url_for('main.about') }}" class="nav-link {% if request.endpoint == 'main.about' %}active{% endif %}">About</a>
+        <a href="{{ url_for('products.catalogue') }}" class="nav-link {% if request.endpoint and 'products' in request.endpoint %}active{% endif %}">Products</a>
+        <a href="{{ url_for('main.services') }}" class="nav-link {% if request.endpoint == 'main.services' %}active{% endif %}">Services</a>
+        <a href="{{ url_for('main.retail_wholesale') }}" class="nav-link {% if request.endpoint == 'main.retail_wholesale' %}active{% endif %}">Retail &amp; Wholesale</a>
+        <a href="{{ url_for('main.doctor_consultation') }}" class="nav-link {% if request.endpoint == 'main.doctor_consultation' %}active{% endif %}">Doctor Consultation</a>
+        <a href="{{ url_for('main.reviews') }}" class="nav-link {% if request.endpoint == 'main.reviews' %}active{% endif %}">Reviews</a>
+        <a href="{{ url_for('main.location') }}" class="nav-link {% if request.endpoint == 'main.location' %}active{% endif %}">Location</a>
+        <a href="{{ url_for('main.faq') }}" class="nav-link {% if request.endpoint == 'main.faq' %}active{% endif %}">FAQ</a>
+        <a href="{{ url_for('contact.contact_page') }}" class="nav-link {% if request.endpoint == 'contact.contact_page' %}active{% endif %}">Contact</a>
+      </nav>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+        <!-- Mobile Drawer Toggle -->
+        <button id="mobileMenuToggle" class="mobile-toggle" aria-label="Open Mobile Menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <div id="mobileDrawer" class="mobile-drawer">
+    <div class="drawer-header">
+      <div class="brand">
+        <span class="brand-title">{{ shop.name }}</span>
+      </div>
+      <button id="closeDrawerBtn" class="mobile-toggle" aria-label="Close Mobile Menu">
+        ✕
+      </button>
+    </div>
+    <nav class="drawer-nav">
+      <a href="{{ url_for('main.index') }}" class="drawer-link {% if request.endpoint == 'main.index' %}active{% endif %}">🏠 Home</a>
+      <a href="{{ url_for('main.about') }}" class="drawer-link {% if request.endpoint == 'main.about' %}active{% endif %}">ℹ️ About Us</a>
+      <a href="{{ url_for('products.catalogue') }}" class="drawer-link {% if request.endpoint and 'products' in request.endpoint %}active{% endif %}">💊 Products &amp; Availability</a>
+      <a href="{{ url_for('main.services') }}" class="drawer-link {% if request.endpoint == 'main.services' %}active{% endif %}">🩺 Services</a>
+      <a href="{{ url_for('main.retail_wholesale') }}" class="drawer-link {% if request.endpoint == 'main.retail_wholesale' %}active{% endif %}">📦 Retail &amp; Wholesale</a>
+      <a href="{{ url_for('main.doctor_consultation') }}" class="drawer-link {% if request.endpoint == 'main.doctor_consultation' %}active{% endif %}">👨‍⚕️ Doctor Consultation</a>
+      <a href="{{ url_for('main.reviews') }}" class="drawer-link {% if request.endpoint == 'main.reviews' %}active{% endif %}">💬 Customer Reviews</a>
+      <a href="{{ url_for('main.location') }}" class="drawer-link {% if request.endpoint == 'main.location' %}active{% endif %}">📍 Store Location &amp; Directions</a>
+      <a href="{{ url_for('main.faq') }}" class="drawer-link {% if request.endpoint == 'main.faq' %}active{% endif %}">❓ Frequently Asked Questions</a>
+      <a href="{{ url_for('contact.contact_page') }}" class="drawer-link {% if request.endpoint == 'contact.contact_page' %}active{% endif %}">📞 Contact Us</a>
+    </nav>
+    <div style="margin-top: auto; padding-top: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem;">
+      <a href="{{ clean_phone }}" class="btn btn-primary" style="width: 100%;">📞 Call {{ shop.phone }}</a>
+      <a href="{{ header_whatsapp_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp" style="width: 100%;">💬 WhatsApp Enquiry</a>
+    </div>
+  </div>
+  <div id="drawerOverlay" class="mobile-drawer-overlay"></div>
+
+  <!-- Flash Notifications -->
+  <div class="container flash-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">
+            <span>{{ message }}</span>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  <!-- Main Content Body -->
+  <main id="mainContent" style="flex-grow: 1;">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Col 1: Shop Overview -->
+        <div class="footer-col">
+          <h4>{{ shop.name }}</h4>
+          <p style="margin-bottom: 1rem; color: #94a3b8; font-size: 0.875rem;">
+            {{ shop.description }}
+          </p>
+          <span class="store-badge-inline {{ store_status.status_class }}">
+            <span class="status-dot"></span>
+            {{ store_status.status_text }}
+          </span>
+          <p style="font-size: 0.8rem; margin-top: 0.5rem; color: #94a3b8;">
+            {{ store_status.today_hours_text }}
+          </p>
+        </div>
+
+        <!-- Col 2: Navigation Links -->
+        <div class="footer-col">
+          <h4>Quick Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="{{ url_for('main.index') }}">Home</a></li>
+            <li><a href="{{ url_for('main.about') }}">About Store</a></li>
+            <li><a href="{{ url_for('products.catalogue') }}">Product Catalogue</a></li>
+            <li><a href="{{ url_for('main.services') }}">Store Services</a></li>
+            <li><a href="{{ url_for('main.retail_wholesale') }}">Retail &amp; Wholesale</a></li>
+            <li><a href="{{ url_for('main.doctor_consultation') }}">Online Doctor Consultation</a></li>
+            <li><a href="{{ url_for('main.reviews') }}">Customer Reviews</a></li>
+            <li><a href="{{ url_for('main.location') }}">Location &amp; Maps</a></li>
+            <li><a href="{{ url_for('main.faq') }}">FAQ</a></li>
+            <li><a href="{{ url_for('contact.contact_page') }}">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Contact & Timings -->
+        <div class="footer-col">
+          <h4>Store Location &amp; Contact</h4>
+          <div class="footer-contact-item">
+            <span class="footer-contact-icon">📍</span>
+            <span>{{ shop.address }}</span>
+          </div>
+          <div class="footer-contact-item">
+            <span class="footer-contact-icon">📞</span>
+            <a href="{{ clean_phone }}" style="color: #cbd5e1;">{{ shop.phone }}</a>
+          </div>
+          <div class="footer-contact-item">
+            <span class="footer-contact-icon">💬</span>
+            <a href="{{ header_whatsapp_url }}" target="_blank" rel="noopener noreferrer" style="color: #cbd5e1;">WhatsApp: +{{ shop.whatsapp }}</a>
+          </div>
+          <div class="footer-contact-item">
+            <span class="footer-contact-icon">🕒</span>
+            <span>{{ shop.opening_hours }}</span>
+          </div>
+        </div>
+
+        <!-- Col 4: Important Notice -->
+        <div class="footer-col">
+          <h4>Physical Store Policy</h4>
+          <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 0.75rem;">
+            This website provides information regarding our physical medical store. We strictly do not offer online medicine delivery or online ordering.
+          </p>
+          <p style="font-size: 0.8rem; color: #f87171;">
+            * Valid doctor's prescription is required for all scheduled prescription medicines upon store visit.
+          </p>
+        </div>
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="footer-bottom">
+        <p>&copy; {{ current_year }} {{ shop.name }}. All rights reserved. | Physical Retail Pharmacy</p>
+        <p>
+          <a href="{{ url_for('admin.login') }}" style="color: #64748b; font-size: 0.8rem;">Staff Admin Login</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Fixed Mobile Bottom Action Bar -->
+  <div class="mobile-bottom-bar" aria-label="Quick Actions">
+    <a href="{{ clean_phone }}" class="mobile-bar-btn bar-call">
+      <span class="bar-icon">📞</span>
+      <span>CALL</span>
+    </a>
+    <a href="{{ header_whatsapp_url }}" target="_blank" rel="noopener noreferrer" class="mobile-bar-btn bar-whatsapp">
+      <span class="bar-icon">💬</span>
+      <span>WHATSAPP</span>
+    </a>
+    <a href="{{ shop.google_maps_url }}" target="_blank" rel="noopener noreferrer" class="mobile-bar-btn bar-directions">
+      <span class="bar-icon">📍</span>
+      <span>DIRECTIONS</span>
+    </a>
+  </div>
+
+  <!-- Main JavaScript -->
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

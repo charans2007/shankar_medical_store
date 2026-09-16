@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block title %}Product Catalogue & Availability - {{ shop.name }}{% endblock %}
+
+{% block content %}
+<!-- Pharmacy Interior Ambient Background Watermark -->
+<div class="products-page-watermark" style="background-image: url('{{ url_for('static', filename='images/pharmacy_bg.jpg') }}?v=2'); opacity: 0.24; mix-blend-mode: multiply;" aria-hidden="true"></div>
+
+<div class="container section" style="position: relative; z-index: 1;">
+  <div class="section-header" style="text-align: left; max-width: 100%; margin-bottom: 2rem;">
+    <span class="section-kicker">IN-STORE INVENTORY</span>
+    <h1 class="section-title">Product Catalogue &amp; Availability</h1>
+    <p class="section-description">
+      Browse products carried in our store. Check live stock status and contact us via WhatsApp to verify current in-store availability.
+    </p>
+  </div>
+
+  <!-- Physical Store Notice -->
+  <div class="medical-disclaimer" style="margin-top: 0; margin-bottom: 2rem;">
+    <div class="disclaimer-icon">ℹ️</div>
+    <div class="disclaimer-content">
+      <h4>In-Store Availability &amp; Prescription Guidance</h4>
+      <p>
+        Stock quantities vary throughout the day. Please click <strong>"Ask Availability"</strong> to confirm live shelf status on WhatsApp before visiting. Scheduled prescription drugs require an original doctor's prescription in person.
+      </p>
+    </div>
+  </div>
+
+  <!-- Catalogue Toolbar: Search & Categories -->
+  <div class="catalogue-toolbar">
+    <form method="GET" action="{{ url_for('products.catalogue') }}" id="searchForm">
+      <div class="search-input-wrapper">
+        <span class="search-icon">🔍</span>
+        <input 
+          type="text" 
+          id="productSearchInput" 
+          name="q" 
+          placeholder="Search medicines, wellness essentials, or healthcare brands..." 
+          value="{{ search_query }}"
+          autocomplete="off"
+        >
+      </div>
+
+      <!-- Hidden category retention -->
+      {% if selected_category %}
+      <input type="hidden" name="category" value="{{ selected_category.slug }}">
+      {% endif %}
+
+      <!-- Category Filter Pills -->
+      <div class="category-filter-pills">
+        <a href="{{ url_for('products.catalogue', q=search_query) }}" class="filter-pill {% if not selected_category %}active{% endif %}">
+          All Categories
+        </a>
+        {% for cat in categories %}
+        <a href="{{ url_for('products.catalogue', category=cat.slug, q=search_query) }}" class="filter-pill {% if selected_category and selected_category.slug == cat.slug %}active{% endif %}">
+          {{ cat.name }}
+        </a>
+        {% endfor %}
+      </div>
+    </form>
+  </div>
+
+  <!-- Products Results Count -->
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+    <span style="font-weight: 600; font-size: 0.95rem; color: var(--text-secondary);">
+      Showing <span id="productCountDisplay">{{ products|length }}</span> product(s)
+      {% if selected_category %} in <strong>{{ selected_category.name }}</strong>{% endif %}
+      {% if search_query %} matching "<em>{{ search_query }}</em>"{% endif %}
+    </span>
+
+    {% if selected_category or search_query or availability_filter %}
+    <a href="{{ url_for('products.catalogue') }}" style="font-size: 0.85rem; font-weight: 600; color: var(--primary);">
+      ✕ Clear Filters
+    </a>
+    {% endif %}
+  </div>
+
+  <!-- Products Grid -->
+  <div class="products-grid" id="productsGrid">
+    {% for product in products %}
+    {% set prod_whatsapp_url = generate_whatsapp_link(shop.whatsapp, product_name=product.name, shop_name=shop.name, message_type='availability') %}
+    <div class="product-card" 
+         data-name="{{ product.name }}" 
+         data-category="{{ product.category.name if product.category else '' }}" 
+         data-brand="{{ product.brand or '' }}" 
+         data-desc="{{ product.description or '' }}">
+      
+      <span class="product-category-tag">{{ product.category.name if product.category else 'General Healthcare' }}</span>
+      <h3 class="product-name">
+        <a href="{{ url_for('products.product_detail', product_id=product.id) }}" style="color: inherit;">
+          {{ product.name }}
+        </a>
+      </h3>
+
+      <div class="product-meta">
+        {% if product.brand %}
+        <span class="product-meta-item">🏷️ {{ product.brand }}</span>
+        {% endif %}
+        {% if product.pack_size %}
+        <span class="product-meta-item">📦 {{ product.pack_size }}</span>
+        {% endif %}
+      </div>
+
+      {% if product.requires_prescription %}
+      <div class="prescription-tag">
+        <span>📋</span> Rx Prescription Required
+      </div>
+      {% endif %}
+
+      <p class="product-desc">{{ product.description }}</p>
+
+      <!-- Availability Badge -->
+      <div>
+        {% if product.availability == 'In Stock' %}
+        <span class="availability-badge badge-in-stock">● In Stock</span>
+        {% elif product.availability == 'Limited Stock' %}
+        <span class="availability-badge badge-limited">▲ Limited Stock</span>
+        {% elif product.availability == 'Out of Stock' %}
+        <span class="availability-badge badge-out-of-stock">✕ Currently Out of Stock</span>
+        {% else %}
+        <span class="availability-badge badge-varies">ℹ️ Availability Varies</span>
+        {% endif %}
+      </div>
+
+      <!-- Actions -->
+      <div class="product-card-actions">
+        <a href="{{ prod_whatsapp_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-whatsapp" style="flex: 1;">
+          💬 Ask on WhatsApp
+        </a>
+        <a href="{{ url_for('products.product_detail', product_id=product.id) }}" class="btn btn-sm btn-outline" title="View details">
+          Details
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Empty State -->
+  <div id="productsEmptyState" style="display: {% if products|length == 0 %}block{% else %}none{% endif %}; text-align: center; padding: 4rem 2rem; background-color: var(--bg-surface); border-radius: var(--radius-lg); border: 1px dashed var(--border-color); margin-top: 1rem;">
+    <span style="font-size: 3rem; display: block; margin-bottom: 1rem;">🔍</span>
+    <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--text-primary);">No matching products found</h3>
+    <p style="color: var(--text-muted); max-width: 480px; margin: 0 auto 1.5rem;">
+      We might still have this product in store! Contact our counter pharmacist directly to check our complete inventory.
+    </p>
+    <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+      <a href="{{ header_whatsapp_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
+        💬 Ask Pharmacist on WhatsApp
+      </a>
+      <a href="{{ clean_phone }}" class="btn btn-outline">
+        📞 Call {{ shop.phone }}
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/products.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+
+{% block title %}Frequently Asked Questions - {{ shop.name }}{% endblock %}
+
+{% block content %}
+<div class="container section">
+  <div class="section-header">
+    <span class="section-kicker">QUESTIONS &amp; ANSWERS</span>
+    <h1 class="section-title">Frequently Asked Questions</h1>
+    <p class="section-description">
+      Common questions about our physical medical store, visiting hours, product enquiries, and dispensing policies.
+    </p>
+  </div>
+
+  <div class="faq-list">
+    <!-- FAQ 1: Delivery -->
+    <div class="faq-item active">
+      <button class="faq-question" type="button">
+        <span>Do you provide online or home medicine delivery?</span>
+        <span class="faq-icon">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          <strong>No.</strong> {{ shop.name }} is strictly a physical medical store. Medicine delivery is not currently provided. Customers are welcome to visit our physical store location to purchase medicines and healthcare supplies in person.
+        </p>
+      </div>
+    </div>
+
+    <!-- FAQ 2: Online Purchase -->
+    <div class="faq-item">
+      <button class="faq-question" type="button">
+        <span>Can I purchase medicines online through this website?</span>
+        <span class="faq-icon">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          <strong>No.</strong> This website functions exclusively as an informative catalogue and availability enquiry platform. There is no shopping cart, checkout, or online payment gateway. Customers visit the physical store to purchase medicines directly.
+        </p>
+      </div>
+    </div>
+
+    <!-- FAQ 3: Opening Hours -->
+    <div class="faq-item">
+      <button class="faq-question" type="button">
+        <span>What are your store opening hours?</span>
+        <span class="faq-icon">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Our standard operating hours are: <strong>{{ shop.opening_hours }}</strong>.<br>
+          Today's status: <strong>{{ store_status.today_hours_text }}</strong> ({{ store_status.status_text }}).<br>
+          Weekly closure: {{ shop.weekly_closure }}.
+        </p>
+      </div>
+    </div>
+
+    <!-- FAQ 4: Product Availability -->
+    <div class="faq-item">
+      <button class="faq-question" type="button">
+        <span>Can I check whether a product is in stock before visiting?</span>
+        <span class="faq-icon">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          <strong>Yes, absolutely!</strong> You can browse our online catalogue and click the "Ask on WhatsApp" button next to any product, or call us directly at <strong>{{ shop.phone }}</strong>. Our counter pharmacist will confirm current shelf availability before you visit.
+        </p>
+      </div>
+    </div>
+
+    <!-- FAQ 5: Prescription Policy -->
+    <div class="faq-item">
+      <button class="faq-question" type="button">
+        <span>Do I need a doctor's prescription for purchasing medicines?</span>
+        <span class="faq-icon">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Over-the-counter (OTC) healthcare products, first aid supplies, wellness vitamins, and surgical equipment do not require a prescription. However, all scheduled prescription drugs strictly require a valid, original prescription issued by a registered medical practitioner.
+        </p>
+      </div>
+    </div>
+
+    <!-- FAQ 6: Where is the shop located? -->
+    <div class="faq-item">
+      <button class="faq-question" type="button">
+        <span>Where is your medical store located?</span>
+        <span class="faq-icon">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          We are located at: <strong>{{ shop.address }}</strong>{% if shop.landmark %} (Landmark: {{ shop.landmark }}){% endif %}. You can find GPS directions on our <a href="{{ url_for('main.location') }}">Location Page</a> or directly open Google Maps with the link above.
+        </p>
+      </div>
+    </div>
+
+    <!-- FAQ 7: WhatsApp Contact -->
+    <div class="faq-item">
+      <button class="faq-question" type="button">
+        <span>Can I contact the shop through WhatsApp?</span>
+        <span class="faq-icon">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          <strong>Yes.</strong> You can message us on WhatsApp at <strong>+{{ shop.whatsapp }}</strong> to enquire about product availability or store directions during regular hours.
+        </p>
+      </div>
+    </div>
+
+    <!-- FAQ 8: Phone Call -->
+    <div class="faq-item">
+      <button class="faq-question" type="button">
+        <span>Can I call the shop directly?</span>
+        <span class="faq-icon">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          <strong>Yes.</strong> You can reach our pharmacy counter directly at <a href="{{ clean_phone }}"><strong>{{ shop.phone }}</strong></a> during operating hours.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Raise a Problem / Any Other Questions Section -->
+  <div style="margin-top: 4rem;">
+    <div style="background-color: var(--bg-surface); border: 1.5px solid #fecaca; border-radius: var(--radius-lg); padding: 2.5rem; box-shadow: var(--shadow-sm); max-width: 850px; margin: 0 auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.75rem;">
+        <span style="display: inline-block; background-color: #fee2e2; color: #991b1b; font-size: 0.78rem; font-weight: 700; padding: 0.25rem 0.75rem; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.5px;">
+          ⚠️ Customer Support &amp; Grievance
+        </span>
+        <span style="font-size: 0.85rem; color: #991b1b; font-weight: 600;">
+          Official Store Email: <u>{{ shop.email }}</u>
+        </span>
+      </div>
+
+      <h2 style="font-size: 1.65rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem;">
+        Raise a Problem / Any Other Questions??
+      </h2>
+      <p style="font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 1.75rem; line-height: 1.6;">
+        Have a question not listed above, or faced an issue with medicine availability, store service, packaging, or dosage guidance? Report it below and your message will be forwarded directly to our store management for prompt resolution.
+      </p>
+
+      <form method="POST" action="{{ url_for('main.faq') }}" style="display: flex; flex-direction: column; gap: 1rem;">
+        <div style="display: grid; grid-template-columns: 1fr; gap: 1rem;">
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label" for="name">Your Full Name *</label>
+            <input type="text" id="name" name="name" class="form-control" required placeholder="e.g. Ramesh Kumar" value="{{ form_data.name if form_data else '' }}">
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label" for="phone">Your Contact Phone / WhatsApp *</label>
+            <input type="tel" id="phone" name="phone" class="form-control" required placeholder="e.g. +91 98765 43210" value="{{ form_data.phone if form_data else '' }}">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+          <label class="form-label" for="problem_type">Category of Problem / Question *</label>
+          <select id="problem_type" name="problem_type" class="form-control" required style="cursor: pointer;">
+            <option value="General Question / Unanswered Query">❓ General Question / Unanswered Query</option>
+            <option value="Medicine Out of Stock / Unavailability">📦 Medicine Out of Stock / Unavailability</option>
+            <option value="Store Service / Counter Staff Assistance">🤝 Store Service / Counter Staff Assistance</option>
+            <option value="Medicine Packaging / Seal Quality Concern">🏷️ Medicine Packaging / Seal Quality Concern</option>
+            <option value="Prescription Guidance / Dosage Query">📋 Prescription Guidance / Dosage Query</option>
+            <option value="Billing or Pricing Discrepancy">💳 Billing or Pricing Discrepancy</option>
+            <option value="Other Grievance / Problem">⚠️ Other Grievance / Problem</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+          <label class="form-label" for="message">Describe the Problem or Question in Detail *</label>
+          <textarea id="message" name="message" class="form-control" rows="4" required placeholder="Please describe what you experienced or what question you would like to ask our pharmacy management...">{{ form_data.message if form_data else '' }}</textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; background-color: #dc2626; border-color: #dc2626; padding: 0.9rem; font-weight: 700; margin-top: 0.5rem; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);">
+          ⚠️ Submit / Raise Problem
+        </button>
+      </form>
+
+      <!-- Immediate Escalation Buttons -->
+      <div style="background-color: #fef2f2; border: 1px solid #fecaca; border-radius: var(--radius-md); padding: 1.25rem; margin-top: 1.75rem; text-align: center;">
+        <span style="font-size: 0.85rem; color: #991b1b; display: block; margin-bottom: 0.5rem; font-weight: 700;">
+          📩 Raised problems are automatically forwarded to official store email: <u>{{ shop.email }}</u>
+        </span>
+        <p style="font-size: 0.8rem; color: #7f1d1d; margin-bottom: 0.85rem;">
+          Need immediate assistance? Reach the store team directly via WhatsApp or Phone:
+        </p>
+        <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+          {% set email_problem_url = "mailto:" ~ shop.email ~ "?subject=%5BRaised%20Problem%5D%20Issue%20-%20Shankar%20Homoeo%20Stores&body=Customer%20Name%3A%0APhone%20Number%3A%0AProblem%20Category%3A%0ADetails%3A%0A" %}
+          <a href="{{ email_problem_url }}" class="btn btn-outline btn-sm" style="border-color: #dc2626; color: #dc2626;">
+            ✉️ Email: {{ shop.email }}
+          </a>
+          {% set faq_wa_url = "https://wa.me/" ~ clean_whatsapp ~ "?text=Hello%20Shankar%20Homoeo%20Stores%2C%20I%20would%20like%20to%20raise%20a%20problem%2Fquestion." %}
+          <a href="{{ faq_wa_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-sm">
+            💬 WhatsApp Us
+          </a>
+          <a href="{{ clean_phone }}" class="btn btn-outline btn-sm">
+            📞 Call Desk: {{ shop.phone }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

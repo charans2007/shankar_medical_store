@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+
+{% block title %}Doctor Consultation (Free Online & In-Store) - {{ shop.name }}{% endblock %}
+
+{% block content %}
+<div class="container section">
+  <div class="section-header" style="text-align: left; max-width: 100%; margin-bottom: 2rem; position: relative;">
+    <!-- Background Watermark Image of Doctors - Pinned directly attached above orange outline -->
+    <div class="doctor-consultation-bg-watermark" style="background-image: url('{{ url_for('static', filename='images/doctors_team.jpg') }}?v=5'); opacity: 1; mix-blend-mode: multiply; bottom: -2rem;" aria-hidden="true"></div>
+
+    <span class="section-kicker" style="position: relative; z-index: 1;">HEALTHCARE CONSULTATION SERVICES</span>
+    <h1 class="section-title" style="position: relative; z-index: 1;">Doctor Consultation (Free Online &amp; In-Store)</h1>
+    <p class="section-description" style="max-width: 760px; position: relative; z-index: 1;">
+      Connect with qualified, certified B.H.M.S homoeopathic doctors associated with {{ shop.name }}. We provide both online tele-consultation (100% free via WhatsApp/Phone) and in-person consultations at our Malleswaram store clinic.
+    </p>
+  </div>
+
+  <!-- Medical Consultation Notice -->
+  <div class="medical-disclaimer" style="margin-top: 0; margin-bottom: 2.5rem;">
+    <div class="disclaimer-icon">ℹ️</div>
+    <div class="disclaimer-content">
+      <h4>Dedicated Homoeopathic Doctors for Your Convenience</h4>
+      <p>
+        Our doctors provide <strong>100% free online guidance</strong> via WhatsApp and Phone for everyday health queries and dosage advice. For comprehensive clinical examination and constitutional case evaluation, doctors are also available for face-to-face in-person consultations at our Malleswaram store <em>(standard in-store consultation charges apply)</em>. For acute emergencies, please visit the nearest hospital immediately.
+      </p>
+    </div>
+  </div>
+
+  <!-- Dedicated Doctors Profiles Section -->
+  <div style="margin-bottom: 3.5rem;">
+    <div style="display: grid; grid-template-columns: 1fr; gap: 2rem;">
+      <!-- DOCTOR 1: ONLINE CONSULTATION DOCTOR -->
+      <div style="background: var(--bg-surface); border: 2px solid #0d9488; border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-md); display: flex; flex-direction: column;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.25rem;">
+          <span style="display: inline-block; background-color: #ccfbf1; color: #0f766e; font-size: 0.78rem; font-weight: 700; padding: 0.3rem 0.85rem; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.5px;">
+            ⚡ Online Homoeopathic Doctor (Free)
+          </span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border-color);">
+          <div style="width: 76px; height: 76px; border-radius: 50%; background: linear-gradient(135deg, #0d9488, #14b8a6); color: #fff; font-size: 2.2rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25); flex-shrink: 0;">
+            👨‍⚕️
+          </div>
+          <div>
+            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.25rem;">
+              Online Consulting Homoeopathic Doctor
+            </h3>
+            <div style="font-size: 0.95rem; font-weight: 700; color: #0f766e; margin-bottom: 0.2rem;">
+              Certified B.H.M.S Practitioner
+            </div>
+            <div style="font-size: 0.85rem; color: var(--text-muted);">
+              Tele-Health, WhatsApp &amp; Remote Case Management
+            </div>
+          </div>
+        </div>
+
+        <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.25rem;">
+          Specialized in remote digital patient assessment, explaining homoeopathic dosages, dilution selection, and gentle symptom relief. Consult from anywhere across Bengaluru or India without visiting the store.
+        </p>
+
+        <div style="background-color: var(--bg-main); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.5rem; font-size: 0.9rem; display: flex; flex-direction: column; gap: 0.5rem;">
+          <div><span>📱</span> <strong>Consultation Mode:</strong> WhatsApp Chat, Voice Call, or Video Consultation</div>
+          <div><span>🕒</span> <strong>Online Hours:</strong> Monday – Saturday (10:00 AM – 8:00 PM)</div>
+          <div><span>💳</span> <strong>Consultation Fee:</strong> <strong style="color: #0d9488; font-size: 1rem;">100% Free</strong> (Exclusive for Online Consultations)</div>
+          <div><span>🎯</span> <strong>Key Focus Areas:</strong> Acidity, digestive problems, seasonal allergies, cough &amp; cold, stress, mother tincture guidance</div>
+        </div>
+
+        <!-- Action buttons -->
+        <div style="display: grid; grid-template-columns: 1fr; gap: 0.85rem; margin-top: auto; @media (min-width: 600px){ grid-template-columns: 1fr 1fr; }">
+          {% set doc_wa_instant = "https://wa.me/" ~ clean_doctor_whatsapp ~ "?text=Hello%20Doctor%2C%20I%20would%20like%20to%20consult%20with%20you%20for%20free%20regarding%20my%20health." %}
+          <a href="{{ doc_wa_instant }}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-lg" style="text-align: center; font-size: 1rem; padding: 0.9rem 1rem; display: flex; align-items: center; justify-content: center; gap: 0.65rem; box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);">
+            <span style="font-size: 1.35rem;">💬</span>
+            <span><strong>Chat on WhatsApp (Free):</strong> {{ doctor_phone }}</span>
+          </a>
+
+          <a href="{{ clean_doctor_phone }}" class="btn btn-primary btn-lg" style="text-align: center; font-size: 1rem; padding: 0.9rem 1rem; background-color: #0f766e; border-color: #0f766e; display: flex; align-items: center; justify-content: center; gap: 0.65rem; box-shadow: 0 4px 14px rgba(15, 118, 110, 0.3);">
+            <span style="font-size: 1.25rem;">📞</span>
+            <span><strong>Call Online Doctor (Free):</strong> {{ doctor_phone }}</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- DOCTOR 2: OFFLINE IN-STORE CLINICAL DOCTOR -->
+      <div style="background: var(--bg-surface); border: 2px solid #2563eb; border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-md); display: flex; flex-direction: column;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.25rem;">
+          <span style="display: inline-block; background-color: #dbeafe; color: #1e40af; font-size: 0.78rem; font-weight: 700; padding: 0.3rem 0.85rem; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.5px;">
+            🏥 In-Store Clinical Doctor
+          </span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border-color);">
+          <div style="width: 76px; height: 76px; border-radius: 50%; background: linear-gradient(135deg, #2563eb, #3b82f6); color: #fff; font-size: 2.2rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25); flex-shrink: 0;">
+            🩺
+          </div>
+          <div>
+            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.25rem;">
+              In-Store Clinical Homoeopathic Doctor
+            </h3>
+            <div style="font-size: 0.95rem; font-weight: 700; color: #1e40af; margin-bottom: 0.2rem;">
+              Certified B.H.M.S Homoeopathic Physician
+            </div>
+            <div style="font-size: 0.85rem; color: var(--text-muted);">
+              Face-to-Face Clinical Evaluation &amp; Case Taking
+            </div>
+          </div>
+        </div>
+
+        <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.25rem;">
+          Specialized in detailed face-to-face clinical case evaluation, physical observation, and deep-rooted constitutional treatment at our store in Malleswaram. Prescriptions are dispensed immediately from our extensive stock of genuine German homoeopathic medicines.
+        </p>
+
+        <div style="background-color: var(--bg-main); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.5rem; font-size: 0.9rem; display: flex; flex-direction: column; gap: 0.5rem;">
+          <div><span>🏥</span> <strong>Consultation Mode:</strong> Offline In-Person Clinical Consultation</div>
+          <div><span>📍</span> <strong>Clinic Location:</strong> {{ shop.address }}</div>
+          {% if shop.landmark %}
+          <div><span>📌</span> <strong>Landmark:</strong> {{ shop.landmark }}</div>
+          {% endif %}
+          <div><span>🕒</span> <strong>Store Clinic Hours:</strong> {{ shop.opening_hours }}</div>
+          <div><span>💳</span> <strong>Consultation Fee:</strong> <strong style="color: #1e40af;">Standard In-Store Consultation Charges Apply</strong></div>
+          <div><span>🎯</span> <strong>Key Focus Areas:</strong> Chronic arthritis &amp; joint stiffness, long-standing skin conditions, migraine, pediatric health</div>
+        </div>
+
+        <!-- Action buttons -->
+        <div style="display: grid; grid-template-columns: 1fr; gap: 0.85rem; margin-top: auto; @media (min-width: 600px){ grid-template-columns: 1fr 1fr; }">
+          <a href="{{ shop.google_maps_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg" style="text-align: center; font-size: 1rem; padding: 0.9rem 1rem; background-color: #2563eb; border-color: #2563eb; display: flex; align-items: center; justify-content: center; gap: 0.65rem; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);">
+            <span style="font-size: 1.25rem;">📍</span>
+            <span><strong>Get Directions to Store Clinic</strong></span>
+          </a>
+
+          <a href="{{ clean_phone }}" class="btn btn-outline btn-lg" style="text-align: center; font-size: 0.95rem; padding: 0.9rem 1rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+            <span>📞</span>
+            <span>Call Store Desk: {{ shop.phone }}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparison & Key Areas Grid -->
+  <div style="display: grid; grid-template-columns: 1fr; gap: 2rem; @media (min-width: 992px){ grid-template-columns: 1fr 1fr; }">
+    <!-- Left: Why Consult Our B.H.M.S Doctors? -->
+    <div style="background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-sm);">
+      <h3 style="font-size: 1.3rem; margin-bottom: 1.25rem; color: var(--text-primary);">Why Consult Our B.H.M.S Physicians?</h3>
+      
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <div style="padding: 1rem; border-radius: var(--radius-md); background: var(--bg-main); border-left: 4px solid var(--primary);">
+          <strong style="color: var(--text-primary); font-size: 1rem;">🩺 Certified B.H.M.S Homoeopathic Practitioners</strong>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem;">
+            Our consulting doctors are certified B.H.M.S practitioners dedicated to individualized patient analysis and root-cause remedy selection.
+          </p>
+        </div>
+
+        <div style="padding: 1rem; border-radius: var(--radius-md); background: var(--bg-main); border-left: 4px solid #0d9488;">
+          <strong style="color: var(--text-primary); font-size: 1rem;">🌐 Clear Division Between Online &amp; Offline</strong>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem;">
+            Get immediate online guidance for free, or schedule an in-person physical clinical evaluation at Malleswaram without confusion.
+          </p>
+        </div>
+
+        <div style="padding: 1rem; border-radius: var(--radius-md); background: var(--bg-main); border-left: 4px solid #2563eb;">
+          <strong style="color: var(--text-primary); font-size: 1rem;">🌿 Authentic Sourcing &amp; Sealed Medicines</strong>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem;">
+            Remedies prescribed by our doctors are dispensed from genuine German dilutions (Dr. Reckeweg, Schwabe) and top manufacturers backed by 20+ years of distribution experience.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Conditions Treated -->
+    <div style="background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-sm);">
+      <h3 style="font-size: 1.3rem; margin-bottom: 1.25rem; color: var(--text-primary);">Key Health Conditions Addressed</h3>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
+        <div style="background: var(--bg-main); padding: 0.75rem; border-radius: var(--radius-sm);">✔️ Chronic Acidity &amp; Digestion</div>
+        <div style="background: var(--bg-main); padding: 0.75rem; border-radius: var(--radius-sm);">✔️ Arthritis &amp; Joint Pains</div>
+        <div style="background: var(--bg-main); padding: 0.75rem; border-radius: var(--radius-sm);">✔️ Skin Allergies &amp; Eczema</div>
+        <div style="background: var(--bg-main); padding: 0.75rem; border-radius: var(--radius-sm);">✔️ Respiratory &amp; Sinusitis</div>
+        <div style="background: var(--bg-main); padding: 0.75rem; border-radius: var(--radius-sm);">✔️ Migraine &amp; Stress Relief</div>
+        <div style="background: var(--bg-main); padding: 0.75rem; border-radius: var(--radius-sm);">✔️ Child Immunity &amp; Nutrition</div>
+      </div>
+
+      <div style="background-color: #f0fdf4; border: 1.5px solid #bbf7d0; border-radius: var(--radius-md); padding: 1.25rem;">
+        <h4 style="color: #166534; font-size: 1rem; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.5rem;">
+          <span>🌿</span> Genuine Homoeopathic Principles
+        </h4>
+        <p style="color: #15803d; font-size: 0.88rem; line-height: 1.5; margin: 0;">
+          Our doctors prescribe gentle, non-habit-forming homoeopathic medicines customized to your individual physical and emotional symptoms.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Healthcare & Consultation Disclaimer Note -->
+  <div class="medical-disclaimer" style="margin-top: 3rem; margin-bottom: 1rem;">
+    <div class="disclaimer-icon">⚠️</div>
+    <div class="disclaimer-content">
+      <h4>Important Medical &amp; Consultation Disclaimer</h4>
+      <p style="margin-bottom: 0.5rem;">
+        <strong>Emergency Notice:</strong> Online tele-consultations and homoeopathic guidance provided through this platform are strictly for non-emergency healthcare, chronic wellness, and preliminary symptom analysis. They do <strong>NOT</strong> substitute emergency medical treatment. In the event of a medical emergency (such as severe chest pain, acute shortness of breath, heavy trauma, or unconsciousness), please visit the nearest hospital emergency department or call 112 / 108 immediately.
+      </p>
+      <p style="margin-bottom: 0.5rem;">
+        <strong>Ongoing Medications:</strong> Do not discontinue, alter, or delay any existing allopathic life-saving medications (e.g., for heart conditions, high blood pressure, or diabetes) without consulting your primary treating physician.
+      </p>
+      <p style="margin: 0;">
+        <strong>Tele-Health Scope:</strong> Online consultations via WhatsApp or phone are advisory and depend on the information shared by the patient. Our practitioners may advise an in-person physical clinical examination or laboratory tests when necessary for safe and accurate healthcare evaluation.
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

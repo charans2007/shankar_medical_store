@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }} - Availability & Info | {{ shop.name }}{% endblock %}
+
+{% block content %}
+<!-- Pharmacy Interior Ambient Background Watermark -->
+<div class="products-page-watermark" style="background-image: url('{{ url_for('static', filename='images/pharmacy_bg.jpg') }}?v=2'); opacity: 0.24; mix-blend-mode: multiply;" aria-hidden="true"></div>
+
+<div class="container section" style="position: relative; z-index: 1;">
+  <!-- Breadcrumb -->
+  <nav style="margin-bottom: 1.5rem; font-size: 0.875rem; color: var(--text-muted);">
+    <a href="{{ url_for('main.index') }}" style="color: var(--text-muted);">Home</a> &gt; 
+    <a href="{{ url_for('products.catalogue') }}" style="color: var(--text-muted);">Products</a> &gt; 
+    {% if product.category %}
+    <a href="{{ url_for('products.catalogue', category=product.category.slug) }}" style="color: var(--text-muted);">{{ product.category.name }}</a> &gt; 
+    {% endif %}
+    <span style="color: var(--text-primary); font-weight: 600;">{{ product.name }}</span>
+  </nav>
+
+  <div style="display: grid; grid-template-columns: 1fr; gap: 2.5rem; @media (min-width: 992px){ grid-template-columns: 1.2fr 0.8fr; }">
+    <!-- Left Column: Details -->
+    <div style="background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2.5rem; box-shadow: var(--shadow-sm);">
+      <span class="product-category-tag" style="font-size: 0.85rem;">{{ product.category.name if product.category else 'General Healthcare' }}</span>
+      <h1 style="font-size: 2rem; margin-top: 0.25rem; margin-bottom: 1rem; color: var(--text-primary); line-height: 1.25;">{{ product.name }}</h1>
+
+      <!-- Status Badge -->
+      <div style="margin-bottom: 1.5rem;">
+        {% if product.availability == 'In Stock' %}
+        <span class="availability-badge badge-in-stock" style="font-size: 0.85rem; padding: 0.35rem 0.85rem;">● In Stock (Physical Store)</span>
+        {% elif product.availability == 'Limited Stock' %}
+        <span class="availability-badge badge-limited" style="font-size: 0.85rem; padding: 0.35rem 0.85rem;">▲ Limited Stock Remaining</span>
+        {% elif product.availability == 'Out of Stock' %}
+        <span class="availability-badge badge-out-of-stock" style="font-size: 0.85rem; padding: 0.35rem 0.85rem;">✕ Out of Stock</span>
+        {% else %}
+        <span class="availability-badge badge-varies" style="font-size: 0.85rem; padding: 0.35rem 0.85rem;">ℹ️ Availability Varies</span>
+        {% endif %}
+      </div>
+
+      <!-- Prescription Warning -->
+      {% if product.requires_prescription %}
+      <div class="medical-disclaimer" style="margin: 1.5rem 0; background-color: #fff1f2; border-color: #fecdd3;">
+        <div class="disclaimer-icon">⚠️</div>
+        <div class="disclaimer-content">
+          <h4 style="color: #be123c;">Prescription Medicine Policy</h4>
+          <p style="color: #881337;">
+            This is a prescription medication. As per pharmacy regulations, it is dispensed solely against an original physical prescription written by a licensed medical practitioner.
+          </p>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Specifications Table -->
+      <h3 style="font-size: 1.15rem; margin-bottom: 0.75rem; color: var(--text-primary);">Product Specifications</h3>
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 2rem; font-size: 0.95rem;">
+        <tbody>
+          {% if product.brand %}
+          <tr style="border-bottom: 1px solid var(--border-color);">
+            <td style="padding: 0.75rem 0; font-weight: 600; color: var(--text-secondary); width: 35%;">Brand / Manufacturer:</td>
+            <td style="padding: 0.75rem 0; color: var(--text-primary);">{{ product.brand }}</td>
+          </tr>
+          {% endif %}
+          {% if product.pack_size %}
+          <tr style="border-bottom: 1px solid var(--border-color);">
+            <td style="padding: 0.75rem 0; font-weight: 600; color: var(--text-secondary);">Packaging / Pack Size:</td>
+            <td style="padding: 0.75rem 0; color: var(--text-primary);">{{ product.pack_size }}</td>
+          </tr>
+          {% endif %}
+          {% if product.dosage_form %}
+          <tr style="border-bottom: 1px solid var(--border-color);">
+            <td style="padding: 0.75rem 0; font-weight: 600; color: var(--text-secondary);">Dosage Form:</td>
+            <td style="padding: 0.75rem 0; color: var(--text-primary);">{{ product.dosage_form }}</td>
+          </tr>
+          {% endif %}
+          <tr style="border-bottom: 1px solid var(--border-color);">
+            <td style="padding: 0.75rem 0; font-weight: 600; color: var(--text-secondary);">Purchase Type:</td>
+            <td style="padding: 0.75rem 0; color: var(--text-primary);">Physical Store Purchase Only (No Delivery)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Description -->
+      <h3 style="font-size: 1.15rem; margin-bottom: 0.75rem; color: var(--text-primary);">Description &amp; Product Details</h3>
+      <p style="color: var(--text-secondary); line-height: 1.7; font-size: 1rem; margin-bottom: 2rem;">
+        {{ product.description or 'Please contact our store pharmacist for detailed guidance and usage instructions regarding this product.' }}
+      </p>
+
+      <!-- Standard Medical Disclaimer -->
+      <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+        * Disclaimer: Information provided here is for catalogue reference. It does not substitute professional medical advice. Always read package inserts and consult your healthcare provider.
+      </p>
+    </div>
+
+    <!-- Right Column: Store Enquiry Action Card -->
+    <div>
+      <div style="background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-md); position: sticky; top: 100px;">
+        <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--text-primary);">Enquire Availability</h3>
+        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+          Connect with our store to verify current shelf stock before your visit.
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 0.85rem; margin-bottom: 1.5rem;">
+          <a href="{{ whatsapp_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-lg" style="width: 100%;">
+            💬 Ask on WhatsApp
+          </a>
+          <a href="{{ clean_phone }}" class="btn btn-primary btn-lg" style="width: 100%;">
+            📞 Call Store: {{ shop.phone }}
+          </a>
+          <a href="{{ shop.google_maps_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="width: 100%;">
+            📍 Get Store Directions
+          </a>
+        </div>
+
+        <div style="background-color: var(--bg-alt); padding: 1.25rem; border-radius: var(--radius-md); font-size: 0.85rem; color: var(--text-secondary);">
+          <strong style="color: var(--text-primary); display: block; margin-bottom: 0.35rem;">🏪 Store Visit Guidelines:</strong>
+          <ul style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.35rem;">
+            <li>Visit during our opening hours: <strong>{{ store_status.today_hours_text }}</strong></li>
+            <li>Bring valid original doctor's prescription for scheduled medicines.</li>
+            <li>Payment is accepted directly at the store counter.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Related Products -->
+  {% if related_products %}
+  <div style="margin-top: 4rem;">
+    <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--text-primary);">Other Products in {{ product.category.name }}</h2>
+    <div class="products-grid">
+      {% for rel in related_products %}
+      {% set rel_wa = generate_whatsapp_link(shop.whatsapp, product_name=rel.name, shop_name=shop.name, message_type='availability') %}
+      <div class="product-card">
+        <span class="product-category-tag">{{ rel.category.name }}</span>
+        <h4 class="product-name">
+          <a href="{{ url_for('products.product_detail', product_id=rel.id) }}" style="color: inherit;">
+            {{ rel.name }}
+          </a>
+        </h4>
+        <p class="product-desc">{{ rel.description|truncate(80) }}</p>
+        <div class="product-card-actions">
+          <a href="{{ rel_wa }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-whatsapp" style="flex: 1;">
+            💬 Ask Availability
+          </a>
+          <a href="{{ url_for('products.product_detail', product_id=rel.id) }}" class="btn btn-sm btn-outline">
+            View
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

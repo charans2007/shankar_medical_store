@@ -1,0 +1,172 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+  <div>
+    <h1 style="font-size: 1.75rem; color: #0f172a; font-weight: 800;">Pharmacy Dashboard</h1>
+    <p style="color: #64748b; font-size: 0.95rem;">Store inventory overview, recent enquiries, and quick actions.</p>
+  </div>
+  <div style="display: flex; gap: 0.75rem;">
+    <a href="{{ url_for('admin.add_product') }}" class="btn btn-primary">
+      ➕ Add New Product
+    </a>
+    <a href="{{ url_for('admin.settings') }}" class="btn btn-outline">
+      ⚙️ Shop Settings
+    </a>
+  </div>
+</div>
+
+<!-- Stats Cards Grid -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon teal">💊</div>
+    <div class="stat-info">
+      <div class="stat-value">{{ total_products }}</div>
+      <div class="stat-label">Total Products</div>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon blue">✅</div>
+    <div class="stat-info">
+      <div class="stat-value">{{ available_products }}</div>
+      <div class="stat-label">In Stock</div>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon rose">⚠️</div>
+    <div class="stat-info">
+      <div class="stat-value">{{ out_of_stock_products }}</div>
+      <div class="stat-label">Out of Stock</div>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon amber">✉️</div>
+    <div class="stat-info">
+      <div class="stat-value">{{ unread_enquiries }}</div>
+      <div class="stat-label">Unread Enquiries (Total {{ total_enquiries }})</div>
+    </div>
+  </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr; gap: 2rem; @media (min-width: 992px){ grid-template-columns: 1.2fr 0.8fr; }">
+  <!-- Recent Enquiries -->
+  <div class="admin-card">
+    <div class="admin-card-header">
+      <div class="admin-card-title">Recent Customer Enquiries</div>
+      <a href="{{ url_for('admin.enquiries') }}" style="font-size: 0.85rem; font-weight: 600; color: var(--primary);">
+        View All Enquiries &rarr;
+      </a>
+    </div>
+
+    <div class="table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Customer</th>
+            <th>Phone</th>
+            <th>Message / Product</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for enq in recent_enquiries %}
+          <tr>
+            <td>
+              <strong>{{ enq.name }}</strong><br>
+              <span style="font-size: 0.75rem; color: #94a3b8;">{{ enq.created_at.strftime('%b %d, %H:%M') }}</span>
+            </td>
+            <td>
+              <a href="tel:{{ enq.phone }}">{{ enq.phone }}</a>
+            </td>
+            <td>
+              {% if enq.product_name %}
+              <div style="font-weight: 600; color: var(--primary); font-size: 0.8rem;">📦 {{ enq.product_name }}</div>
+              {% endif %}
+              <div style="color: #475569; font-size: 0.85rem;">{{ enq.message|truncate(60) }}</div>
+            </td>
+            <td>
+              {% if enq.status == 'unread' %}
+              <span style="background-color: #fee2e2; color: #991b1b; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700;">Unread</span>
+              {% else %}
+              <span style="background-color: #d1fae5; color: #065f46; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700;">Read</span>
+              {% endif %}
+            </td>
+            <td>
+              <form method="POST" action="{{ url_for('admin.toggle_enquiry_status', enquiry_id=enq.id) }}" style="display: inline;">
+                <button type="submit" class="btn btn-sm btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">
+                  {% if enq.status == 'unread' %}Mark Read{% else %}Mark Unread{% endif %}
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="5" style="text-align: center; color: #94a3b8; padding: 2rem;">No enquiries received yet.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Store Information Summary -->
+  <div class="admin-card">
+    <div class="admin-card-header">
+      <div class="admin-card-title">Live Store Status</div>
+      <a href="{{ url_for('admin.settings') }}" style="font-size: 0.85rem; font-weight: 600; color: var(--primary);">
+        Edit Settings &rarr;
+      </a>
+    </div>
+
+    <div style="padding: 1.5rem;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1px solid #e2e8f0;">
+        <div style="display: flex; align-items: center; gap: 0.85rem;">
+          <img src="{{ url_for('static', filename='images/profile.jpg') }}" alt="Profile Photo" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; object-position: center top; border: 2px solid #0d9488;">
+          <div>
+            <strong style="display: block; font-size: 0.95rem; color: #0f172a;">{{ shop.owner_name if shop.owner_name and shop.owner_name != '[OWNER_NAME]' else 'Chief Pharmacist' }}</strong>
+            <span style="font-size: 0.75rem; color: #64748b;">Store Administrator</span>
+          </div>
+        </div>
+        <span class="store-badge-inline {{ store_status.status_class }}" style="font-size: 0.85rem; padding: 0.35rem 0.85rem;">
+          <span class="status-dot"></span> {{ store_status.status_text }}
+        </span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.9rem; color: #334155;">
+        <div>
+          <span style="color: #64748b; display: block; font-size: 0.75rem; text-transform: uppercase;">Shop Name:</span>
+          <strong>{{ shop.name }}</strong>
+        </div>
+        <div>
+          <span style="color: #64748b; display: block; font-size: 0.75rem; text-transform: uppercase;">Contact Phone:</span>
+          <span>{{ shop.phone }}</span>
+        </div>
+        <div>
+          <span style="color: #64748b; display: block; font-size: 0.75rem; text-transform: uppercase;">WhatsApp Number:</span>
+          <span>+{{ shop.whatsapp }}</span>
+        </div>
+        <div>
+          <span style="color: #64748b; display: block; font-size: 0.75rem; text-transform: uppercase;">Address:</span>
+          <span>{{ shop.address }}</span>
+        </div>
+        <div>
+          <span style="color: #64748b; display: block; font-size: 0.75rem; text-transform: uppercase;">Opening Schedule:</span>
+          <span>{{ shop.opening_hours }}</span>
+        </div>
+      </div>
+
+      <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e2e8f0;">
+        <a href="{{ url_for('admin.products') }}" class="btn btn-primary" style="width: 100%;">
+          📦 Manage Product Inventory
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

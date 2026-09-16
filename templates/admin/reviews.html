@@ -1,0 +1,76 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block title %}Customer Reviews{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+  <div>
+    <h1 style="font-size: 1.75rem; color: #0f172a; font-weight: 800;">Customer Reviews &amp; Feedback</h1>
+    <p style="color: #64748b; font-size: 0.95rem;">Manage feedback and ratings submitted by pharmacy customers.</p>
+  </div>
+  <a href="{{ url_for('main.reviews') }}" target="_blank" class="btn btn-outline" style="font-size: 0.875rem;">
+    🌐 View Public Reviews Page &rarr;
+  </a>
+</div>
+
+<div class="admin-card">
+  <div class="table-responsive">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Customer Name</th>
+          <th>Rating</th>
+          <th>Category / Service</th>
+          <th>Location</th>
+          <th>Review Comment</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in reviews %}
+        <tr>
+          <td style="font-size: 0.8rem; color: #64748b; white-space: nowrap;">
+            {{ r.created_at.strftime('%Y-%m-%d') if r.created_at else '-' }}
+          </td>
+          <td>
+            <strong>{{ r.author_name }}</strong>
+            <div style="font-size: 0.75rem; color: #64748b;">{{ r.reviewer_title }}</div>
+          </td>
+          <td>
+            <span style="color: #eab308; font-weight: 700; font-size: 0.95rem;">
+              {% for i in range(r.rating) %}★{% endfor %}
+            </span>
+            <span style="font-size: 0.8rem; color: #64748b;">({{ r.rating }}/5)</span>
+          </td>
+          <td>
+            <span style="background: #f1f5f9; color: #334155; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600;">
+              {{ r.service_tag }}
+            </span>
+          </td>
+          <td style="font-size: 0.85rem; color: #64748b;">
+            {{ r.location }}
+          </td>
+          <td style="max-width: 340px;">
+            <div style="font-size: 0.875rem; color: #1e293b; line-height: 1.4;">{{ r.comment }}</div>
+          </td>
+          <td>
+            <form action="{{ url_for('admin.delete_review', review_id=r.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this review?');" style="display: inline;">
+              <button type="submit" class="btn btn-sm btn-outline-danger" style="color: #dc2626; border-color: #fca5a5; padding: 0.25rem 0.5rem; font-size: 0.75rem;">
+                🗑️ Delete
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="7" style="text-align: center; padding: 3rem; color: #94a3b8;">
+            No customer reviews submitted yet.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

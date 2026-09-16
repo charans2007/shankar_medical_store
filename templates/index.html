@@ -1,0 +1,393 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ shop.name }} - Your Trusted Local Medical Store & Pharmacy{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-content">
+        <div class="hero-welcome-highlight">
+          <span class="welcome-hand">👋</span>
+          <span class="welcome-text">Welcome to <strong>{{ shop.name }}</strong></span>
+        </div>
+        <h1 class="hero-title hero-title-single-line">
+          Your Trusted <span class="text-highlight">Local Medical Store</span>
+        </h1>
+        <p class="hero-subtitle">
+          We provide genuine healthcare products, authentic German homoeopathic dilutions, verified medicines, and personalized assistance at our neighborhood retail shop.
+        </p>
+        <div class="hero-actions">
+          <a href="{{ clean_phone }}" class="btn btn-lg btn-primary">
+            📞 Call Now
+          </a>
+          <a href="{{ header_whatsapp_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-lg btn-whatsapp">
+            💬 WhatsApp
+          </a>
+          <a href="{{ shop.google_maps_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-lg btn-outline">
+            📍 Directions
+          </a>
+        </div>
+      </div>
+
+      <!-- Real-Time Opening Hours Card -->
+      <div class="hero-status-wrapper">
+        <div class="hero-status-card">
+          <div class="status-header">
+            <span style="font-weight: 700; color: var(--text-secondary); font-size: 0.9rem;">CURRENT STORE STATUS</span>
+            <span class="status-badge {{ store_status.status_class }}">
+              <span class="status-dot"></span>
+              {{ store_status.status_text }}
+            </span>
+          </div>
+          <div class="schedule-text">
+            {{ store_status.today_hours_text }}
+          </div>
+          <div class="sub-text">
+            {{ store_status.sub_text }}
+          </div>
+          <hr style="border: none; border-top: 1px solid var(--border-color); margin: 0.5rem 0;">
+          <div style="display: flex; justify-content: space-between; font-size: 0.825rem; color: var(--text-muted);">
+            <span>Monday - Saturday:</span>
+            <span style="font-weight: 600; color: var(--text-primary);">10:00 AM – 8:00 PM</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.825rem; color: var(--text-muted);">
+            <span>Sunday:</span>
+            <span style="font-weight: 600; color: var(--text-primary);">Closed (Weekly Holiday)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Quick Action Cards Section -->
+<section class="section-quick-actions">
+  <div class="container">
+    <div class="action-cards-grid">
+      <!-- Card 1: Call Us -->
+      <a href="{{ clean_phone }}" class="action-card call">
+        <div class="action-card-icon">📞</div>
+        <h3 class="action-card-title">Call Us Directly</h3>
+        <p class="action-card-desc">Speak directly with our store pharmacist for quick inquiries on stock and store timings.</p>
+        <span class="action-card-action-text">{{ shop.phone }} &rarr;</span>
+      </a>
+
+      <!-- Card 2: WhatsApp Us -->
+      <a href="{{ header_whatsapp_url }}" target="_blank" rel="noopener noreferrer" class="action-card whatsapp">
+        <div class="action-card-icon">💬</div>
+        <h3 class="action-card-title">WhatsApp Us</h3>
+        <p class="action-card-desc">Send medicine names or questions on WhatsApp to check stock before visiting our store.</p>
+        <span class="action-card-action-text">Chat on WhatsApp &rarr;</span>
+      </a>
+
+      <!-- Card 3: Get Directions -->
+      <a href="{{ shop.google_maps_url }}" target="_blank" rel="noopener noreferrer" class="action-card directions">
+        <div class="action-card-icon">📍</div>
+        <h3 class="action-card-title">Get Directions</h3>
+        <p class="action-card-desc">Navigate directly to our physical medical shop using Google Maps GPS directions.</p>
+        <span class="action-card-action-text">Open Google Maps &rarr;</span>
+      </a>
+
+      <!-- Card 4: Doctor Consultation -->
+      <a href="{{ url_for('main.doctor_consultation') }}" class="action-card doctor">
+        <div class="action-card-icon">🩺</div>
+        <h3 class="action-card-title">Doctor Consultation</h3>
+        <p class="action-card-desc">Free doctor consultation online or in-person clinic visits with experienced B.H.M.S doctors.</p>
+        <span class="action-card-action-text">Consult Doctor &rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Prescription Safety Disclaimer -->
+<div class="container">
+  <div class="medical-disclaimer">
+    <div class="disclaimer-icon">⚠️</div>
+    <div class="disclaimer-content">
+      <h4>Important Healthcare &amp; Prescription Disclaimer</h4>
+      <p>
+        This website provides information about our physical medical store and product availability. It does not provide medical diagnosis or treatment advice. Please consult a qualified healthcare professional for medical advice. Scheduled prescription medicines are strictly dispensed upon presentation of a valid doctor's prescription at our store.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- About Preview Section -->
+<section class="section section-alt">
+  <div class="container">
+    <div style="max-width: 850px; margin: 0 auto; text-align: center;">
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem; align-items: center; margin-bottom: 1rem;">
+        <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: #ecfdf5; border: 1.5px solid #a7f3d0; color: #065f46; padding: 0.35rem 0.95rem; border-radius: 9999px; font-weight: 700; font-size: 0.85rem;">
+          🌿 25+ Years of Experience in the Field of Homoeopathy
+        </div>
+        <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: #f0fdfa; border: 1.5px solid #99f6e4; color: #0f766e; padding: 0.35rem 0.95rem; border-radius: 9999px; font-weight: 700; font-size: 0.85rem;">
+          📦 20+ Years as Distributor in Retail &amp; Wholesale
+        </div>
+      </div>
+      <span class="section-kicker">ABOUT OUR PHARMACY</span>
+      <h2 class="section-title">Dedicated to Neighborhood Health &amp; Genuine Care</h2>
+      <p style="color: var(--text-secondary); margin-bottom: 1rem; font-size: 1.05rem; line-height: 1.6;">
+        {{ shop.description }}
+      </p>
+      <p style="color: var(--text-secondary); margin-bottom: 1.75rem; font-size: 1rem; line-height: 1.6;">
+        Located conveniently at <strong>{{ shop.area or shop.city }}</strong>, our physical store is committed to dispensing authentic pharmaceutical products sourced directly from licensed distributors.
+      </p>
+      <a href="{{ url_for('main.about') }}" class="btn btn-outline-primary btn-lg">
+        Learn More About Our Store &rarr;
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Free Doctor Consultation Highlight Section -->
+<section class="consultation-highlight-section" style="background: linear-gradient(135deg, #042f2e 0%, #05645c 50%, #0f766e 100%); color: #ffffff; padding: 3.5rem 0; overflow: hidden;">
+  <div class="container">
+    <div class="consultation-highlight-grid">
+      <!-- Left Column: Guidance & Actions -->
+      <div class="consultation-highlight-content">
+        <span style="display: inline-block; background-color: rgba(255, 255, 255, 0.15); color: #a7f3d0; padding: 0.3rem 0.85rem; border-radius: 999px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.75rem;">
+          🩺 Healthcare Guidance
+        </span>
+        <h2 style="font-size: 2.2rem; font-weight: 800; color: #ffffff; margin-bottom: 0.75rem; line-height: 1.2;">
+          Doctor Consultation (Free Online &amp; In-Store)
+        </h2>
+        <p style="color: #ccfbf1; font-size: 1.05rem; line-height: 1.6; margin-bottom: 1.75rem; max-width: 620px;">
+          Have questions about chronic conditions, digestion, skin allergies, joint pains, or safe homoeopathic remedies? We have dedicated doctors for free online tele-consultation (via WhatsApp/Phone) and in-person clinical consultations at our Malleswaram store.
+        </p>
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+          <a href="{{ url_for('main.doctor_consultation') }}" class="btn btn-lg" style="background-color: #ffffff; color: #0f766e; font-weight: 700; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);">
+            Doctor Consultation &rarr;
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Column: Doctors Photo -->
+      <div class="consultation-highlight-media">
+        <img src="{{ url_for('static', filename='images/doctors_banner.jpg') }}?v=1" alt="Qualified Homoeopathic Doctors" class="consultation-highlight-img">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Product Categories Section -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-kicker">OUR CATALOGUE</span>
+      <h2 class="section-title">Browse Product Categories</h2>
+      <p class="section-description">
+        Explore the healthcare essentials and wellness supplies available for purchase in our store.
+      </p>
+    </div>
+
+    <div class="categories-grid">
+      {% for cat in categories %}
+      <a href="{{ url_for('products.catalogue', category=cat.slug) }}" class="category-card" style="padding: 1.5rem;">
+        <div class="category-icon-wrapper">
+          {% if cat.slug == 'prescription-medicines' %}📋
+          {% elif cat.slug == 'otc-medicines' %}💊
+          {% elif cat.slug == 'first-aid' %}🩹
+          {% elif cat.slug == 'baby-care' %}🍼
+          {% elif cat.slug == 'personal-care' %}🧴
+          {% elif cat.slug == 'vitamins-wellness' %}🌿
+          {% elif cat.slug == 'medical-equipment' %}🩺
+          {% elif cat.slug == 'diabetes-care' %}🩸
+          {% else %}🛡️{% endif %}
+        </div>
+        <h3 class="category-card-title" style="margin-bottom: 0; font-size: 1.1rem; display: flex; align-items: center; justify-content: space-between;">
+          <span>{{ cat.name }}</span>
+          <span style="color: var(--primary); font-size: 1rem;">&rarr;</span>
+        </h3>
+      </a>
+      {% endfor %}
+    </div>
+
+    <div style="text-align: center; margin-top: 2.5rem;">
+      <a href="{{ url_for('products.catalogue') }}" class="btn btn-primary btn-lg">
+        🔍 Search Full Product Catalogue
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Why Choose Us -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-kicker">STORE ADVANTAGES</span>
+      <h2 class="section-title">Why Visit Our Pharmacy</h2>
+      <p class="section-description">
+        We focus on genuine healthcare products and transparent customer service.
+      </p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-box">
+        <div class="feature-box-icon">📍</div>
+        <h3 class="feature-box-title">Convenient Local Location</h3>
+        <p class="feature-box-desc">Situated in {{ shop.city }} with accessible parking and simple landmark navigation.</p>
+      </div>
+      <div class="feature-box">
+        <div class="feature-box-icon">💬</div>
+        <h3 class="feature-box-title">Easy Communication</h3>
+        <p class="feature-box-desc">Verify product availability in seconds via WhatsApp or phone before heading to the store.</p>
+      </div>
+      <div class="feature-box">
+        <div class="feature-box-icon">🛡️</div>
+        <h3 class="feature-box-title">Genuine Healthcare Products</h3>
+        <p class="feature-box-desc">All medicines and surgical products are sourced from certified pharmaceutical manufacturers.</p>
+      </div>
+      <div class="feature-box">
+        <div class="feature-box-icon">🤝</div>
+        <h3 class="feature-box-title">Helpful Customer Service</h3>
+        <p class="feature-box-desc">Our experienced counter staff assists you in finding the exact items on your doctor's prescription.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Customer Reviews Section (Google Reviews) -->
+<section class="section">
+  <div class="container">
+    <div class="section-header" style="margin-bottom: 2rem;">
+      <span class="section-kicker">VERIFIED GOOGLE BUSINESS PROFILE</span>
+      <h2 class="section-title">Customer Reviews &amp; Ratings</h2>
+      <p class="section-description">
+        Genuine ratings and customer feedback for Shankar Homoeo Stores on Google.
+      </p>
+    </div>
+
+    <!-- Google Review Summary Widget (Pixel-Perfect from Screenshot) -->
+    <a href="https://share.google/oKp52jZpoZgdzDc7F" target="_blank" rel="noopener noreferrer" class="google-summary-card" title="Click to view all reviews on Google">
+      <div class="google-summary-header">
+        <span class="google-summary-title">Google review summary</span>
+        <span class="google-info-icon" title="Google review information">i</span>
+      </div>
+      <div class="google-summary-body">
+        <!-- Rating Distribution Bars -->
+        <div class="google-bars-container">
+          <div class="google-bar-row">
+            <span class="google-bar-num">5</span>
+            <div class="google-bar-track">
+              <div class="google-bar-fill" style="width: 82%;"></div>
+            </div>
+          </div>
+          <div class="google-bar-row">
+            <span class="google-bar-num">4</span>
+            <div class="google-bar-track">
+              <div class="google-bar-fill" style="width: 11%;"></div>
+            </div>
+          </div>
+          <div class="google-bar-row">
+            <span class="google-bar-num">3</span>
+            <div class="google-bar-track">
+              <div class="google-bar-fill" style="width: 3%;"></div>
+            </div>
+          </div>
+          <div class="google-bar-row">
+            <span class="google-bar-num">2</span>
+            <div class="google-bar-track">
+              <div class="google-bar-fill" style="width: 0%;"></div>
+            </div>
+          </div>
+          <div class="google-bar-row">
+            <span class="google-bar-num">1</span>
+            <div class="google-bar-track">
+              <div class="google-bar-fill" style="width: 4%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Overall Score & Stars -->
+        <div class="google-score-box">
+          <div class="google-score-val">4.6</div>
+          <div class="google-stars">
+            <span>★</span><span>★</span><span>★</span><span>★</span><span style="opacity: 0.85;">★</span>
+          </div>
+          <div class="google-review-total">(105)</div>
+        </div>
+      </div>
+    </a>
+
+    <!-- Link to Reviews Page and Write Review -->
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+      <a href="{{ url_for('main.reviews') }}" class="btn btn-lg btn-primary">
+        View All Customer Reviews &rarr;
+      </a>
+      <a href="{{ url_for('main.reviews') }}#write-review" class="btn btn-lg btn-outline" style="border-color: #e2e8f0; box-shadow: var(--shadow-sm);">
+        ✍️ Write a Review
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Location Preview Section -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-kicker">STORE LOCATION</span>
+      <h2 class="section-title">Visit Our Physical Store</h2>
+      <p class="section-description">
+        Drop by during our opening hours. We look forward to assisting you.
+      </p>
+    </div>
+
+    <div class="location-grid">
+      <div class="location-info-card">
+        <div class="location-meta-item">
+          <div class="location-meta-icon">📍</div>
+          <div class="location-meta-content">
+            <h4>Address</h4>
+            <p>{{ shop.address }}</p>
+            {% if shop.landmark %}
+            <p style="margin-top: 0.25rem; font-size: 0.85rem; color: var(--primary);">
+              Landmark: {{ shop.landmark }}
+            </p>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="location-meta-item">
+          <div class="location-meta-icon">🕒</div>
+          <div class="location-meta-content">
+            <h4>Store Hours</h4>
+            <p>{{ shop.opening_hours }}</p>
+            <p style="margin-top: 0.25rem; font-size: 0.85rem; color: var(--text-muted);">
+              Weekly Off: {{ shop.weekly_closure }}
+            </p>
+          </div>
+        </div>
+
+        <div class="location-meta-item">
+          <div class="location-meta-icon">📞</div>
+          <div class="location-meta-content">
+            <h4>Direct Contact</h4>
+            <p>Phone: <a href="{{ clean_phone }}">{{ shop.phone }}</a></p>
+            <p>WhatsApp: <a href="{{ header_whatsapp_url }}" target="_blank" rel="noopener noreferrer">+{{ shop.whatsapp }}</a></p>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.5rem;">
+          <a href="{{ shop.google_maps_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+            📍 Get Directions in Maps
+          </a>
+          <a href="{{ clean_phone }}" class="btn btn-outline">
+            📞 Call Before Visiting
+          </a>
+        </div>
+      </div>
+
+      <div class="map-container">
+        <iframe 
+          title="{{ shop.name }} Google Maps Location"
+          src="{{ shop.google_maps_embed_url }}" 
+          loading="lazy" 
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

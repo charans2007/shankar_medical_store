@@ -1,0 +1,237 @@
+{% extends 'base.html' %}
+
+{% block title %}Retail & Wholesale Homoeopathy Medicine Distribution - {{ shop.name }}{% endblock %}
+
+{% block meta_description %}Authorized distributor with 20+ years experience in retail and wholesale of homoeopathy medicines in Malleswaram, Bangalore. Direct stockist of Dr. Reckeweg, Schwabe, and SBL for clinics, doctors, and walk-in customers.{% endblock %}
+
+{% block content %}
+<div class="container section">
+  <!-- Page Header / Hero -->
+  <div class="section-header" style="text-align: left; max-width: 100%; margin-bottom: 2.5rem;">
+    <div style="display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin-bottom: 0.85rem;">
+      <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: #ecfdf5; border: 1.5px solid #a7f3d0; color: #065f46; padding: 0.35rem 0.95rem; border-radius: 9999px; font-weight: 700; font-size: 0.9rem;">
+        <span>🌿</span> 20+ Years of Experience as Distributor in Retail and Wholesale of Homoeopathy Medicine
+      </div>
+      <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: #f0fdfa; border: 1.5px solid #99f6e4; color: #0f766e; padding: 0.35rem 0.95rem; border-radius: 9999px; font-weight: 700; font-size: 0.9rem;">
+        <span>🏢</span> Malleswaram, Bengaluru Direct Stockist
+      </div>
+    </div>
+    <span class="section-kicker" style="display: block;">DISTRIBUTION &amp; PHARMACY DISPENSARY</span>
+    <h1 class="section-title">Retail &amp; Wholesale Homoeopathic Medicine Distribution</h1>
+    <p class="section-description" style="max-width: 900px;">
+      Serving individual patients, certified homoeopathic physicians, healthcare clinics, and dispensaries across Bengaluru. As established stockists and distributors for over two decades, we provide authentic, sealed formulations from world-leading German and Indian manufacturers.
+    </p>
+
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem;">
+      <a href="https://wa.me/{{ clean_phone_digits }}?text=Hello%20Shankar%20Homoeo%20Stores,%20I%20am%20inquiring%20about%20Wholesale%20/%20Bulk%20Homoeopathy%20Medicine%20pricing%20and%20stock%20availability." target="_blank" rel="noopener noreferrer" class="btn btn-lg btn-whatsapp">
+        💬 WhatsApp Wholesale Inquiry
+      </a>
+      <a href="{{ clean_phone }}" class="btn btn-lg btn-primary">
+        📞 Call for Bulk Stock: {{ shop.phone }}
+      </a>
+      <a href="{{ shop.google_maps_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-lg btn-outline">
+        📍 Visit Our Store
+      </a>
+    </div>
+  </div>
+
+  <!-- Dual Pillar Grid: Retail vs Wholesale -->
+  <div style="display: grid; grid-template-columns: 1fr; gap: 2rem; margin-bottom: 3.5rem; @media (min-width: 992px){ grid-template-columns: 1fr 1fr; }">
+    <!-- Pillar 1: Retail Customers -->
+    <div style="background-color: var(--bg-surface); border: 1.5px solid var(--border-color); border-radius: var(--radius-lg); padding: 2.25rem; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
+      <div style="display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; border-radius: var(--radius-md); background: #f0fdf4; color: #16a34a; font-size: 1.6rem; margin-bottom: 1.25rem;">
+        🏪
+      </div>
+      <span style="font-size: 0.8rem; text-transform: uppercase; font-weight: 700; color: #16a34a; letter-spacing: 0.05em;">Individual &amp; Family Care</span>
+      <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin: 0.35rem 0 1rem 0;">Retail Homoeopathy Pharmacy</h2>
+      <p style="color: var(--text-secondary); font-size: 0.98rem; line-height: 1.6; margin-bottom: 1.5rem;">
+        Walk in to our physical dispensary on 7th Cross, Sampige Road, Malleswaram for direct over-the-counter dispensing, prescription fulfillment, and personalized assistance.
+      </p>
+
+      <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.85rem; color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 2rem; flex-grow: 1;">
+        <li style="display: flex; align-items: flex-start; gap: 0.6rem;">
+          <span style="color: #10b981; font-weight: 700;">✓</span>
+          <span><strong>Prescription Dispensing:</strong> Accurate dispensing of doctor-prescribed potencies, pills, globes, and dilutions.</span>
+        </li>
+        <li style="display: flex; align-items: flex-start; gap: 0.6rem;">
+          <span style="color: #10b981; font-weight: 700;">✓</span>
+          <span><strong>German Brands Available:</strong> Genuine imported dilutions from Dr. Reckeweg &amp; Dr. Willmar Schwabe Germany.</span>
+        </li>
+        <li style="display: flex; align-items: flex-start; gap: 0.6rem;">
+          <span style="color: #10b981; font-weight: 700;">✓</span>
+          <span><strong>Free Doctor Consultation:</strong> 100% free online guidance via WhatsApp / Phone to help answer remedy questions.</span>
+        </li>
+        <li style="display: flex; align-items: flex-start; gap: 0.6rem;">
+          <span style="color: #10b981; font-weight: 700;">✓</span>
+          <span><strong>Instant WhatsApp Stock Check:</strong> Confirm exact bottle size and dilution potency before visiting our store.</span>
+        </li>
+      </ul>
+
+      <a href="{{ url_for('products.catalogue') }}" class="btn btn-outline-primary" style="width: 100%; justify-content: center;">
+        Browse Retail Catalogue &rarr;
+      </a>
+    </div>
+
+    <!-- Pillar 2: Wholesale & Bulk Distribution -->
+    <div style="background-color: var(--bg-surface); border: 2px solid #0d9488; border-radius: var(--radius-lg); padding: 2.25rem; box-shadow: var(--shadow-md); display: flex; flex-direction: column;">
+      <div style="display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; border-radius: var(--radius-md); background: #ccfbf1; color: #0f766e; font-size: 1.6rem; margin-bottom: 1.25rem;">
+        📦
+      </div>
+      <span style="font-size: 0.8rem; text-transform: uppercase; font-weight: 700; color: #0d9488; letter-spacing: 0.05em;">Doctors, Clinics &amp; Chemists</span>
+      <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin: 0.35rem 0 1rem 0;">Wholesale &amp; Bulk Supply</h2>
+      <p style="color: var(--text-secondary); font-size: 0.98rem; line-height: 1.6; margin-bottom: 1.5rem;">
+        Special trade pricing, reliable stock availability, and bulk procurement support for homoeopathic practitioners, medical clinics, and independent pharmacies.
+      </p>
+
+      <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.85rem; color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 2rem; flex-grow: 1;">
+        <li style="display: flex; align-items: flex-start; gap: 0.6rem;">
+          <span style="color: #0d9488; font-weight: 700;">✓</span>
+          <span><strong>Authorized Stockist:</strong> Factory-direct shipments with authentic tamper-proof seals and batch verification.</span>
+        </li>
+        <li style="display: flex; align-items: flex-start; gap: 0.6rem;">
+          <span style="color: #0d9488; font-weight: 700;">✓</span>
+          <span><strong>Competitive Wholesale Margins:</strong> Discounted tiered pricing for volume clinic orders and monthly supply subscriptions.</span>
+        </li>
+        <li style="display: flex; align-items: flex-start; gap: 0.6rem;">
+          <span style="color: #0d9488; font-weight: 700;">✓</span>
+          <span><strong>Rare &amp; High Potencies:</strong> Readily available stocks of 30C, 200C, 1M, 10M, 50M, CM, and Q (LM) potencies.</span>
+        </li>
+        <li style="display: flex; align-items: flex-start; gap: 0.6rem;">
+          <span style="color: #0d9488; font-weight: 700;">✓</span>
+          <span><strong>Consumables in Bulk:</strong> Sugar globules (sizes 10 to 60), glass dispensing bottles, corks, droppers, and blank envelopes.</span>
+        </li>
+      </ul>
+
+      <a href="https://wa.me/{{ clean_phone_digits }}?text=Hello%20Shankar%20Homoeo%20Stores,%20I%20would%20like%20to%20request%20a%20Wholesale%20Price%20List%20for%20our%20clinic/pharmacy." target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp" style="width: 100%; justify-content: center;">
+        Request Wholesale Price List &rarr;
+      </a>
+    </div>
+  </div>
+
+  <!-- Leading Brands Carried Section -->
+  <div style="background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2.5rem; margin-bottom: 3.5rem; box-shadow: var(--shadow-sm);">
+    <div style="text-align: center; max-width: 750px; margin: 0 auto 2.5rem auto;">
+      <span class="section-kicker">AUTHORIZED SOURCING</span>
+      <h2 style="font-size: 1.8rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.75rem;">Leading Homoeopathic Brands Stocked</h2>
+      <p style="color: var(--text-secondary); font-size: 0.95rem;">
+        We maintain ready stock across all leading domestic and international homoeopathic manufacturing laboratories.
+      </p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem;">
+      <div style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-main);">
+        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🇩🇪</div>
+        <h4 style="font-size: 1.15rem; color: var(--text-primary); margin-bottom: 0.35rem;">Dr. Reckeweg (Germany)</h4>
+        <p style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.5; margin: 0;">
+          Specialty R1 to R89 drops, biochemic salts, mother tinctures, and imported single dilutions in sealed original packs.
+        </p>
+      </div>
+
+      <div style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-main);">
+        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🌿</div>
+        <h4 style="font-size: 1.15rem; color: var(--text-primary); margin-bottom: 0.35rem;">Dr. Willmar Schwabe</h4>
+        <p style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.5; margin: 0;">
+          German and Indian manufactured dilutions, 1X tablets, Pentarkan combinations, mother tinctures, and syrups.
+        </p>
+      </div>
+
+      <div style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-main);">
+        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🇮🇳</div>
+        <h4 style="font-size: 1.15rem; color: var(--text-primary); margin-bottom: 0.35rem;">SBL Private Limited</h4>
+        <p style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.5; margin: 0;">
+          Comprehensive range of dilutions, biochemic combinations, hair oils, ointments, baby care, and personal wellness lines.
+        </p>
+      </div>
+
+      <div style="padding: 1.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-main);">
+        <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">✨</div>
+        <h4 style="font-size: 1.15rem; color: var(--text-primary); margin-bottom: 0.35rem;">Lords, Bakson, Wheezal</h4>
+        <p style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.5; margin: 0;">
+          Full catalog of certified Indian homoeopathic preparations, drops, tonics, specialized hair and skin formulations.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wholesale Ordering Process (4 Easy Steps) -->
+  <div style="margin-bottom: 3.5rem;">
+    <div style="text-align: center; max-width: 700px; margin: 0 auto 2.5rem auto;">
+      <span class="section-kicker">EFFORTLESS FULFILLMENT</span>
+      <h2 style="font-size: 1.8rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.75rem;">How Wholesale Orders Work</h2>
+      <p style="color: var(--text-secondary); font-size: 0.95rem;">
+        Simplified ordering process tailored for doctors, hospitals, and pharmacies.
+      </p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; text-align: center;">
+        <div style="width: 40px; height: 40px; background: #ecfdf5; color: #047857; font-weight: 800; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem auto;">1</div>
+        <h4 style="font-size: 1.05rem; color: var(--text-primary); margin-bottom: 0.5rem;">Send Requirement</h4>
+        <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.5; margin: 0;">
+          Share your medicine list via WhatsApp or email with required potencies and pack sizes.
+        </p>
+      </div>
+
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; text-align: center;">
+        <div style="width: 40px; height: 40px; background: #ecfdf5; color: #047857; font-weight: 800; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem auto;">2</div>
+        <h4 style="font-size: 1.05rem; color: var(--text-primary); margin-bottom: 0.5rem;">Stock &amp; Price Quote</h4>
+        <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.5; margin: 0;">
+          We immediately verify shelf inventory and provide discounted wholesale pricing with GST invoice.
+        </p>
+      </div>
+
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; text-align: center;">
+        <div style="width: 40px; height: 40px; background: #ecfdf5; color: #047857; font-weight: 800; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem auto;">3</div>
+        <h4 style="font-size: 1.05rem; color: var(--text-primary); margin-bottom: 0.5rem;">Quality Packing</h4>
+        <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.5; margin: 0;">
+          Items are carefully cross-checked for batch dates, potency accuracy, and packed securely.
+        </p>
+      </div>
+
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; text-align: center;">
+        <div style="width: 40px; height: 40px; background: #ecfdf5; color: #047857; font-weight: 800; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem auto;">4</div>
+        <h4 style="font-size: 1.05rem; color: var(--text-primary); margin-bottom: 0.5rem;">Pickup or Dispatch</h4>
+        <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.5; margin: 0;">
+          Pick up directly from our Malleswaram store or arrange courier/local delivery across Bengaluru.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wholesale Contact Banner -->
+  <div style="background: linear-gradient(135deg, #042f2e 0%, #0f766e 100%); color: #ffffff; border-radius: var(--radius-lg); padding: 3rem; text-align: center; margin-bottom: 3rem;">
+    <span style="display: inline-block; background: rgba(255,255,255,0.15); color: #a7f3d0; padding: 0.35rem 0.95rem; border-radius: 9999px; font-weight: 700; font-size: 0.85rem; margin-bottom: 1rem;">
+      🤝 DIRECT DISTRIBUTION DESK
+    </span>
+    <h2 style="font-size: 2.2rem; font-weight: 800; color: #ffffff; margin-bottom: 0.75rem;">
+      Ready to Place a Bulk or Trade Order?
+    </h2>
+    <p style="color: #ccfbf1; font-size: 1.05rem; max-width: 650px; margin: 0 auto 2rem auto; line-height: 1.6;">
+      Contact our wholesale coordinator directly on WhatsApp or call our dispensary line. You can also email your purchase list to our official address.
+    </p>
+
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+      <a href="https://wa.me/{{ clean_phone_digits }}?text=Hello%20Shankar%20Homoeo%20Stores,%20I%20want%20to%20discuss%20a%20bulk%20wholesale%20order." target="_blank" rel="noopener noreferrer" class="btn btn-lg btn-whatsapp" style="padding: 0.85rem 1.75rem;">
+        💬 Chat on WhatsApp
+      </a>
+      <a href="{{ clean_phone }}" class="btn btn-lg" style="background: #ffffff; color: #0f766e; font-weight: 700; padding: 0.85rem 1.75rem;">
+        📞 Call {{ shop.phone }}
+      </a>
+      <a href="mailto:shankarhomeostores@gmail.com?subject=Wholesale%20Medicine%20Inquiry" class="btn btn-lg btn-outline" style="border-color: rgba(255,255,255,0.4); color: #ffffff; padding: 0.85rem 1.75rem;">
+        ✉️ Email Purchase Order
+      </a>
+    </div>
+  </div>
+
+  <!-- Medical & Legal Notice -->
+  <div class="medical-disclaimer" style="margin-top: 0; margin-bottom: 1rem;">
+    <div class="disclaimer-icon">ℹ️</div>
+    <div class="disclaimer-content">
+      <h4>Pharmaceutical Compliance &amp; Sourcing Notice</h4>
+      <p>
+        {{ shop.name }} complies strictly with the Drugs and Cosmetics Act and statutory pharmaceutical storage requirements. All homoeopathic mother tinctures, dilutions, and bio-chemist combinations are held under climate-controlled conditions. Bulk supply of scheduled formulations is strictly fulfilled against valid documentation and registered trade accounts.
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

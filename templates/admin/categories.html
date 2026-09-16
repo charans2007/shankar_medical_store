@@ -1,0 +1,82 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block title %}Manage Categories{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+  <h1 style="font-size: 1.75rem; color: #0f172a; font-weight: 800;">Product Categories</h1>
+  <p style="color: #64748b; font-size: 0.95rem;">Organize store products into accessible healthcare categories.</p>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr; gap: 2rem; @media (min-width: 992px){ grid-template-columns: 1.2fr 0.8fr; }">
+  <!-- Existing Categories List -->
+  <div class="admin-card">
+    <div class="admin-card-header">
+      <div class="admin-card-title">Existing Categories ({{ categories|length }})</div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Slug</th>
+            <th>Products</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for cat in categories %}
+          <tr>
+            <td>
+              <strong>{{ cat.name }}</strong>
+              <div style="font-size: 0.75rem; color: #94a3b8;">{{ cat.description|truncate(50) }}</div>
+            </td>
+            <td>
+              <code>{{ cat.slug }}</code>
+            </td>
+            <td>
+              <span style="font-weight: 700; color: var(--primary);">{{ cat.products|length }}</span>
+            </td>
+            <td>
+              <form method="POST" action="{{ url_for('admin.delete_category', category_id=cat.id) }}" class="confirm-delete-form" data-entity="category and all its associated products" style="display: inline;">
+                <button type="submit" class="btn btn-sm btn-outline" style="color: #ef4444; padding: 0.25rem 0.5rem; font-size: 0.75rem;">
+                  🗑️ Delete
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Add New Category Form -->
+  <div class="admin-card" style="padding: 1.5rem;">
+    <h3 style="font-size: 1.15rem; margin-bottom: 1rem; color: #0f172a;">➕ Add New Category</h3>
+    <form method="POST" action="{{ url_for('admin.categories') }}">
+      <input type="hidden" name="action" value="add">
+
+      <div class="form-group">
+        <label class="form-label" for="name">Category Name *</label>
+        <input type="text" id="name" name="name" class="form-control" required placeholder="e.g. Ayurvedic & Herbal Care">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="slug">URL Slug *</label>
+        <input type="text" id="slug" name="slug" class="form-control" required placeholder="e.g. ayurvedic-herbal-care">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="description">Short Description</label>
+        <textarea id="description" name="description" class="form-control" rows="3" placeholder="Brief summary of items in this category."></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%;">
+        Save Category
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

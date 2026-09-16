@@ -1,0 +1,117 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block title %}Manage Products{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+  <div>
+    <h1 style="font-size: 1.75rem; color: #0f172a; font-weight: 800;">Product Catalogue</h1>
+    <p style="color: #64748b; font-size: 0.95rem;">View, add, edit, or adjust in-store availability statuses.</p>
+  </div>
+  <a href="{{ url_for('admin.add_product') }}" class="btn btn-primary">
+    ➕ Add New Product
+  </a>
+</div>
+
+<!-- Filters Bar -->
+<div class="admin-card" style="padding: 1.25rem; margin-bottom: 1.5rem;">
+  <form method="GET" action="{{ url_for('admin.products') }}" style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+    <div style="flex: 1; min-width: 220px;">
+      <input type="text" name="q" value="{{ search }}" placeholder="Search by name..." class="form-control" style="padding: 0.5rem 0.85rem; font-size: 0.9rem;">
+    </div>
+    <div style="min-width: 180px;">
+      <select name="category_id" class="form-control" style="padding: 0.5rem 0.85rem; font-size: 0.9rem;">
+        <option value="">All Categories</option>
+        {% for cat in categories %}
+        <option value="{{ cat.id }}" {% if selected_category_id == cat.id %}selected{% endif %}>{{ cat.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div style="min-width: 160px;">
+      <select name="availability" class="form-control" style="padding: 0.5rem 0.85rem; font-size: 0.9rem;">
+        <option value="">All Statuses</option>
+        <option value="In Stock" {% if selected_availability == 'In Stock' %}selected{% endif %}>In Stock</option>
+        <option value="Limited Stock" {% if selected_availability == 'Limited Stock' %}selected{% endif %}>Limited Stock</option>
+        <option value="Availability Varies" {% if selected_availability == 'Availability Varies' %}selected{% endif %}>Availability Varies</option>
+        <option value="Out of Stock" {% if selected_availability == 'Out of Stock' %}selected{% endif %}>Out of Stock</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-outline" style="padding: 0.5rem 1rem;">Filter</button>
+    {% if search or selected_category_id or selected_availability %}
+    <a href="{{ url_for('admin.products') }}" style="font-size: 0.85rem; color: #ef4444; text-decoration: underline;">Reset</a>
+    {% endif %}
+  </form>
+</div>
+
+<!-- Product Table -->
+<div class="admin-card">
+  <div class="table-responsive">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Product Name</th>
+          <th>Category</th>
+          <th>Brand / Pack</th>
+          <th>Rx Required</th>
+          <th>Availability Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for prod in products %}
+        <tr>
+          <td>{{ prod.id }}</td>
+          <td>
+            <strong>{{ prod.name }}</strong>
+          </td>
+          <td>
+            <span style="font-size: 0.85rem; color: #475569;">{{ prod.category.name if prod.category else '-' }}</span>
+          </td>
+          <td>
+            <div style="font-size: 0.85rem;">{{ prod.brand or '-' }}</div>
+            <div style="font-size: 0.75rem; color: #94a3b8;">{{ prod.pack_size or '' }}</div>
+          </td>
+          <td>
+            {% if prod.requires_prescription %}
+            <span style="color: #b91c1c; font-weight: 700; font-size: 0.75rem; background-color: #fee2e2; padding: 0.15rem 0.4rem; border-radius: 4px;">Rx Yes</span>
+            {% else %}
+            <span style="color: #64748b; font-size: 0.75rem;">OTC</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if prod.availability == 'In Stock' %}
+            <span style="background-color: #d1fae5; color: #065f46; font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 999px; font-weight: 700;">● In Stock</span>
+            {% elif prod.availability == 'Limited Stock' %}
+            <span style="background-color: #fef3c7; color: #92400e; font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 999px; font-weight: 700;">▲ Limited Stock</span>
+            {% elif prod.availability == 'Out of Stock' %}
+            <span style="background-color: #fee2e2; color: #991b1b; font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 999px; font-weight: 700;">✕ Out of Stock</span>
+            {% else %}
+            <span style="background-color: #e0f2fe; color: #0369a1; font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 999px; font-weight: 700;">ℹ️ Varies</span>
+            {% endif %}
+          </td>
+          <td>
+            <div style="display: flex; gap: 0.5rem;">
+              <a href="{{ url_for('admin.edit_product', product_id=prod.id) }}" class="btn btn-sm btn-outline" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">
+                ✏️ Edit
+              </a>
+              <form method="POST" action="{{ url_for('admin.delete_product', product_id=prod.id) }}" class="confirm-delete-form" data-entity="product" style="display: inline;">
+                <button type="submit" class="btn btn-sm btn-outline" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; color: #ef4444;">
+                  🗑️
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="7" style="text-align: center; color: #94a3b8; padding: 3rem;">
+            No products found matching your filters.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

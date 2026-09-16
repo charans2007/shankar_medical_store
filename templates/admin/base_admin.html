@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Staff Admin Dashboard{% endblock %} - {{ shop.name }}</title>
+  
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon/favicon.svg') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-header">
+        <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Logo" style="height: 32px; filter: brightness(0) invert(1);">
+        <div class="sidebar-brand-title">Pharmacy Admin</div>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li>
+          <a href="{{ url_for('admin.dashboard') }}" class="sidebar-link {% if request.endpoint == 'admin.dashboard' %}active{% endif %}">
+            <span>📊</span> Dashboard
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('admin.products') }}" class="sidebar-link {% if 'admin.products' in request.endpoint or 'product' in request.endpoint %}active{% endif %}">
+            <span>💊</span> Products
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('admin.categories') }}" class="sidebar-link {% if request.endpoint == 'admin.categories' %}active{% endif %}">
+            <span>📁</span> Categories
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('admin.enquiries') }}" class="sidebar-link {% if request.endpoint == 'admin.enquiries' %}active{% endif %}">
+            <span>✉️</span> Enquiries
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('admin.consultations') }}" class="sidebar-link {% if request.endpoint == 'admin.consultations' %}active{% endif %}">
+            <span>🩺</span> Consultations
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('admin.reviews') }}" class="sidebar-link {% if request.endpoint == 'admin.reviews' %}active{% endif %}">
+            <span>💬</span> Customer Reviews
+          </a>
+        </li>
+        <li>
+          <a href="{{ url_for('admin.settings') }}" class="sidebar-link {% if request.endpoint == 'admin.settings' %}active{% endif %}">
+            <span>⚙️</span> Shop Settings
+          </a>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <a href="{{ url_for('main.index') }}" target="_blank" class="sidebar-link" style="color: #94a3b8; font-size: 0.85rem;">
+          <span>🌐</span> View Public Website
+        </a>
+        <a href="{{ url_for('admin.logout') }}" class="sidebar-link" style="color: #f87171; font-size: 0.85rem; margin-top: 0.5rem;">
+          <span>🚪</span> Log Out
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="admin-main">
+      <header class="admin-top-nav">
+        <div style="font-weight: 700; color: #0f172a; font-size: 1.1rem;">
+          {{ shop.name }} Administration
+        </div>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <img src="{{ url_for('static', filename='images/profile.jpg') }}" alt="Admin Profile" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; object-position: center top; border: 2px solid #0d9488;">
+          <span style="font-size: 0.85rem; color: #64748b;">
+            Logged in as <strong>{{ session.get('admin_username', 'Admin') }}</strong>
+          </span>
+          <a href="{{ url_for('admin.logout') }}" class="btn btn-sm btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">
+            Logout
+          </a>
+        </div>
+      </header>
+
+      <!-- Flash Messages in Admin -->
+      <div style="padding: 1.5rem 2rem 0;">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }}">
+                <span>{{ message }}</span>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+      </div>
+
+      <main class="admin-body">
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>

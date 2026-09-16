@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Store Location & Directions - {{ shop.name }}{% endblock %}
+
+{% block content %}
+<div class="container section">
+  <div class="section-header" style="text-align: left; max-width: 100%; margin-bottom: 2.5rem;">
+    <span class="section-kicker">FIND OUR STORE</span>
+    <h1 class="section-title">Location &amp; Directions</h1>
+    <p class="section-description">
+      Visit {{ shop.name }} in person. Find detailed address information, landmark references, and navigation instructions below.
+    </p>
+  </div>
+
+  <div class="location-grid">
+    <!-- Location Card -->
+    <div class="location-info-card">
+      <h3 style="font-size: 1.35rem; margin-bottom: 1.5rem; color: var(--text-primary);">Store Location Details</h3>
+
+      <div class="location-meta-item">
+        <div class="location-meta-icon">📍</div>
+        <div class="location-meta-content">
+          <h4>Physical Address</h4>
+          <p style="font-size: 1.05rem; color: var(--text-primary); font-weight: 500;">{{ shop.address }}</p>
+          {% if shop.landmark %}
+          <p style="margin-top: 0.35rem; font-size: 0.9rem; color: var(--primary); font-weight: 600;">
+            Landmark: {{ shop.landmark }}
+          </p>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="location-meta-item">
+        <div class="location-meta-icon">🕒</div>
+        <div class="location-meta-content">
+          <h4>Opening Hours</h4>
+          <p>{{ shop.opening_hours }}</p>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">
+            Current Status: 
+            <span class="store-badge-inline {{ store_status.status_class }}">
+              <span class="status-dot"></span> {{ store_status.status_text }}
+            </span>
+          </p>
+        </div>
+      </div>
+
+      <div class="location-meta-item">
+        <div class="location-meta-icon">📞</div>
+        <div class="location-meta-content">
+          <h4>Store Contact</h4>
+          <p>Phone: <a href="{{ clean_phone }}">{{ shop.phone }}</a></p>
+          <p>WhatsApp: <a href="{{ header_whatsapp_url }}" target="_blank" rel="noopener noreferrer">+{{ shop.whatsapp }}</a></p>
+        </div>
+      </div>
+
+      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 1.5rem 0;">
+
+      <!-- Action Buttons -->
+      <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+        <a href="{{ shop.google_maps_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg" style="width: 100%;">
+          📍 Get Directions in Google Maps
+        </a>
+        <a href="{{ clean_phone }}" class="btn btn-outline" style="width: 100%;">
+          📞 Call Pharmacy: {{ shop.phone }}
+        </a>
+        <a href="{{ header_whatsapp_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp" style="width: 100%;">
+          💬 WhatsApp Us for Help
+        </a>
+      </div>
+    </div>
+
+    <!-- Interactive Embedded Map -->
+    <div>
+      <div class="map-container" style="height: 480px;">
+        <iframe 
+          title="{{ shop.name }} Google Maps Embed"
+          src="{{ shop.google_maps_embed_url }}" 
+          loading="lazy" 
+          allowfullscreen>
+        </iframe>
+      </div>
+      <p style="font-size: 0.825rem; color: var(--text-muted); margin-top: 0.75rem; text-align: center;">
+        Tip: Click "Directions" on the map or the button above to navigate using your mobile device's GPS.
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

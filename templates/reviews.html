@@ -1,0 +1,341 @@
+{% extends 'base.html' %}
+
+{% block title %}Customer Reviews & Ratings - {{ shop.name }}{% endblock %}
+
+{% block meta_description %}Read real customer reviews and patient testimonials for Shankar Homoeo Stores, Malleswaram. Share your own experience with our medicines and doctor consultations.{% endblock %}
+
+{% block content %}
+<div class="container section">
+  <!-- Page Header -->
+  <div class="section-header" style="text-align: left; max-width: 100%; margin-bottom: 2.5rem;">
+    <span class="section-kicker">COMMUNITY FEEDBACK</span>
+    <h1 class="section-title">Customer Reviews &amp; Testimonials</h1>
+    <p class="section-description">
+      Read genuine experiences from customers and patients, or share your own review for {{ shop.name }} on 7th Cross, Sampige Road, Malleswaram.
+    </p>
+  </div>
+
+  <!-- Google Overview Card Banner -->
+  <div style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border-radius: var(--radius-lg); padding: 2.5rem; color: #ffffff; margin-bottom: 3rem; box-shadow: var(--shadow-lg); display: grid; grid-template-columns: 1fr; gap: 2.5rem; align-items: center; @media (min-width: 992px){ grid-template-columns: 1.2fr 0.8fr; }">
+    <div>
+      <div style="display: inline-flex; align-items: center; gap: 0.5rem; background-color: rgba(255, 255, 255, 0.1); padding: 0.35rem 0.85rem; border-radius: 999px; font-size: 0.85rem; font-weight: 600; color: #facc15; margin-bottom: 1rem;">
+        <span>★</span> ⭐ Verified Google Rating: 4.6 / 5.0 (105+ Reviews)
+      </div>
+      <h2 style="font-size: 2rem; font-weight: 800; color: #ffffff; margin-bottom: 0.75rem; line-height: 1.25;">
+        Trusted by Generations in Malleswaram
+      </h2>
+      <p style="color: #cbd5e1; font-size: 1.05rem; line-height: 1.6; margin-bottom: 1.75rem;">
+        We take immense pride in dispensing genuine German homoeopathic dilutions, mother tinctures, and biochemic combinations with transparent advice and free professional doctor consultations.
+      </p>
+      <div style="display: flex; gap: 0.85rem; flex-wrap: wrap;">
+        <a href="#write-review" class="btn btn-lg btn-primary" style="font-weight: 700; box-shadow: 0 4px 14px rgba(13, 148, 136, 0.4);">
+          ✍️ Write a Customer Review &darr;
+        </a>
+        <a href="https://share.google/oKp52jZpoZgdzDc7F" target="_blank" rel="noopener noreferrer" class="btn btn-lg" style="background: rgba(255, 255, 255, 0.12); color: #ffffff; border: 1px solid rgba(255,255,255,0.25); text-decoration: none; font-weight: 600;">
+          ⭐ View Google Profile
+        </a>
+      </div>
+    </div>
+
+    <!-- Google Review Summary Widget (Pixel-Perfect from Google Profile) -->
+    <div>
+      <a href="https://share.google/oKp52jZpoZgdzDc7F" target="_blank" rel="noopener noreferrer" class="google-summary-card" style="margin: 0; max-width: 100%; text-decoration: none;" title="Click to view verified Google profile">
+        <div class="google-summary-header">
+          <span class="google-summary-title">Google review summary</span>
+          <span class="google-info-icon" title="Google review information">i</span>
+        </div>
+        <div class="google-summary-body">
+          <!-- Rating Distribution Bars -->
+          <div class="google-bars-container">
+            <div class="google-bar-row">
+              <span class="google-bar-num">5</span>
+              <div class="google-bar-track">
+                <div class="google-bar-fill" style="width: 82%;"></div>
+              </div>
+            </div>
+            <div class="google-bar-row">
+              <span class="google-bar-num">4</span>
+              <div class="google-bar-track">
+                <div class="google-bar-fill" style="width: 11%;"></div>
+              </div>
+            </div>
+            <div class="google-bar-row">
+              <span class="google-bar-num">3</span>
+              <div class="google-bar-track">
+                <div class="google-bar-fill" style="width: 3%;"></div>
+              </div>
+            </div>
+            <div class="google-bar-row">
+              <span class="google-bar-num">2</span>
+              <div class="google-bar-track">
+                <div class="google-bar-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+            <div class="google-bar-row">
+              <span class="google-bar-num">1</span>
+              <div class="google-bar-track">
+                <div class="google-bar-fill" style="width: 4%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Overall Score & Stars -->
+          <div class="google-score-box">
+            <div class="google-score-val">4.6</div>
+            <div class="google-stars">
+              <span>★</span><span>★</span><span>★</span><span>★</span><span style="opacity: 0.85;">★</span>
+            </div>
+            <div class="google-review-total">(105)</div>
+          </div>
+        </div>
+      </a>
+      <p style="text-align: center; color: #94a3b8; font-size: 0.8rem; margin-top: 0.6rem;">
+        Official Google Business Profile • 105 verified patient &amp; customer ratings
+      </p>
+    </div>
+  </div>
+
+  <!-- Review Filtering Tabs -->
+  <div style="margin-bottom: 2rem;">
+    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;" id="review-filters">
+      <button class="filter-btn active" data-filter="all" onclick="filterReviews('all', this)" style="padding: 0.5rem 1.25rem; border-radius: 999px; border: 1px solid var(--border-color); background: var(--primary); color: #fff; font-weight: 600; cursor: pointer; font-size: 0.9rem;">
+        All Reviews ({{ total_count }})
+      </button>
+      <button class="filter-btn" data-filter="5star" onclick="filterReviews('5star', this)" style="padding: 0.5rem 1.25rem; border-radius: 999px; border: 1px solid var(--border-color); background: var(--bg-surface); color: var(--text-secondary); font-weight: 600; cursor: pointer; font-size: 0.9rem;">
+        5 Stars ({{ star_counts[5] if star_counts else 86 }})
+      </button>
+      <button class="filter-btn" data-filter="4star" onclick="filterReviews('4star', this)" style="padding: 0.5rem 1.25rem; border-radius: 999px; border: 1px solid var(--border-color); background: var(--bg-surface); color: var(--text-secondary); font-weight: 600; cursor: pointer; font-size: 0.9rem;">
+        4 Stars ({{ star_counts[4] if star_counts else 12 }})
+      </button>
+      <button class="filter-btn" data-filter="medicines" onclick="filterReviews('medicines', this)" style="padding: 0.5rem 1.25rem; border-radius: 999px; border: 1px solid var(--border-color); background: var(--bg-surface); color: var(--text-secondary); font-weight: 600; cursor: pointer; font-size: 0.9rem;">
+        German Dilutions &amp; Stock
+      </button>
+      <button class="filter-btn" data-filter="consultation" onclick="filterReviews('consultation', this)" style="padding: 0.5rem 1.25rem; border-radius: 999px; border: 1px solid var(--border-color); background: var(--bg-surface); color: var(--text-secondary); font-weight: 600; cursor: pointer; font-size: 0.9rem;">
+        Doctor Consultation
+      </button>
+      <button class="filter-btn" data-filter="service" onclick="filterReviews('service', this)" style="padding: 0.5rem 1.25rem; border-radius: 999px; border: 1px solid var(--border-color); background: var(--bg-surface); color: var(--text-secondary); font-weight: 600; cursor: pointer; font-size: 0.9rem;">
+        Service &amp; WhatsApp Support
+      </button>
+    </div>
+  </div>
+
+  <!-- Customer Reviews Grid (Loaded dynamically from database) -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.75rem;" id="reviews-container">
+    {% for rev in reviews %}
+    {% set tag_lower = rev.service_tag|lower %}
+    {% set cat_tag = "all" %}
+    {% if rev.rating == 5 %}{% set cat_tag = cat_tag ~ " 5star" %}{% elif rev.rating == 4 %}{% set cat_tag = cat_tag ~ " 4star" %}{% endif %}
+    {% if "dilution" in tag_lower or "medicine" in tag_lower or "tincture" in tag_lower %}{% set cat_tag = cat_tag ~ " medicines" %}{% endif %}
+    {% if "consult" in tag_lower or "doctor" in tag_lower %}{% set cat_tag = cat_tag ~ " consultation" %}{% endif %}
+    {% if "service" in tag_lower or "whatsapp" in tag_lower or "staff" in tag_lower %}{% set cat_tag = cat_tag ~ " service" %}{% endif %}
+
+    <div class="review-item" data-tags="{{ cat_tag }}" style="background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.75rem; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+        <div style="display: flex; gap: 0.85rem; align-items: center;">
+          <div style="width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #0d9488, #14b8a6); color: #fff; font-weight: 700; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; text-transform: uppercase;">
+            {{ rev.author_name[:2] }}
+          </div>
+          <div>
+            <strong style="color: var(--text-primary); font-size: 1.05rem; display: block;">{{ rev.author_name }}</strong>
+            <span style="font-size: 0.78rem; color: var(--text-muted);">{{ rev.reviewer_title }} • {{ rev.location }}</span>
+          </div>
+        </div>
+        <div style="text-align: right;">
+          <div style="color: #eab308; font-size: 1rem; letter-spacing: 2px;">
+            {% for i in range(rev.rating) %}★{% endfor %}{% for i in range(5 - rev.rating) %}☆{% endfor %}
+          </div>
+          <span style="font-size: 0.75rem; color: var(--text-muted);">{{ rev.created_at.strftime('%b %d, %Y') if rev.created_at else 'Recent' }}</span>
+        </div>
+      </div>
+      <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; flex-grow: 1; margin-bottom: 1.25rem;">
+        "{{ rev.comment }}"
+      </p>
+      <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 0.75rem; border-top: 1px solid var(--border-color); font-size: 0.8rem;">
+        <span style="color: #0f766e; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Verified Review
+        </span>
+        <span style="background: rgba(13, 148, 136, 0.1); color: #0f766e; padding: 0.2rem 0.55rem; border-radius: 4px; font-weight: 600;">
+          {{ rev.service_tag }}
+        </span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Receive Customer Review Section Form -->
+  <div id="write-review" style="background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2.5rem; margin-top: 3.5rem; box-shadow: var(--shadow-md);">
+    <div style="text-align: center; max-width: 650px; margin: 0 auto 2rem auto;">
+      <span class="section-kicker">SHARE YOUR EXPERIENCE</span>
+      <h2 style="font-size: 1.85rem; color: var(--text-primary); margin-bottom: 0.5rem; font-weight: 800;">
+        Submit a Review
+      </h2>
+      <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">
+        We appreciate your feedback! Share your experience with our medicines, customer service, or doctor consultations.
+      </p>
+    </div>
+
+    <form method="POST" action="{{ url_for('main.reviews') }}" style="max-width: 700px; margin: 0 auto;">
+      <!-- Star Rating Picker -->
+      <div style="margin-bottom: 1.75rem; text-align: center;">
+        <label style="display: block; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">
+          Your Overall Rating <span style="color: #ef4444;">*</span>
+        </label>
+        <div id="star-picker" style="display: inline-flex; gap: 0.5rem; font-size: 2.2rem; cursor: pointer; user-select: none;">
+          <span class="star-choice" data-value="1" style="color: #eab308; transition: transform 0.15s ease;">★</span>
+          <span class="star-choice" data-value="2" style="color: #eab308; transition: transform 0.15s ease;">★</span>
+          <span class="star-choice" data-value="3" style="color: #eab308; transition: transform 0.15s ease;">★</span>
+          <span class="star-choice" data-value="4" style="color: #eab308; transition: transform 0.15s ease;">★</span>
+          <span class="star-choice" data-value="5" style="color: #eab308; transition: transform 0.15s ease;">★</span>
+        </div>
+        <input type="hidden" name="rating" id="rating-input" value="5">
+        <div id="rating-label" style="font-size: 0.9rem; color: var(--text-secondary); font-weight: 600; margin-top: 0.25rem;">
+          5 Stars - Excellent Experience
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr; gap: 1.25rem; margin-bottom: 1.25rem; @media (min-width: 640px){ grid-template-columns: 1fr 1fr; }">
+        <div>
+          <label for="author_name" style="display: block; font-size: 0.9rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.35rem;">
+            Your Full Name <span style="color: #ef4444;">*</span>
+          </label>
+          <input 
+            type="text" 
+            id="author_name" 
+            name="author_name" 
+            required 
+            placeholder="e.g. Ramesh Kumar"
+            value="{{ form_data.author_name if form_data else '' }}"
+            style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-body); color: var(--text-primary);"
+          >
+        </div>
+
+        <div>
+          <label for="location" style="display: block; font-size: 0.9rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.35rem;">
+            Your Area / City
+          </label>
+          <input 
+            type="text" 
+            id="location" 
+            name="location" 
+            placeholder="e.g. Malleswaram, Bengaluru"
+            value="{{ form_data.location if form_data else 'Malleswaram, Bengaluru' }}"
+            style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-body); color: var(--text-primary);"
+          >
+        </div>
+      </div>
+
+      <div style="margin-bottom: 1.25rem;">
+        <label for="service_tag" style="display: block; font-size: 0.9rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.35rem;">
+          What was your visit regarding?
+        </label>
+        <select 
+          id="service_tag" 
+          name="service_tag" 
+          style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-body); color: var(--text-primary);"
+        >
+          <option value="German Dilutions & Medicines">German Dilutions &amp; Homoeopathic Medicines</option>
+          <option value="Doctor Consultation">Free Online Doctor Consultation</option>
+          <option value="Mother Tinctures">Mother Tinctures &amp; Biochemic Salts</option>
+          <option value="Customer Service & WhatsApp">WhatsApp Medicine Availability Check</option>
+          <option value="Store Availability">In-Store Pharmacy Visit</option>
+          <option value="General Healthcare">General Healthcare &amp; Wellness</option>
+        </select>
+      </div>
+
+      <div style="margin-bottom: 1.75rem;">
+        <label for="comment" style="display: block; font-size: 0.9rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.35rem;">
+          Your Review &amp; Comments <span style="color: #ef4444;">*</span>
+        </label>
+        <textarea 
+          id="comment" 
+          name="comment" 
+          rows="4" 
+          required 
+          placeholder="Share details about medicine quality, doctor's advice, counter assistance, or store experience..."
+          style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-body); color: var(--text-primary); line-height: 1.5;"
+        >{{ form_data.comment if form_data else '' }}</textarea>
+      </div>
+
+      <div style="text-align: center;">
+        <button type="submit" class="btn btn-primary btn-lg" style="min-width: 240px; font-weight: 700;">
+          Submit Customer Review
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+// Filter reviews on client side
+function filterReviews(category, btnElement) {
+  const buttons = document.querySelectorAll('#review-filters .filter-btn');
+  buttons.forEach(b => {
+    b.classList.remove('active');
+    b.style.background = 'var(--bg-surface)';
+    b.style.color = 'var(--text-secondary)';
+  });
+
+  btnElement.classList.add('active');
+  btnElement.style.background = 'var(--primary)';
+  btnElement.style.color = '#fff';
+
+  const items = document.querySelectorAll('#reviews-container .review-item');
+  items.forEach(item => {
+    const tags = item.getAttribute('data-tags') || '';
+    if (category === 'all' || tags.includes(category)) {
+      item.style.display = 'flex';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
+// Interactive Star Rating Picker
+document.addEventListener('DOMContentLoaded', function() {
+  const stars = document.querySelectorAll('#star-picker .star-choice');
+  const ratingInput = document.getElementById('rating-input');
+  const ratingLabel = document.getElementById('rating-label');
+  const labels = {
+    1: '1 Star - Needs Improvement',
+    2: '2 Stars - Fair Experience',
+    3: '3 Stars - Average Service',
+    4: '4 Stars - Good Experience',
+    5: '5 Stars - Excellent Experience'
+  };
+
+  function setRating(val) {
+    ratingInput.value = val;
+    ratingLabel.textContent = labels[val] || (val + ' Stars');
+    stars.forEach(s => {
+      const sVal = parseInt(s.getAttribute('data-value'));
+      if (sVal <= val) {
+        s.textContent = '★';
+        s.style.color = '#eab308';
+      } else {
+        s.textContent = '☆';
+        s.style.color = 'var(--border-color)';
+      }
+    });
+  }
+
+  stars.forEach(star => {
+    star.addEventListener('click', function() {
+      const val = parseInt(this.getAttribute('data-value'));
+      setRating(val);
+    });
+
+    star.addEventListener('mouseenter', function() {
+      const val = parseInt(this.getAttribute('data-value'));
+      stars.forEach(s => {
+        const sVal = parseInt(s.getAttribute('data-value'));
+        s.style.transform = sVal <= val ? 'scale(1.2)' : 'scale(1)';
+      });
+    });
+
+    star.addEventListener('mouseleave', function() {
+      stars.forEach(s => s.style.transform = 'scale(1)');
+    });
+  });
+});
+</script>
+{% endblock %}
