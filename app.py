@@ -3,18 +3,21 @@ from datetime import datetime
 from flask import Flask, render_template, request
 from sqlalchemy import event
 from sqlalchemy.engine import Engine
-from config import Config
+from config import Config, is_vercel
 from models import db, Shop, Category
 from utils import get_store_status, clean_phone_for_tel, clean_whatsapp_number, generate_whatsapp_link, get_cached_value
 from seed_data import seed_database
 
-# Optimize SQLite for High Concurrency (WAL Mode, 30s timeout, 64MB cache)
+# Optimize SQLite for High Concurrency (WAL locally, Memory pragma for serverless/Vercel)
 @event.listens_for(Engine, "connect")
 def set_sqlite_pragma(dbapi_connection, connection_record):
     if hasattr(dbapi_connection, 'cursor'):
         try:
             cursor = dbapi_connection.cursor()
-            cursor.execute("PRAGMA journal_mode=WAL")
+            if not is_vercel:
+                cursor.execute("PRAGMA journal_mode=WAL")
+            else:
+                cursor.execute("PRAGMA journal_mode=MEMORY")
             cursor.execute("PRAGMA busy_timeout=30000")
             cursor.execute("PRAGMA synchronous=NORMAL")
             cursor.execute("PRAGMA cache_size=-64000")

@@ -23,6 +23,7 @@ if is_vercel:
         import shutil
         try:
             shutil.copy2(bundled_db_path, DEFAULT_DB_PATH)
+            os.chmod(DEFAULT_DB_PATH, 0o666)
         except Exception:
             pass
 else:

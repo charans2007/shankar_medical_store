@@ -8,3 +8,4 @@ echo  Press Ctrl+C to stop cleanly.
 echo ======================================================================
 .\venv\Scripts\python.exe app.py
 pause
+

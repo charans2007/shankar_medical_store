@@ -7,7 +7,12 @@ __pycache__/
 .vscode/
 scratch/
 test_app.py
+check_links.py
+migrate_db.py
+start_server.bat
+run_production.py
+pyrightconfig.json
 database/*.db-shm
 database/*.db-wal
-page.html
-run_production.py
+*.log
+
