@@ -39,17 +39,20 @@ def start_production_server():
     print("=" * 70)
     print(" Press CTRL+C to stop the server.\n")
 
-    serve(
-        app,
-        host=host,
-        port=port,
-        threads=threads,
-        connection_limit=connection_limit,
-        backlog=backlog,
-        channel_timeout=60,
-        cleanup_interval=30,
-        ident="Shankar-Homoeo-Stores-Production/1.0"
-    )
+    try:
+        serve(
+            app,
+            host=host,
+            port=port,
+            threads=threads,
+            connection_limit=connection_limit,
+            backlog=backlog,
+            channel_timeout=60,
+            cleanup_interval=30,
+            ident="Shankar-Homoeo-Stores-Production/1.0"
+        )
+    except (KeyboardInterrupt, SystemExit):
+        print("\n[*] Production server stopped cleanly.")
 
 if __name__ == '__main__':
     start_production_server()
