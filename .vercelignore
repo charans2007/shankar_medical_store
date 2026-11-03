@@ -1,0 +1,13 @@
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+.git/
+.vscode/
+scratch/
+test_app.py
+database/*.db-shm
+database/*.db-wal
+page.html
+run_production.py

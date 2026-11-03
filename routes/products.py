@@ -1,16 +1,20 @@
-from flask import Blueprint, render_template, request, jsonify, abort
-from models import Product, Category, Shop
+from flask import Blueprint, render_template, request, jsonify
+from models import Product, Category, Shop, db
 from utils import generate_whatsapp_link
 
 products_bp = Blueprint('products', __name__)
 
 @products_bp.route('/products')
-def catalogue():
+@products_bp.route('/products/category/<category_slug>')
+def catalogue(category_slug=None):
     """
     Searchable product catalogue for in-store inventory discovery and WhatsApp availability enquiry.
     Strictly NOT an e-commerce store (no cart, no checkout, no delivery).
     """
-    category_slug = request.args.get('category', '').strip()
+    if not category_slug:
+        category_slug = request.args.get('category', '').strip()
+    else:
+        category_slug = category_slug.strip()
     search_query = request.args.get('q', '').strip()
     availability_filter = request.args.get('availability', '').strip()
     
@@ -49,7 +53,7 @@ def catalogue():
 @products_bp.route('/products/<int:product_id>')
 def product_detail(product_id):
     """Product detailed specification view with WhatsApp availability enquiry trigger."""
-    product = Product.query.get_or_404(product_id)
+    product = db.get_or_404(Product, product_id)
     shop = Shop.query.first()
     shop_name = shop.name if shop else "Shankar Homoeo Stores"
     whatsapp_number = shop.whatsapp if shop else "919886661239"

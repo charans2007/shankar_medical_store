@@ -4,84 +4,263 @@
 
 {% block content %}
 <div class="container section">
-  <div class="section-header" style="text-align: left; max-width: 100%; margin-bottom: 2.5rem;">
-    <span class="section-kicker">FIND OUR STORE</span>
-    <h1 class="section-title">Location &amp; Directions</h1>
-    <p class="section-description">
-      Visit {{ shop.name }} in person. Find detailed address information, landmark references, and navigation instructions below.
+  <!-- Page Header -->
+  <div class="loc-page-header">
+    <div class="loc-header-top">
+      <div class="loc-kicker-badge">
+        <span>📍</span>
+        <span>FIND OUR STORE</span>
+      </div>
+      <div class="loc-status-pill {{ store_status.status_class }}">
+        <span class="loc-status-dot"></span>
+        <span>{{ store_status.status_text }}</span>
+      </div>
+    </div>
+    <h1 class="loc-title">Store Location &amp; Directions</h1>
+    <p class="loc-subtitle">
+      Visit <strong>{{ shop.name }}</strong> in person. Centrally situated on Sampige Road in Malleshwaram with convenient access via Metro, city bus, and two-wheeler parking.
     </p>
   </div>
 
-  <div class="location-grid">
-    <!-- Location Card -->
-    <div class="location-info-card">
-      <h3 style="font-size: 1.35rem; margin-bottom: 1.5rem; color: var(--text-primary);">Store Location Details</h3>
-
-      <div class="location-meta-item">
-        <div class="location-meta-icon">📍</div>
-        <div class="location-meta-content">
-          <h4>Physical Address</h4>
-          <p style="font-size: 1.05rem; color: var(--text-primary); font-weight: 500;">{{ shop.address }}</p>
-          {% if shop.landmark %}
-          <p style="margin-top: 0.35rem; font-size: 0.9rem; color: var(--primary); font-weight: 600;">
-            Landmark: {{ shop.landmark }}
-          </p>
-          {% endif %}
-        </div>
-      </div>
-
-      <div class="location-meta-item">
-        <div class="location-meta-icon">🕒</div>
-        <div class="location-meta-content">
-          <h4>Opening Hours</h4>
-          <p>{{ shop.opening_hours }}</p>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">
-            Current Status: 
-            <span class="store-badge-inline {{ store_status.status_class }}">
-              <span class="status-dot"></span> {{ store_status.status_text }}
-            </span>
-          </p>
-        </div>
-      </div>
-
-      <div class="location-meta-item">
-        <div class="location-meta-icon">📞</div>
-        <div class="location-meta-content">
-          <h4>Store Contact</h4>
-          <p>Phone: <a href="{{ clean_phone }}">{{ shop.phone }}</a></p>
-          <p>WhatsApp: <a href="{{ header_whatsapp_url }}" target="_blank" rel="noopener noreferrer">+{{ shop.whatsapp }}</a></p>
-        </div>
-      </div>
-
-      <hr style="border: none; border-top: 1px solid var(--border-color); margin: 1.5rem 0;">
-
-      <!-- Action Buttons -->
-      <div style="display: flex; flex-direction: column; gap: 0.85rem;">
-        <a href="{{ shop.google_maps_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg" style="width: 100%;">
-          📍 Get Directions in Google Maps
-        </a>
-        <a href="{{ clean_phone }}" class="btn btn-outline" style="width: 100%;">
-          📞 Call Pharmacy: {{ shop.phone }}
-        </a>
-        <a href="{{ header_whatsapp_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp" style="width: 100%;">
-          💬 WhatsApp Us for Help
-        </a>
+  <!-- Quick Info Highlights Bar -->
+  <div class="loc-summary-grid">
+    <div class="loc-summary-card">
+      <div class="loc-summary-icon emerald">📍</div>
+      <div class="loc-summary-meta">
+        <div class="loc-summary-label">Store Location</div>
+        <div class="loc-summary-value">7th Cross, Sampige Road</div>
+        <div class="loc-summary-subtext">Malleshwaram, Bengaluru 560003</div>
       </div>
     </div>
 
-    <!-- Interactive Embedded Map -->
-    <div>
-      <div class="map-container" style="height: 480px;">
+    <div class="loc-summary-card">
+      <div class="loc-summary-icon teal">🕒</div>
+      <div class="loc-summary-meta">
+        <div class="loc-summary-label">Working Hours</div>
+        <div class="loc-summary-value">{{ shop.opening_hours.split('|')[0].strip() if '|' in shop.opening_hours else shop.opening_hours }}</div>
+        <div class="loc-summary-subtext">Weekly Closure: {{ shop.weekly_closure }}</div>
+      </div>
+    </div>
+
+    <div class="loc-summary-card">
+      <div class="loc-summary-icon blue">📞</div>
+      <div class="loc-summary-meta">
+        <div class="loc-summary-label">Pharmacy Counter</div>
+        <div class="loc-summary-value">{{ shop.phone }}</div>
+        <div class="loc-summary-subtext">WhatsApp: +{{ shop.whatsapp }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Split Section: Store Details Card + Interactive Map -->
+  <div class="loc-main-grid">
+    <!-- Store Details Card -->
+    <div class="loc-card-primary">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+        <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+          <span>🏬</span>
+          <span>{{ shop.name }}</span>
+        </h2>
+        <span class="loc-card-badge">Walk-In Dispensary &amp; Counter</span>
+      </div>
+
+      <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.5rem;">
+        Your trusted homoeopathic dispensary providing sealed remedies, German dilutions, mother tinctures, and wellness products.
+      </p>
+
+      <!-- Address Box -->
+      <div class="loc-address-box">
+        <div style="font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.35rem;">
+          Dispensary Address
+        </div>
+        <div class="loc-address-text">
+          {{ shop.address }}
+        </div>
+        {% if shop.landmark %}
+        <div class="loc-landmark-pill">
+          <span>🏛️ Landmark:</span>
+          <span>{{ shop.landmark }}</span>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Contact Rows -->
+      <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1rem;">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; background: var(--bg-main); padding: 0.75rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+          <div style="display: flex; align-items: center; gap: 0.65rem;">
+            <span style="font-size: 1.15rem;">📞</span>
+            <div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Direct Phone</div>
+              <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary);">{{ shop.phone }}</div>
+            </div>
+          </div>
+          <a href="{{ clean_phone }}" class="btn btn-outline" style="font-size: 0.8rem; padding: 0.35rem 0.75rem;">
+            Call Counter
+          </a>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; background: var(--bg-main); padding: 0.75rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+          <div style="display: flex; align-items: center; gap: 0.65rem;">
+            <span style="font-size: 1.15rem;">💬</span>
+            <div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">WhatsApp Stock Check</div>
+              <div style="font-size: 0.95rem; font-weight: 700; color: #16a34a;">+{{ shop.whatsapp }}</div>
+            </div>
+          </div>
+          <a href="https://wa.me/{{ clean_whatsapp }}?text=Hello%20Shankar%20Homoeo%20Stores%2C%20I%20would%20like%20to%20inquire%20about%20medicine%20stock." target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp" style="font-size: 0.8rem; padding: 0.35rem 0.75rem;">
+            Chat on WhatsApp
+          </a>
+        </div>
+      </div>
+
+      <!-- In-Store Amenities -->
+      <div class="loc-amenity-grid">
+        <div class="loc-amenity-item">
+          <span class="loc-amenity-check">✓</span>
+          <span>5,000+ Genuine Dilutions</span>
+        </div>
+        <div class="loc-amenity-item">
+          <span class="loc-amenity-check">✓</span>
+          <span>UPI, Cash &amp; Cards</span>
+        </div>
+        <div class="loc-amenity-item">
+          <span class="loc-amenity-check">✓</span>
+          <span>Easy Two-Wheeler Parking</span>
+        </div>
+        <div class="loc-amenity-item">
+          <span class="loc-amenity-check">✓</span>
+          <span>Instant Stock Check</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="loc-actions-wrap">
+        <a href="{{ shop.google_maps_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg" style="width: 100%; justify-content: center; display: flex; align-items: center; gap: 0.5rem; font-weight: 700;">
+          <span>🗺️</span>
+          <span>Get Directions in Google Maps</span>
+        </a>
+        <div class="loc-action-row">
+          <a href="{{ clean_phone }}" class="btn btn-outline" style="text-align: center; justify-content: center; display: flex; align-items: center; gap: 0.45rem;">
+            <span>📞</span>
+            <span>Call Pharmacist</span>
+          </a>
+          <a href="{{ url_for('contact.contact_page') }}" class="btn btn-outline" style="text-align: center; justify-content: center; display: flex; align-items: center; gap: 0.45rem;">
+            <span>✉️</span>
+            <span>Contact Desk</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Map Experience -->
+    <div class="loc-map-card">
+      <div class="loc-map-header">
+        <div class="loc-map-header-title">
+          <span>📍</span>
+          <span>Interactive Location Map</span>
+        </div>
+        <a href="{{ shop.google_maps_url }}" target="_blank" rel="noopener noreferrer" style="font-size: 0.8rem; font-weight: 700; color: var(--primary); text-decoration: none;">
+          Open in Google Maps App &rarr;
+        </a>
+      </div>
+
+      <div class="loc-map-frame-box">
         <iframe 
-          title="{{ shop.name }} Google Maps Embed"
+          title="{{ shop.name }} Google Maps Location"
           src="{{ shop.google_maps_embed_url }}" 
           loading="lazy" 
           allowfullscreen>
         </iframe>
       </div>
-      <p style="font-size: 0.825rem; color: var(--text-muted); margin-top: 0.75rem; text-align: center;">
-        Tip: Click "Directions" on the map or the button above to navigate using your mobile device's GPS.
+
+      <div class="loc-map-footer">
+        <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.84rem; color: var(--text-secondary);">
+          <span>🧭</span>
+          <span>GPS coordinates set to <strong>Sampige Rd, 7th Cross</strong></span>
+        </div>
+        <a href="{{ shop.google_maps_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size: 0.82rem; padding: 0.35rem 0.85rem;">
+          Start GPS Navigation
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- How to Reach Our Store (Transport Section) -->
+  <div class="loc-guide-section">
+    <div class="section-header" style="text-align: left; max-width: 100%; margin-bottom: 1.5rem;">
+      <h2 class="loc-section-headline">How to Reach Our Store</h2>
+      <p class="loc-section-subline">
+        Conveniently located in central Malleshwaram with quick connectivity from across Bengaluru.
       </p>
+    </div>
+
+    <div class="loc-transport-grid">
+      <!-- 1. Metro -->
+      <div class="loc-transport-card">
+        <div class="loc-transport-icon-wrap" style="background: #eff6ff; color: #2563eb;">
+          🚇
+        </div>
+        <h3 class="loc-transport-title">Namma Metro</h3>
+        <div class="loc-transport-stop">Mantri Square Sampige Road (Green Line)</div>
+        <p class="loc-transport-desc">
+          <strong>Mantri Square Sampige Road</strong> on the <strong>Green Line</strong> is the nearest metro station to our store. It is approximately a 6–8 minute walk (~600m) or a quick 2-minute auto ride to 7th Cross.
+        </p>
+        <div class="loc-transport-tag">
+          <span>🚇 Nearest Metro: Green Line (~600m)</span>
+        </div>
+      </div>
+
+      <!-- 2. BMTC Bus -->
+      <div class="loc-transport-card">
+        <div class="loc-transport-icon-wrap" style="background: #f0fdf4; color: #16a34a;">
+          🚌
+        </div>
+        <h3 class="loc-transport-title">BMTC Bus Service</h3>
+        <div class="loc-transport-stop">Malleshwaram Circle Bus Stop</div>
+        <p class="loc-transport-desc">
+          <strong>Malleshwaram Circle</strong> is the nearest BMTC bus stop to our store. Frequent city buses run directly to this stop from Majestic (Kempegowda Bus Station), Shivajinagar, Yeshwanthpur, and KR Market.
+        </p>
+        <div class="loc-transport-tag">
+          <span>🚏 Malleshwaram Circle (Short Walk)</span>
+        </div>
+      </div>
+
+      <!-- 3. Two-Wheeler & Car -->
+      <div class="loc-transport-card">
+        <div class="loc-transport-icon-wrap" style="background: #fefce8; color: #ca8a04;">
+          🛵
+        </div>
+        <h3 class="loc-transport-title">Road &amp; Parking</h3>
+        <div class="loc-transport-stop">7th Cross, Sampige Road Junction</div>
+        <p class="loc-transport-desc">
+          Convenient two-wheeler parking directly outside our store. Four-wheeler street parking is accessible along the adjacent 7th and 8th Cross side roads.
+        </p>
+        <div class="loc-transport-tag">
+          <span>🅿️ Dedicated Bike Parking</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Doctor Consultation Guidance Banner -->
+  <div class="loc-doctor-banner">
+    <div class="loc-doctor-content">
+      <div class="loc-doctor-badge">
+        <span>👨‍⚕️</span>
+        <span>Doctor Consultation Available</span>
+      </div>
+      <h3 class="loc-doctor-title">Need Clinical Guidance or Remedy Advice?</h3>
+      <p class="loc-doctor-desc">
+        We offer expert doctor consultations for acute and chronic conditions, skin allergies, joint pains, pediatric wellness, and dietary advice. Inquire before you visit or schedule online.
+      </p>
+    </div>
+    <div class="loc-doctor-actions">
+      <a href="{{ url_for('main.doctor_consultation') }}" class="btn btn-lg" style="background-color: #ffffff; color: #0f766e; font-weight: 700; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2); white-space: nowrap;">
+        Doctor Consultation &rarr;
+      </a>
+      <a href="https://wa.me/{{ clean_doctor_whatsapp }}?text=Hello%20Doctor%2C%20I%20would%20like%20to%20inquire%20about%20a%20doctor%20consultation." target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-lg" style="white-space: nowrap;">
+        💬 WhatsApp Doctor
+      </a>
     </div>
   </div>
 </div>

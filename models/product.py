@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from models import db
 
 class Product(db.Model):
@@ -9,8 +9,8 @@ class Product(db.Model):
     __tablename__ = 'product'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(200), nullable=False)
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id', ondelete='CASCADE'), nullable=False)
+    name = db.Column(db.String(200), nullable=False, index=True)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id', ondelete='CASCADE'), nullable=False, index=True)
     description = db.Column(db.Text, nullable=True)
     brand = db.Column(db.String(100), nullable=True)
     pack_size = db.Column(db.String(80), nullable=True) # e.g., 'Strip of 10 Tablets', '100 ml Bottle'
@@ -18,10 +18,13 @@ class Product(db.Model):
     requires_prescription = db.Column(db.Boolean, default=False)
     
     # Availability status values: 'Available', 'In Stock', 'Limited Stock', 'Out of Stock', 'Availability Varies'
-    availability = db.Column(db.String(50), nullable=False, default='Availability Varies')
+    availability = db.Column(db.String(50), nullable=False, default='Availability Varies', index=True)
     
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
     def to_dict(self):
         return {

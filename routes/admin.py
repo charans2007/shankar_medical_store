@@ -1,6 +1,10 @@
 import functools
-from flask import Blueprint, render_template, request, redirect, url_for, flash, session, current_app
-from models import db, AdminUser, Product, Category, Enquiry, Shop, Consultation, Review
+import re
+import urllib.parse
+from datetime import datetime, timezone
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session, current_app, jsonify
+from models import db, AdminUser, Product, Category, Enquiry, Shop, Consultation, Review, FaqQuestion
+from utils import clear_cache
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -30,7 +34,7 @@ def login():
             session['admin_logged_in'] = True
             session['admin_username'] = user.username
             flash(f'Welcome back, {user.username}!', 'success')
-            next_url = request.args.get('next')
+            next_url = request.form.get('next') or request.args.get('next')
             return redirect(next_url or url_for('admin.dashboard'))
         else:
             flash('Invalid admin credentials. Please verify username and password.', 'danger')
@@ -57,6 +61,8 @@ def dashboard():
     unread_enquiries = Enquiry.query.filter_by(status='unread').count()
     total_consultations = Consultation.query.count()
     pending_consultations = Consultation.query.filter_by(status='pending').count()
+    total_faq_questions = FaqQuestion.query.count()
+    pending_faq_questions = FaqQuestion.query.filter_by(status='pending').count()
     
     recent_enquiries = Enquiry.query.order_by(Enquiry.created_at.desc()).limit(6).all()
     recent_consultations = Consultation.query.order_by(Consultation.created_at.desc()).limit(6).all()
@@ -71,6 +77,8 @@ def dashboard():
         unread_enquiries=unread_enquiries,
         total_consultations=total_consultations,
         pending_consultations=pending_consultations,
+        total_faq_questions=total_faq_questions,
+        pending_faq_questions=pending_faq_questions,
         recent_enquiries=recent_enquiries,
         recent_consultations=recent_consultations,
         recent_products=recent_products
@@ -143,7 +151,7 @@ def add_product():
 @admin_bp.route('/products/edit/<int:product_id>', methods=['GET', 'POST'])
 @admin_required
 def edit_product(product_id):
-    product = Product.query.get_or_404(product_id)
+    product = db.get_or_404(Product, product_id)
     categories = Category.query.order_by(Category.name.asc()).all()
     
     if request.method == 'POST':
@@ -169,7 +177,7 @@ def edit_product(product_id):
 @admin_bp.route('/products/delete/<int:product_id>', methods=['POST'])
 @admin_required
 def delete_product(product_id):
-    product = Product.query.get_or_404(product_id)
+    product = db.get_or_404(Product, product_id)
     p_name = product.name
     db.session.delete(product)
     db.session.commit()
@@ -200,16 +208,18 @@ def categories():
                     cat = Category(name=name, slug=slug, description=description, icon=icon)
                     db.session.add(cat)
                     db.session.commit()
+                    clear_cache('global_')
                     flash(f'Category "{name}" created.', 'success')
             return redirect(url_for('admin.categories'))
 
         elif action == 'edit':
             category_id = request.form.get('category_id', type=int)
-            cat = Category.query.get_or_404(category_id)
+            cat = db.get_or_404(Category, category_id)
             cat.name = request.form.get('name', '').strip()
             cat.description = request.form.get('description', '').strip()
             cat.icon = request.form.get('icon', 'capsules').strip()
             db.session.commit()
+            clear_cache('global_')
             flash(f'Category "{cat.name}" updated.', 'success')
             return redirect(url_for('admin.categories'))
 
@@ -219,10 +229,11 @@ def categories():
 @admin_bp.route('/categories/delete/<int:category_id>', methods=['POST'])
 @admin_required
 def delete_category(category_id):
-    cat = Category.query.get_or_404(category_id)
+    cat = db.get_or_404(Category, category_id)
     c_name = cat.name
     db.session.delete(cat)
     db.session.commit()
+    clear_cache('global_')
     flash(f'Category "{c_name}" deleted.', 'info')
     return redirect(url_for('admin.categories'))
 
@@ -237,7 +248,7 @@ def enquiries():
 @admin_bp.route('/enquiries/<int:enquiry_id>/toggle-status', methods=['POST'])
 @admin_required
 def toggle_enquiry_status(enquiry_id):
-    enquiry = Enquiry.query.get_or_404(enquiry_id)
+    enquiry = db.get_or_404(Enquiry, enquiry_id)
     enquiry.status = 'read' if enquiry.status == 'unread' else 'unread'
     db.session.commit()
     flash(f'Enquiry from {enquiry.name} marked as {enquiry.status}.', 'info')
@@ -246,7 +257,7 @@ def toggle_enquiry_status(enquiry_id):
 @admin_bp.route('/enquiries/<int:enquiry_id>/delete', methods=['POST'])
 @admin_required
 def delete_enquiry(enquiry_id):
-    enquiry = Enquiry.query.get_or_404(enquiry_id)
+    enquiry = db.get_or_404(Enquiry, enquiry_id)
     db.session.delete(enquiry)
     db.session.commit()
     flash('Enquiry deleted.', 'info')
@@ -263,7 +274,7 @@ def consultations():
 @admin_bp.route('/consultations/<int:consultation_id>/status', methods=['POST'])
 @admin_required
 def update_consultation_status(consultation_id):
-    consultation = Consultation.query.get_or_404(consultation_id)
+    consultation = db.get_or_404(Consultation, consultation_id)
     new_status = request.form.get('status', 'confirmed')
     consultation.status = new_status
     db.session.commit()
@@ -273,11 +284,106 @@ def update_consultation_status(consultation_id):
 @admin_bp.route('/consultations/<int:consultation_id>/delete', methods=['POST'])
 @admin_required
 def delete_consultation(consultation_id):
-    consultation = Consultation.query.get_or_404(consultation_id)
+    consultation = db.get_or_404(Consultation, consultation_id)
     db.session.delete(consultation)
     db.session.commit()
     flash('Consultation booking deleted.', 'info')
     return redirect(url_for('admin.consultations'))
+
+# ----------------- FAQ QUESTIONS & RESPONSES -----------------
+
+@admin_bp.route('/faq-questions')
+@admin_required
+def faq_questions():
+    status_filter = request.args.get('status', 'all')
+    query = FaqQuestion.query
+
+    if status_filter == 'pending':
+        query = query.filter_by(status='pending')
+    elif status_filter == 'answered':
+        query = query.filter_by(status='answered')
+
+    questions_list = query.order_by(FaqQuestion.created_at.desc()).all()
+    total_count = FaqQuestion.query.count()
+    pending_count = FaqQuestion.query.filter_by(status='pending').count()
+    answered_count = FaqQuestion.query.filter_by(status='answered').count()
+
+    return render_template('admin/faq_questions.html',
+                           questions=questions_list,
+                           status_filter=status_filter,
+                           counts={
+                               'total': total_count,
+                               'pending': pending_count,
+                               'answered': answered_count
+                           })
+
+@admin_bp.route('/faq-questions/<int:question_id>/respond', methods=['POST'])
+@admin_required
+def respond_faq_question(question_id):
+    faq_q = db.get_or_404(FaqQuestion, question_id)
+    is_ajax = request.is_json or request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+    payload = request.get_json(silent=True) if request.is_json else request.form
+
+    response_text = payload.get('admin_response', '').strip()
+    is_public = payload.get('is_public') in [True, 'on', 'true', '1']
+    send_whatsapp = payload.get('send_whatsapp') in [True, 'on', 'true', '1']
+
+    if not response_text:
+        if is_ajax:
+            return jsonify({'success': False, 'message': 'Please enter your response before saving.'}), 400
+        flash('Please enter your response before saving.', 'danger')
+        return redirect(url_for('admin.faq_questions'))
+
+    faq_q.admin_response = response_text
+    faq_q.status = 'answered'
+    faq_q.responded_at = datetime.now(timezone.utc)
+    faq_q.is_public = is_public
+    db.session.commit()
+
+    # Format customer WhatsApp URL
+    phone_digits = re.sub(r'\D', '', faq_q.phone)
+    if len(phone_digits) == 10:
+        phone_digits = '91' + phone_digits
+
+    shop = Shop.query.first()
+    shop_name = shop.name if shop else "Shankar Homoeo Stores"
+    shop_phone = shop.phone if shop else "+91 98866 61239"
+
+    shop_area = shop.area if (shop and shop.area) else "Malleshwaram"
+    shop_city = shop.city if (shop and shop.city) else "Bengaluru"
+
+    wa_text = (
+        f"Hello {faq_q.name},\n\n"
+        f"Thank you for reaching out to {shop_name}.\n\n"
+        f"📌 Your Question:\n\"{faq_q.question}\"\n\n"
+        f"👨‍⚕️ Store Pharmacist Response:\n{response_text}\n\n"
+        f"📍 Location: {shop_name}, {shop_area}, {shop_city}\n"
+        f"📞 Contact: {shop_phone}"
+    )
+    wa_url = f"https://wa.me/{phone_digits}?text={urllib.parse.quote(wa_text)}"
+
+    if is_ajax:
+        return jsonify({
+            'success': True,
+            'message': f'Response saved for {faq_q.name}!',
+            'whatsapp_url': wa_url,
+            'send_whatsapp': send_whatsapp
+        })
+
+    flash(f'Response successfully saved for question from {faq_q.name}!', 'success')
+    if send_whatsapp:
+        return redirect(wa_url)
+    return redirect(url_for('admin.faq_questions'))
+
+@admin_bp.route('/faq-questions/<int:question_id>/delete', methods=['POST'])
+@admin_required
+def delete_faq_question(question_id):
+    faq_q = db.get_or_404(FaqQuestion, question_id)
+    name = faq_q.name
+    db.session.delete(faq_q)
+    db.session.commit()
+    flash(f'Question from {name} has been deleted.', 'info')
+    return redirect(url_for('admin.faq_questions'))
 
 # ----------------- SHOP SETTINGS -----------------
 
@@ -291,39 +397,47 @@ def settings():
         db.session.commit()
 
     if request.method == 'POST':
-        shop.name = request.form.get('name', shop.name).strip()
-        shop.tagline = request.form.get('tagline', shop.tagline).strip()
-        shop.owner_name = request.form.get('owner_name', shop.owner_name).strip()
-        shop.phone = request.form.get('phone', shop.phone).strip()
-        shop.whatsapp = request.form.get('whatsapp', shop.whatsapp).strip()
-        shop.doctor_phone = request.form.get('doctor_phone', getattr(shop, 'doctor_phone', '+91 95357 17958')).strip()
-        shop.doctor_whatsapp = request.form.get('doctor_whatsapp', getattr(shop, 'doctor_whatsapp', '919535717958')).strip()
-        shop.email = request.form.get('email', shop.email).strip()
-        shop.address = request.form.get('address', shop.address).strip()
-        shop.area = request.form.get('area', shop.area).strip()
-        shop.city = request.form.get('city', shop.city).strip()
-        shop.state = request.form.get('state', shop.state).strip()
-        shop.pincode = request.form.get('pincode', shop.pincode).strip()
-        shop.landmark = request.form.get('landmark', shop.landmark).strip()
-        shop.google_maps_url = request.form.get('google_maps_url', shop.google_maps_url).strip()
-        shop.google_maps_embed_url = request.form.get('google_maps_embed_url', shop.google_maps_embed_url).strip()
+        shop.name = (request.form.get('name') or shop.name or '').strip()
+        shop.tagline = (request.form.get('tagline') or shop.tagline or '').strip()
+        shop.owner_name = (request.form.get('owner_name') or shop.owner_name or '').strip()
+        shop.phone = (request.form.get('phone') or shop.phone or '').strip()
+        shop.whatsapp = (request.form.get('whatsapp') or shop.whatsapp or '').strip()
+        shop.physical_store_name = (request.form.get('physical_store_name') or getattr(shop, 'physical_store_name', 'Homeolaya') or '').strip()
+        shop.physical_store_phone = (request.form.get('physical_store_phone') or getattr(shop, 'physical_store_phone', '+91 80506 04747') or '').strip()
+        shop.physical_store_whatsapp = (request.form.get('physical_store_whatsapp') or getattr(shop, 'physical_store_whatsapp', '918050604747') or '').strip()
+        shop.doctor_phone = (request.form.get('doctor_phone') or getattr(shop, 'doctor_phone', '+91 95357 17958') or '').strip()
+        shop.doctor_whatsapp = (request.form.get('doctor_whatsapp') or getattr(shop, 'doctor_whatsapp', '919535717958') or '').strip()
+        shop.email = (request.form.get('email') or shop.email or '').strip()
+        shop.address = (request.form.get('address') or shop.address or '').strip()
+        shop.area = (request.form.get('area') or shop.area or '').strip()
+        shop.city = (request.form.get('city') or shop.city or '').strip()
+        shop.state = (request.form.get('state') or shop.state or '').strip()
+        shop.pincode = (request.form.get('pincode') or shop.pincode or '').strip()
+        shop.landmark = (request.form.get('landmark') or shop.landmark or '').strip()
+        shop.google_maps_url = (request.form.get('google_maps_url') or shop.google_maps_url or '').strip()
+        shop.google_maps_embed_url = (request.form.get('google_maps_embed_url') or shop.google_maps_embed_url or '').strip()
         
         try:
-            shop.latitude = float(request.form.get('latitude', shop.latitude))
-            shop.longitude = float(request.form.get('longitude', shop.longitude))
+            lat_val = request.form.get('latitude')
+            if lat_val:
+                shop.latitude = float(lat_val)
+            long_val = request.form.get('longitude')
+            if long_val:
+                shop.longitude = float(long_val)
         except (ValueError, TypeError):
             pass
 
-        shop.opening_hours = request.form.get('opening_hours', shop.opening_hours).strip()
-        shop.weekly_closure = request.form.get('weekly_closure', shop.weekly_closure).strip()
-        shop.weekday_open_time = request.form.get('weekday_open_time', shop.weekday_open_time).strip()
-        shop.weekday_close_time = request.form.get('weekday_close_time', shop.weekday_close_time).strip()
-        shop.sunday_open_time = request.form.get('sunday_open_time', shop.sunday_open_time).strip()
-        shop.sunday_close_time = request.form.get('sunday_close_time', shop.sunday_close_time).strip()
+        shop.opening_hours = (request.form.get('opening_hours') or shop.opening_hours or '').strip()
+        shop.weekly_closure = (request.form.get('weekly_closure') or shop.weekly_closure or '').strip()
+        shop.weekday_open_time = (request.form.get('weekday_open_time') or shop.weekday_open_time or '').strip()
+        shop.weekday_close_time = (request.form.get('weekday_close_time') or shop.weekday_close_time or '').strip()
+        shop.sunday_open_time = (request.form.get('sunday_open_time') or shop.sunday_open_time or '').strip()
+        shop.sunday_close_time = (request.form.get('sunday_close_time') or shop.sunday_close_time or '').strip()
         shop.is_sunday_closed = bool(request.form.get('is_sunday_closed'))
-        shop.description = request.form.get('description', shop.description).strip()
+        shop.description = (request.form.get('description') or shop.description or '').strip()
         
         db.session.commit()
+        clear_cache('global_')
         flash('Shop information updated successfully! Changes will appear throughout the website.', 'success')
         return redirect(url_for('admin.settings'))
 
@@ -340,7 +454,7 @@ def reviews():
 @admin_bp.route('/reviews/delete/<int:review_id>', methods=['POST'])
 @admin_required
 def delete_review(review_id):
-    rev = Review.query.get_or_404(review_id)
+    rev = db.get_or_404(Review, review_id)
     db.session.delete(rev)
     db.session.commit()
     flash('Customer review deleted successfully.', 'info')

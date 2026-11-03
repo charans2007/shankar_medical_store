@@ -7,54 +7,97 @@
 <section class="hero-section">
   <div class="container">
     <div class="hero-grid">
+      <!-- Left: Value Proposition & CTA -->
       <div class="hero-content">
-        <div class="hero-welcome-highlight">
-          <span class="welcome-hand">👋</span>
-          <span class="welcome-text">Welcome to <strong>{{ shop.name }}</strong></span>
+        <div class="hero-badge">
+          <span class="hero-badge-pulse"></span>
+          <span class="hero-badge-text">Est. Trusted Medical Store &amp; Clinic</span>
         </div>
-        <h1 class="hero-title hero-title-single-line">
-          Your Trusted <span class="text-highlight">Local Medical Store</span>
+
+        <h1 class="hero-title">
+          Your Trusted <span class="text-highlight">Medical Store</span> &amp; Homoeopathic Pharmacy
         </h1>
+
         <p class="hero-subtitle">
-          We provide genuine healthcare products, authentic German homoeopathic dilutions, verified medicines, and personalized assistance at our neighborhood retail shop.
+          Dispensing genuine German dilutions, sealed medicines, mother tinctures, and wellness essentials with free doctor consultations at Malleswaram.
         </p>
+
         <div class="hero-actions">
-          <a href="{{ clean_phone }}" class="btn btn-lg btn-primary">
-            📞 Call Now
+          <a href="{{ clean_phone }}" class="btn btn-lg hero-btn-main">
+            📞 Call Pharmacist
           </a>
-          <a href="{{ header_whatsapp_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-lg btn-whatsapp">
-            💬 WhatsApp
+          <a href="{{ header_whatsapp_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-lg hero-btn-whatsapp">
+            💬 WhatsApp Enquiry
           </a>
-          <a href="{{ shop.google_maps_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-lg btn-outline">
+          <a href="{{ shop.google_maps_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-lg hero-btn-directions">
             📍 Directions
           </a>
         </div>
+
+        <!-- Trust Highlights Strip -->
+        <div class="hero-trust-strip">
+          <div class="hero-trust-item">
+            <span class="trust-icon">⭐</span>
+            <div>
+              <strong>4.6 / 5.0</strong>
+              <small>105+ Google Reviews</small>
+            </div>
+          </div>
+          <div class="hero-trust-divider"></div>
+          <div class="hero-trust-item">
+            <span class="trust-icon">🛡️</span>
+            <div>
+              <strong>100% Authentic</strong>
+              <small>Sealed German Dilutions</small>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- Real-Time Opening Hours Card -->
+      <!-- Right: Premium Interactive Store Live Card -->
       <div class="hero-status-wrapper">
-        <div class="hero-status-card">
-          <div class="status-header">
-            <span style="font-weight: 700; color: var(--text-secondary); font-size: 0.9rem;">CURRENT STORE STATUS</span>
-            <span class="status-badge {{ store_status.status_class }}">
-              <span class="status-dot"></span>
-              {{ store_status.status_text }}
-            </span>
+        <div class="hero-store-card">
+          <div class="hero-store-card-image" style="background-image: url('{{ url_for('static', filename='images/pharmacy_bg.jpg') }}');">
+            <div class="hero-store-card-overlay"></div>
+            <div class="hero-store-card-status">
+              <span class="status-badge {{ store_status.status_class }}">
+                <span class="status-dot"></span>
+                {{ store_status.status_text }}
+              </span>
+              <span class="hero-store-hours-pill">
+                {{ store_status.today_hours_text }}
+              </span>
+            </div>
           </div>
-          <div class="schedule-text">
-            {{ store_status.today_hours_text }}
-          </div>
-          <div class="sub-text">
-            {{ store_status.sub_text }}
-          </div>
-          <hr style="border: none; border-top: 1px solid var(--border-color); margin: 0.5rem 0;">
-          <div style="display: flex; justify-content: space-between; font-size: 0.825rem; color: var(--text-muted);">
-            <span>Monday - Saturday:</span>
-            <span style="font-weight: 600; color: var(--text-primary);">10:00 AM – 8:00 PM</span>
-          </div>
-          <div style="display: flex; justify-content: space-between; font-size: 0.825rem; color: var(--text-muted);">
-            <span>Sunday:</span>
-            <span style="font-weight: 600; color: var(--text-primary);">Closed (Weekly Holiday)</span>
+
+          <div class="hero-store-card-body">
+            <div class="hero-store-info-row">
+              <div class="info-icon">📍</div>
+              <div class="info-details">
+                <strong>Shankar Homoeo Stores</strong>
+                <p>7th Cross, Sampige Rd, Malleswaram (Opp. Kids Kingdom)</p>
+              </div>
+            </div>
+
+            <div class="hero-store-info-row">
+              <div class="info-icon">🕒</div>
+              <div class="info-details">
+                <strong>Store Operating Hours</strong>
+                <p>Mon – Sat: 10:00 AM – 8:00 PM · Sunday: Closed</p>
+              </div>
+            </div>
+
+            <div class="hero-store-card-actions">
+              <a href="{{ clean_phone }}" class="store-card-btn call" title="Call Store">
+                <span>📞 Call Store</span>
+              </a>
+              <a href="{{ header_whatsapp_url }}" target="_blank" rel="noopener noreferrer" class="store-card-btn whatsapp" title="WhatsApp Store">
+                <span>💬 WhatsApp</span>
+              </a>
+              <a href="{{ shop.google_maps_url }}" target="_blank" rel="noopener noreferrer" class="store-card-btn map" title="Google Maps">
+                <span>📍 Map</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -68,34 +111,79 @@
     <div class="action-cards-grid">
       <!-- Card 1: Call Us -->
       <a href="{{ clean_phone }}" class="action-card call">
-        <div class="action-card-icon">📞</div>
+        <div class="action-card-header">
+          <div class="action-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+          </div>
+          <span class="action-card-badge">Instant Call</span>
+        </div>
         <h3 class="action-card-title">Call Us Directly</h3>
-        <p class="action-card-desc">Speak directly with our store pharmacist for quick inquiries on stock and store timings.</p>
-        <span class="action-card-action-text">{{ shop.phone }} &rarr;</span>
+        <p class="action-card-desc">Check stock availability &amp; medicine potencies with our pharmacist.</p>
+        <div class="action-card-footer">
+          <span class="action-card-action-text">{{ shop.phone }}</span>
+          <span class="action-card-arrow">&rarr;</span>
+        </div>
       </a>
 
       <!-- Card 2: WhatsApp Us -->
       <a href="{{ header_whatsapp_url }}" target="_blank" rel="noopener noreferrer" class="action-card whatsapp">
-        <div class="action-card-icon">💬</div>
+        <div class="action-card-header">
+          <div class="action-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+            </svg>
+          </div>
+          <span class="action-card-badge">Quick Chat</span>
+        </div>
         <h3 class="action-card-title">WhatsApp Us</h3>
-        <p class="action-card-desc">Send medicine names or questions on WhatsApp to check stock before visiting our store.</p>
-        <span class="action-card-action-text">Chat on WhatsApp &rarr;</span>
+        <p class="action-card-desc">Send prescription photos or dilution names for fast confirmation.</p>
+        <div class="action-card-footer">
+          <span class="action-card-action-text">Chat on WhatsApp</span>
+          <span class="action-card-arrow">&rarr;</span>
+        </div>
       </a>
 
       <!-- Card 3: Get Directions -->
       <a href="{{ shop.google_maps_url }}" target="_blank" rel="noopener noreferrer" class="action-card directions">
-        <div class="action-card-icon">📍</div>
+        <div class="action-card-header">
+          <div class="action-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+          </div>
+          <span class="action-card-badge">Malleshwaram</span>
+        </div>
         <h3 class="action-card-title">Get Directions</h3>
-        <p class="action-card-desc">Navigate directly to our physical medical shop using Google Maps GPS directions.</p>
-        <span class="action-card-action-text">Open Google Maps &rarr;</span>
+        <p class="action-card-desc">Navigate directly to 7th Cross, Sampige Road with Google Maps GPS.</p>
+        <div class="action-card-footer">
+          <span class="action-card-action-text">Open Google Maps</span>
+          <span class="action-card-arrow">&rarr;</span>
+        </div>
       </a>
 
       <!-- Card 4: Doctor Consultation -->
       <a href="{{ url_for('main.doctor_consultation') }}" class="action-card doctor">
-        <div class="action-card-icon">🩺</div>
+        <div class="action-card-header">
+          <div class="action-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4.5 3v5a4.5 4.5 0 0 0 9 0V3"></path>
+              <path d="M9 12.5v5a2.5 2.5 0 0 0 5 0v-2"></path>
+              <circle cx="14" cy="15.5" r="2.5"></circle>
+              <circle cx="4.5" cy="3" r="1.5"></circle>
+              <circle cx="13.5" cy="3" r="1.5"></circle>
+            </svg>
+          </div>
+          <span class="action-card-badge">Free Guidance</span>
+        </div>
         <h3 class="action-card-title">Doctor Consultation</h3>
-        <p class="action-card-desc">Free doctor consultation online or in-person clinic visits with experienced B.H.M.S doctors.</p>
-        <span class="action-card-action-text">Consult Doctor &rarr;</span>
+        <p class="action-card-desc">Consult certified homoeopathic practitioners online or at our clinic.</p>
+        <div class="action-card-footer">
+          <span class="action-card-action-text">Consult Doctor</span>
+          <span class="action-card-arrow">&rarr;</span>
+        </div>
       </a>
     </div>
   </div>
@@ -114,135 +202,327 @@
   </div>
 </div>
 
-<!-- About Preview Section -->
-<section class="section section-alt">
+<!-- About & Trust Showcase Section -->
+<section class="about-showcase-section">
   <div class="container">
-    <div style="max-width: 850px; margin: 0 auto; text-align: center;">
-      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem; align-items: center; margin-bottom: 1rem;">
-        <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: #ecfdf5; border: 1.5px solid #a7f3d0; color: #065f46; padding: 0.35rem 0.95rem; border-radius: 9999px; font-weight: 700; font-size: 0.85rem;">
-          🌿 25+ Years of Experience in the Field of Homoeopathy
+    <div class="about-showcase-grid">
+      
+      <!-- Left Column: Concise Story & Action -->
+      <div>
+        <div style="display: inline-flex; align-items: center; gap: 0.4rem; background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.85rem;">
+          <span>🏥</span>
+          <span>ESTABLISHED TRUSTED PHARMACY</span>
         </div>
-        <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: #f0fdfa; border: 1.5px solid #99f6e4; color: #0f766e; padding: 0.35rem 0.95rem; border-radius: 9999px; font-weight: 700; font-size: 0.85rem;">
-          📦 20+ Years as Distributor in Retail &amp; Wholesale
-        </div>
-      </div>
-      <span class="section-kicker">ABOUT OUR PHARMACY</span>
-      <h2 class="section-title">Dedicated to Neighborhood Health &amp; Genuine Care</h2>
-      <p style="color: var(--text-secondary); margin-bottom: 1rem; font-size: 1.05rem; line-height: 1.6;">
-        {{ shop.description }}
-      </p>
-      <p style="color: var(--text-secondary); margin-bottom: 1.75rem; font-size: 1rem; line-height: 1.6;">
-        Located conveniently at <strong>{{ shop.area or shop.city }}</strong>, our physical store is committed to dispensing authentic pharmaceutical products sourced directly from licensed distributors.
-      </p>
-      <a href="{{ url_for('main.about') }}" class="btn btn-outline-primary btn-lg">
-        Learn More About Our Store &rarr;
-      </a>
-    </div>
-  </div>
-</section>
 
-<!-- Free Doctor Consultation Highlight Section -->
-<section class="consultation-highlight-section" style="background: linear-gradient(135deg, #042f2e 0%, #05645c 50%, #0f766e 100%); color: #ffffff; padding: 3.5rem 0; overflow: hidden;">
-  <div class="container">
-    <div class="consultation-highlight-grid">
-      <!-- Left Column: Guidance & Actions -->
-      <div class="consultation-highlight-content">
-        <span style="display: inline-block; background-color: rgba(255, 255, 255, 0.15); color: #a7f3d0; padding: 0.3rem 0.85rem; border-radius: 999px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.75rem;">
-          🩺 Healthcare Guidance
-        </span>
-        <h2 style="font-size: 2.2rem; font-weight: 800; color: #ffffff; margin-bottom: 0.75rem; line-height: 1.2;">
-          Doctor Consultation (Free Online &amp; In-Store)
+        <h2 style="font-size: clamp(1.65rem, 2.6vw, 2.15rem); font-weight: 800; color: var(--text-primary); line-height: 1.25; margin-bottom: 0.85rem; letter-spacing: -0.5px;">
+          Dedicated to Neighborhood Health &amp; Genuine Care
         </h2>
-        <p style="color: #ccfbf1; font-size: 1.05rem; line-height: 1.6; margin-bottom: 1.75rem; max-width: 620px;">
-          Have questions about chronic conditions, digestion, skin allergies, joint pains, or safe homoeopathic remedies? We have dedicated doctors for free online tele-consultation (via WhatsApp/Phone) and in-person clinical consultations at our Malleswaram store.
+
+        <p style="font-size: 0.98rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.25rem;">
+          Your trusted medical store at <strong>Malleshwaram</strong>, dispensing authentic homoeopathic medicines, German dilutions, healthcare essentials, and personalized care.
         </p>
-        <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
-          <a href="{{ url_for('main.doctor_consultation') }}" class="btn btn-lg" style="background-color: #ffffff; color: #0f766e; font-weight: 700; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);">
-            Doctor Consultation &rarr;
+
+        <!-- Value Proposition Bullet Points -->
+        <div style="display: grid; grid-template-columns: 1fr; gap: 0.55rem; margin-bottom: 1.5rem;">
+          <div style="display: flex; align-items: center; gap: 0.65rem; font-size: 0.9rem; color: var(--text-primary);">
+            <div style="width: 20px; height: 20px; border-radius: 50%; background: #dcfce7; color: #166534; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.75rem; flex-shrink: 0;">✓</div>
+            <span><strong>100% Genuine:</strong> Directly sourced sealed medicines from certified manufacturers</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.65rem; font-size: 0.9rem; color: var(--text-primary);">
+            <div style="width: 20px; height: 20px; border-radius: 50%; background: #dcfce7; color: #166534; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.75rem; flex-shrink: 0;">✓</div>
+            <span><strong>Doctor Consultations:</strong> In-store clinical visits &amp; free online tele-health</span>
+          </div>
+        </div>
+
+        <!-- Call to Action Buttons -->
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
+          <a href="{{ url_for('main.about') }}" class="btn btn-primary" style="padding: 0.65rem 1.25rem; font-size: 0.92rem; box-shadow: 0 4px 12px rgba(15, 118, 110, 0.2);">
+            Learn More About Us &rarr;
+          </a>
+          <a href="{{ url_for('main.retail_wholesale') }}" class="btn btn-outline" style="padding: 0.65rem 1.25rem; font-size: 0.92rem; background: #ffffff;">
+            Retail &amp; Wholesale &rarr;
           </a>
         </div>
       </div>
 
-      <!-- Right Column: Doctors Photo -->
-      <div class="consultation-highlight-media">
-        <img src="{{ url_for('static', filename='images/doctors_banner.jpg') }}?v=1" alt="Qualified Homoeopathic Doctors" class="consultation-highlight-img">
+      <!-- Right Column: 4 Concise Stat Cards -->
+      <div class="about-showcase-stats">
+        
+        <!-- Stat Card 1: 25+ Years Experience in Homoeopathy -->
+        <div class="about-stat-card card-accent-emerald">
+          <div class="about-stat-icon-wrapper" style="background: #ecfdf5; color: #059669;">
+            🌿
+          </div>
+          <div class="about-stat-number" style="color: #0f766e;">
+            25+ <span style="font-size: 0.95rem; font-weight: 700; color: #0d9488;">Years</span>
+          </div>
+          <h4 class="about-stat-title">Field of Homoeopathy</h4>
+          <p class="about-stat-desc">
+            Over a quarter century of trusted constitutional patient care.
+          </p>
+        </div>
+
+        <!-- Stat Card 2: 20+ Years Wholesale Distributor -->
+        <div class="about-stat-card card-accent-sky">
+          <div class="about-stat-icon-wrapper" style="background: #f0fdfa; color: #0284c7;">
+            📦
+          </div>
+          <div class="about-stat-number" style="color: #0284c7;">
+            20+ <span style="font-size: 0.95rem; font-weight: 700; color: #0369a1;">Years</span>
+          </div>
+          <h4 class="about-stat-title">Retail &amp; Wholesale</h4>
+          <p class="about-stat-desc">
+            Reputed distributor supplying authentic formulations across Karnataka.
+          </p>
+        </div>
+
+        <!-- Stat Card 3: Malleshwaram Walk-In Store -->
+        <div class="about-stat-card" style="border-color: #cbd5e1;">
+          <div class="about-stat-icon-wrapper" style="background: #eff6ff; color: #2563eb;">
+            🏬
+          </div>
+          <div class="about-stat-number" style="font-size: 1.3rem; color: #1e40af; line-height: 1.2; margin-bottom: 0.15rem;">
+            Malleshwaram
+          </div>
+          <h4 class="about-stat-title">Physical Walk-In Store</h4>
+          <p class="about-stat-desc">
+            7th Cross, Sampige Road, Malleshwaram, Bengaluru.
+          </p>
+        </div>
+
+        <!-- Stat Card 4: 100% Genuine Care -->
+        <div class="about-stat-card" style="border-color: #fde68a;">
+          <div class="about-stat-icon-wrapper" style="background: #fefce8; color: #d97706;">
+            🛡️
+          </div>
+          <div class="about-stat-number" style="color: #d97706;">
+            100%
+          </div>
+          <h4 class="about-stat-title">Genuine &amp; Authentic</h4>
+          <p class="about-stat-desc">
+            Sealed medicines from SBL, Schwabe, Reckeweg &amp; more.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Free Doctor Consultation Highlight Section with Background Doctors Image -->
+<section class="consultation-highlight-section">
+  <!-- Doctors Image Visible in Background -->
+  <div class="consultation-bg-image-layer" style="background-image: url('{{ url_for('static', filename='images/doctors_banner.jpg') }}?v=3');"></div>
+  
+  <!-- Subtle Gradient Blend Layer -->
+  <div class="consultation-bg-gradient-layer"></div>
+
+  <div class="container">
+    <!-- Consultation Content -->
+    <div class="consultation-highlight-content">
+      <span style="display: inline-block; background-color: rgba(255, 255, 255, 0.18); color: #a7f3d0; padding: 0.32rem 0.9rem; border-radius: 999px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.85rem; backdrop-filter: blur(4px);">
+        🩺 Healthcare Guidance
+      </span>
+      <h2 style="font-size: 2.35rem; font-weight: 800; color: #ffffff; margin-bottom: 0.85rem; line-height: 1.2;">
+        Doctor Consultation
+      </h2>
+      <p style="color: #ccfbf1; font-size: 1.08rem; line-height: 1.65; margin-bottom: 1.85rem;">
+        Have questions about chronic conditions, digestion, skin allergies, joint pains, or safe homoeopathic remedies? We have dedicated doctors for free doctor consultation (via WhatsApp/Phone) and in-person store guidance.
+      </p>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+        <a href="{{ url_for('main.doctor_consultation') }}" class="btn btn-lg" style="background-color: #ffffff; color: #0f766e; font-weight: 700; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);">
+          Doctor Consultation &rarr;
+        </a>
       </div>
     </div>
   </div>
 </section>
 
 <!-- Product Categories Section -->
-<section class="section">
+<section class="section section-categories" id="store-categories">
   <div class="container">
-    <div class="section-header">
+    <div class="section-header section-header-compact">
       <span class="section-kicker">OUR CATALOGUE</span>
       <h2 class="section-title">Browse Product Categories</h2>
       <p class="section-description">
-        Explore the healthcare essentials and wellness supplies available for purchase in our store.
+        Explore healthcare essentials, homoeopathic remedies, and wellness supplies available in store.
       </p>
     </div>
 
-    <div class="categories-grid">
+    <div class="categories-grid" id="categoriesGrid">
       {% for cat in categories %}
-      <a href="{{ url_for('products.catalogue', category=cat.slug) }}" class="category-card" style="padding: 1.5rem;">
+      <a href="{{ url_for('products.catalogue', category=cat.slug) }}" 
+         class="category-card cat-theme-{{ cat.slug }}{% if loop.index > 8 %} category-card-extra is-hidden{% endif %}" 
+         title="Browse {{ cat.name }} in our store catalogue">
         <div class="category-icon-wrapper">
-          {% if cat.slug == 'prescription-medicines' %}📋
-          {% elif cat.slug == 'otc-medicines' %}💊
-          {% elif cat.slug == 'first-aid' %}🩹
-          {% elif cat.slug == 'baby-care' %}🍼
-          {% elif cat.slug == 'personal-care' %}🧴
-          {% elif cat.slug == 'vitamins-wellness' %}🌿
-          {% elif cat.slug == 'medical-equipment' %}🩺
-          {% elif cat.slug == 'diabetes-care' %}🩸
-          {% else %}🛡️{% endif %}
+          {% if cat.slug == 'prescription-medicines' %}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+            </svg>
+          {% elif cat.slug == 'otc-medicines' %}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"></path>
+              <path d="m8.5 8.5 7 7"></path>
+            </svg>
+          {% elif cat.slug == 'first-aid' %}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+              <path d="M12 8v8"></path>
+              <path d="M8 12h8"></path>
+            </svg>
+          {% elif cat.slug == 'baby-care' %}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 12h6"></path>
+              <path d="M12 3v2"></path>
+              <path d="M6 8h12l-1 12a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L6 8Z"></path>
+              <path d="M10 5h4"></path>
+            </svg>
+          {% elif cat.slug == 'personal-care' %}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 21h10a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2Z"></path>
+              <path d="M12 7V3"></path>
+              <path d="M10 3h4"></path>
+              <circle cx="12" cy="14" r="2"></circle>
+            </svg>
+          {% elif cat.slug == 'vitamins-wellness' %}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
+              <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+            </svg>
+          {% elif cat.slug == 'medical-equipment' %}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"></path>
+              <path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4"></path>
+              <circle cx="20" cy="10" r="2"></circle>
+            </svg>
+          {% elif cat.slug == 'diabetes-care' %}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2v6"></path>
+              <path d="M12 22a7 7 0 0 0 7-7c0-3.5-3.5-7-7-11-3.5 4-7 7.5-7 11a7 7 0 0 0 7 7Z"></path>
+              <circle cx="12" cy="15" r="2"></circle>
+            </svg>
+          {% elif cat.slug == 'healthcare-products' %}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              <path d="M12 8v8"></path>
+              <path d="M8 12h8"></path>
+            </svg>
+          {% elif cat.slug == 'homoeopathic-dilutions' %}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 2h4"></path>
+              <path d="M12 2v5"></path>
+              <path d="M6 10a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v9a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3v-9Z"></path>
+              <circle cx="12" cy="14" r="2"></circle>
+            </svg>
+          {% elif cat.slug == 'mother-tinctures' %}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H10a2 2 0 0 0-2 2v2h8V4a2 2 0 0 0-2-2z"></path>
+              <path d="M6 8h12l1 12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L6 8z"></path>
+              <line x1="12" y1="12" x2="12" y2="18"></line>
+              <circle cx="12" cy="18" r="1"></circle>
+            </svg>
+          {% elif cat.slug == 'biochemic-tissue-salts' %}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+              <line x1="12" y1="22.08" x2="12" y2="12"></line>
+            </svg>
+          {% elif cat.slug == 'speciality-drops-tonics' %}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 2h8"></path>
+              <path d="M12 2v4"></path>
+              <path d="M7 8h10l1 12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L7 8z"></path>
+              <path d="M12 11v6"></path>
+              <path d="M9 14h6"></path>
+            </svg>
+          {% else %}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="16"></line>
+              <line x1="8" y1="12" x2="16" y2="12"></line>
+            </svg>
+          {% endif %}
         </div>
-        <h3 class="category-card-title" style="margin-bottom: 0; font-size: 1.1rem; display: flex; align-items: center; justify-content: space-between;">
-          <span>{{ cat.name }}</span>
-          <span style="color: var(--primary); font-size: 1rem;">&rarr;</span>
-        </h3>
+
+        <span class="category-card-title">{{ cat.name }}</span>
+        <span class="category-card-arrow" aria-hidden="true">&rarr;</span>
       </a>
       {% endfor %}
     </div>
 
-    <div style="text-align: center; margin-top: 2.5rem;">
-      <a href="{{ url_for('products.catalogue') }}" class="btn btn-primary btn-lg">
-        🔍 Search Full Product Catalogue
+    <div class="categories-actions-row">
+      {% if categories|length > 8 %}
+      <button type="button" class="btn-toggle-categories" id="toggleCategoriesBtn" aria-expanded="false" aria-controls="categoriesGrid">
+        <span class="toggle-text">Show All {{ categories|length }} Categories</span>
+        <span class="toggle-icon" aria-hidden="true">▾</span>
+      </button>
+      {% endif %}
+      <a href="{{ url_for('products.catalogue') }}" class="btn-catalogue-link">
+        Explore Full Catalogue &rarr;
       </a>
     </div>
   </div>
 </section>
 
 <!-- Why Choose Us -->
-<section class="section section-alt">
+<section class="section section-alt section-features">
   <div class="container">
-    <div class="section-header">
+    <div class="section-header section-header-compact">
       <span class="section-kicker">STORE ADVANTAGES</span>
       <h2 class="section-title">Why Visit Our Pharmacy</h2>
       <p class="section-description">
-        We focus on genuine healthcare products and transparent customer service.
+        Genuine healthcare products, verified potencies, and dependable personal service.
       </p>
     </div>
 
     <div class="features-grid">
       <div class="feature-box">
-        <div class="feature-box-icon">📍</div>
-        <h3 class="feature-box-title">Convenient Local Location</h3>
-        <p class="feature-box-desc">Situated in {{ shop.city }} with accessible parking and simple landmark navigation.</p>
+        <div class="feature-box-icon-wrap icon-emerald">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+        </div>
+        <h3 class="feature-box-title">Convenient Location</h3>
+        <p class="feature-box-desc">Prime location at 7th Cross, Malleshwaram with easy road and parking access.</p>
       </div>
+
       <div class="feature-box">
-        <div class="feature-box-icon">💬</div>
-        <h3 class="feature-box-title">Easy Communication</h3>
-        <p class="feature-box-desc">Verify product availability in seconds via WhatsApp or phone before heading to the store.</p>
+        <div class="feature-box-icon-wrap icon-teal">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+        </div>
+        <h3 class="feature-box-title">Quick Stock Check</h3>
+        <p class="feature-box-desc">Call or WhatsApp in seconds to verify medicine availability before visiting.</p>
       </div>
+
       <div class="feature-box">
-        <div class="feature-box-icon">🛡️</div>
-        <h3 class="feature-box-title">Genuine Healthcare Products</h3>
-        <p class="feature-box-desc">All medicines and surgical products are sourced from certified pharmaceutical manufacturers.</p>
+        <div class="feature-box-icon-wrap icon-blue">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            <path d="m9 12 2 2 4-4"></path>
+          </svg>
+        </div>
+        <h3 class="feature-box-title">100% Genuine Medicines</h3>
+        <p class="feature-box-desc">Directly sourced sealed medicines, German dilutions, and mother tinctures.</p>
       </div>
+
       <div class="feature-box">
-        <div class="feature-box-icon">🤝</div>
-        <h3 class="feature-box-title">Helpful Customer Service</h3>
-        <p class="feature-box-desc">Our experienced counter staff assists you in finding the exact items on your doctor's prescription.</p>
+        <div class="feature-box-icon-wrap icon-amber">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+        </div>
+        <h3 class="feature-box-title">Helpful Experienced Care</h3>
+        <p class="feature-box-desc">Dedicated pharmacy team &amp; certified B.H.M.S doctors for proper dosage guidance.</p>
       </div>
     </div>
   </div>
@@ -259,135 +539,180 @@
       </p>
     </div>
 
-    <!-- Google Review Summary Widget (Pixel-Perfect from Screenshot) -->
-    <a href="https://share.google/oKp52jZpoZgdzDc7F" target="_blank" rel="noopener noreferrer" class="google-summary-card" title="Click to view all reviews on Google">
-      <div class="google-summary-header">
-        <span class="google-summary-title">Google review summary</span>
-        <span class="google-info-icon" title="Google review information">i</span>
-      </div>
-      <div class="google-summary-body">
-        <!-- Rating Distribution Bars -->
-        <div class="google-bars-container">
-          <div class="google-bar-row">
-            <span class="google-bar-num">5</span>
-            <div class="google-bar-track">
-              <div class="google-bar-fill" style="width: 82%;"></div>
-            </div>
-          </div>
-          <div class="google-bar-row">
-            <span class="google-bar-num">4</span>
-            <div class="google-bar-track">
-              <div class="google-bar-fill" style="width: 11%;"></div>
-            </div>
-          </div>
-          <div class="google-bar-row">
-            <span class="google-bar-num">3</span>
-            <div class="google-bar-track">
-              <div class="google-bar-fill" style="width: 3%;"></div>
-            </div>
-          </div>
-          <div class="google-bar-row">
-            <span class="google-bar-num">2</span>
-            <div class="google-bar-track">
-              <div class="google-bar-fill" style="width: 0%;"></div>
-            </div>
-          </div>
-          <div class="google-bar-row">
-            <span class="google-bar-num">1</span>
-            <div class="google-bar-track">
-              <div class="google-bar-fill" style="width: 4%;"></div>
-            </div>
-          </div>
+    <!-- Google Overview Card Banner (Matching Reviews Page) -->
+    <div class="reviews-hero-banner">
+      <div>
+        <div style="display: inline-flex; align-items: center; gap: 0.5rem; background-color: rgba(255, 255, 255, 0.1); padding: 0.35rem 0.85rem; border-radius: 999px; font-size: 0.85rem; font-weight: 600; color: #facc15; margin-bottom: 1rem;">
+          <span>★</span> ⭐ Verified Google Rating: 4.6 / 5.0 (105+ Reviews)
         </div>
-
-        <!-- Overall Score & Stars -->
-        <div class="google-score-box">
-          <div class="google-score-val">4.6</div>
-          <div class="google-stars">
-            <span>★</span><span>★</span><span>★</span><span>★</span><span style="opacity: 0.85;">★</span>
-          </div>
-          <div class="google-review-total">(105)</div>
+        <h2 style="font-size: 2rem; font-weight: 800; color: #ffffff; margin-bottom: 0.75rem; line-height: 1.25;">
+          Trusted by Generations in Malleswaram
+        </h2>
+        <p style="color: #cbd5e1; font-size: 1.05rem; line-height: 1.6; margin-bottom: 1.75rem;">
+          We take immense pride in dispensing genuine German homoeopathic dilutions, mother tinctures, and biochemic combinations with transparent advice and free professional doctor consultations.
+        </p>
+        <div style="display: flex; gap: 0.85rem; flex-wrap: wrap;">
+          <a href="{{ url_for('main.reviews') }}" class="btn btn-lg btn-primary" style="font-weight: 700; box-shadow: 0 4px 14px rgba(13, 148, 136, 0.4);">
+            ⭐ View All Customer Reviews &rarr;
+          </a>
+          <a href="https://share.google/oKp52jZpoZgdzDc7F" target="_blank" rel="noopener noreferrer" class="btn btn-lg" style="background: rgba(255, 255, 255, 0.12); color: #ffffff; border: 1px solid rgba(255,255,255,0.25); text-decoration: none; font-weight: 600;">
+            ✍️ Review on Google &nearr;
+          </a>
         </div>
       </div>
-    </a>
 
-    <!-- Link to Reviews Page and Write Review -->
-    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-      <a href="{{ url_for('main.reviews') }}" class="btn btn-lg btn-primary">
-        View All Customer Reviews &rarr;
-      </a>
-      <a href="{{ url_for('main.reviews') }}#write-review" class="btn btn-lg btn-outline" style="border-color: #e2e8f0; box-shadow: var(--shadow-sm);">
-        ✍️ Write a Review
-      </a>
+      <div>
+        <div class="google-trust-showcase">
+          <div class="google-trust-brand-pill">
+            <svg width="22" height="22" viewBox="0 0 24 24" style="flex-shrink: 0;">
+              <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17Z"/>
+              <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24Z"/>
+              <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.04 0 12s.45 3.82 1.25 5.42l4.03-3.15Z"/>
+              <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98Z"/>
+            </svg>
+            <span class="google-trust-brand-text">Google Verified Reviews</span>
+          </div>
+
+          <div class="google-trust-score-row">
+            <div class="google-trust-number">4.6</div>
+            <div class="google-trust-rating-info">
+              <div class="google-trust-stars">★★★★★</div>
+              <div class="google-trust-verdict">Excellent Customer Rating</div>
+            </div>
+          </div>
+
+          <p class="google-trust-statement">
+            Based on <strong>105+ genuine customer &amp; patient ratings</strong> on Google for our pharmacy.
+          </p>
+
+          <div class="google-trust-badges" style="margin-bottom: 0;">
+            <span class="google-trust-pill">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#16a34a">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>
+              Verified Google Business Profile
+            </span>
+            <span class="google-trust-pill" style="background: #f0fdfa; color: #0f766e; border-color: #99f6e4;">
+              📍 Bengaluru, Karnataka
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- Location Preview Section -->
-<section class="section section-alt">
+<!-- Location Preview Section (Compact Minimized Home Snapshot) -->
+<section class="section section-alt" style="padding: 3rem 0;">
   <div class="container">
-    <div class="section-header">
-      <span class="section-kicker">STORE LOCATION</span>
-      <h2 class="section-title">Visit Our Physical Store</h2>
-      <p class="section-description">
-        Drop by during our opening hours. We look forward to assisting you.
+    <div style="text-align: center; max-width: 620px; margin: 0 auto 1.75rem;">
+      <span class="section-kicker" style="margin-bottom: 0.35rem; font-size: 0.78rem;">STORE LOCATION &amp; DIRECTIONS</span>
+      <h2 class="section-title" style="font-size: 1.75rem; margin-bottom: 0.4rem;">Visit Our Physical Store</h2>
+      <p style="font-size: 0.92rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+        Conveniently located on 7th Cross, Sampige Road, Malleshwaram, Bengaluru.
       </p>
     </div>
 
-    <div class="location-grid">
-      <div class="location-info-card">
-        <div class="location-meta-item">
-          <div class="location-meta-icon">📍</div>
-          <div class="location-meta-content">
-            <h4>Address</h4>
-            <p>{{ shop.address }}</p>
-            {% if shop.landmark %}
-            <p style="margin-top: 0.25rem; font-size: 0.85rem; color: var(--primary);">
-              Landmark: {{ shop.landmark }}
-            </p>
-            {% endif %}
+    <div class="home-location-compact">
+      <!-- Left: Store Info & Quick Actions -->
+      <div class="home-location-info">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; margin-bottom: 0.85rem; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span style="font-size: 1.2rem;">🏬</span>
+            <span style="font-size: 1.15rem; font-weight: 800; color: var(--text-primary);">{{ shop.name }}</span>
+          </div>
+          <span class="loc-status-pill {{ store_status.status_class }}" style="font-size: 0.75rem; padding: 0.25rem 0.65rem;">
+            <span class="loc-status-dot"></span>
+            <span>{{ store_status.status_text }}</span>
+          </span>
+        </div>
+
+        <div style="font-size: 0.92rem; color: var(--text-primary); line-height: 1.5; margin-bottom: 0.75rem;">
+          <span>📍 {{ shop.address }}</span>
+          {% if shop.landmark %}
+          <span style="display: inline-block; margin-left: 0.35rem; font-size: 0.78rem; font-weight: 700; color: #0f766e; background: #ccfbf1; padding: 0.15rem 0.55rem; border-radius: 9999px;">
+            Opp. Kids Kingdom
+          </span>
+          {% endif %}
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 1.25rem; font-size: 0.86rem; color: var(--text-secondary); margin-bottom: 1.25rem; padding: 0.75rem 0; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+          <div>
+            <span style="color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 0.15rem;">Operating Hours</span>
+            <strong style="color: var(--text-primary);">{{ shop.opening_hours.split('|')[0].strip() if '|' in shop.opening_hours else shop.opening_hours }}</strong> (Closed {{ shop.weekly_closure }})
+          </div>
+          <div>
+            <span style="color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 0.15rem;">Quick Contact</span>
+            <a href="{{ clean_phone }}" style="color: var(--text-primary); font-weight: 700; text-decoration: none;">📞 {{ shop.phone }}</a>
+            <span style="color: var(--text-muted); margin: 0 0.3rem;">•</span>
+            <a href="{{ header_whatsapp_url }}" target="_blank" rel="noopener noreferrer" style="color: #16a34a; font-weight: 700; text-decoration: none;">💬 WhatsApp</a>
           </div>
         </div>
 
-        <div class="location-meta-item">
-          <div class="location-meta-icon">🕒</div>
-          <div class="location-meta-content">
-            <h4>Store Hours</h4>
-            <p>{{ shop.opening_hours }}</p>
-            <p style="margin-top: 0.25rem; font-size: 0.85rem; color: var(--text-muted);">
-              Weekly Off: {{ shop.weekly_closure }}
-            </p>
-          </div>
-        </div>
-
-        <div class="location-meta-item">
-          <div class="location-meta-icon">📞</div>
-          <div class="location-meta-content">
-            <h4>Direct Contact</h4>
-            <p>Phone: <a href="{{ clean_phone }}">{{ shop.phone }}</a></p>
-            <p>WhatsApp: <a href="{{ header_whatsapp_url }}" target="_blank" rel="noopener noreferrer">+{{ shop.whatsapp }}</a></p>
-          </div>
-        </div>
-
-        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.5rem;">
-          <a href="{{ shop.google_maps_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-            📍 Get Directions in Maps
+        <div style="display: flex; flex-wrap: wrap; gap: 0.65rem; align-items: center;">
+          <a href="{{ shop.google_maps_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding: 0.6rem 1.15rem; font-size: 0.88rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.45rem;">
+            <span>🗺️</span>
+            <span>Get Directions</span>
           </a>
-          <a href="{{ clean_phone }}" class="btn btn-outline">
-            📞 Call Before Visiting
+          <a href="{{ url_for('main.location') }}" class="btn btn-outline" style="padding: 0.6rem 1.15rem; font-size: 0.88rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.45rem;">
+            <span>🚇</span>
+            <span>Metro &amp; Transit Guide &rarr;</span>
           </a>
         </div>
       </div>
 
-      <div class="map-container">
+      <!-- Right: Compact Interactive Map -->
+      <div class="home-location-map-wrap">
         <iframe 
           title="{{ shop.name }} Google Maps Location"
           src="{{ shop.google_maps_embed_url }}" 
           loading="lazy" 
           allowfullscreen>
         </iframe>
+        <div class="home-location-map-badge">
+          <span>🧭 Malleshwaram 7th Cross</span>
+          <span>•</span>
+          <a href="{{ shop.google_maps_url }}" target="_blank" rel="noopener noreferrer">Open Maps ↗</a>
+        </div>
       </div>
     </div>
   </div>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const toggleBtn = document.getElementById('toggleCategoriesBtn');
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', function () {
+        const extraCards = document.querySelectorAll('.category-card-extra');
+        const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+        const toggleText = toggleBtn.querySelector('.toggle-text');
+        const toggleIcon = toggleBtn.querySelector('.toggle-icon');
+
+        if (isExpanded) {
+          extraCards.forEach(function (card) {
+            card.classList.add('is-hidden');
+          });
+          toggleBtn.setAttribute('aria-expanded', 'false');
+          if (toggleText) toggleText.textContent = 'Show All ' + (8 + extraCards.length) + ' Categories';
+          if (toggleIcon) toggleIcon.textContent = '▾';
+          // Smoothly scroll back if user scrolled far down
+          const catSection = document.getElementById('store-categories');
+          if (catSection && window.scrollY > catSection.offsetTop + 100) {
+            catSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        } else {
+          extraCards.forEach(function (card) {
+            card.classList.remove('is-hidden');
+          });
+          toggleBtn.setAttribute('aria-expanded', 'true');
+          if (toggleText) toggleText.textContent = 'Show Fewer Categories';
+          if (toggleIcon) toggleIcon.textContent = '▴';
+        }
+      });
+    }
+  });
+</script>
 {% endblock %}

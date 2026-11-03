@@ -13,4 +13,51 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   });
+
+  // Mobile Sidebar Drawer Toggle
+  const sidebarToggle = document.getElementById('adminSidebarToggle');
+  const sidebarClose = document.getElementById('adminSidebarClose');
+  const sidebar = document.querySelector('.admin-sidebar');
+  const backdrop = document.getElementById('adminSidebarBackdrop');
+
+  function openSidebar() {
+    if (sidebar) sidebar.classList.add('sidebar-open');
+    if (backdrop) backdrop.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSidebar() {
+    if (sidebar) sidebar.classList.remove('sidebar-open');
+    if (backdrop) backdrop.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  if (sidebarToggle) {
+    sidebarToggle.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      openSidebar();
+    });
+  }
+
+  if (sidebarClose) {
+    sidebarClose.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      closeSidebar();
+    });
+  }
+
+  if (backdrop) {
+    backdrop.addEventListener('click', function () {
+      closeSidebar();
+    });
+  }
+
+  // Close sidebar on Escape key
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && sidebar && sidebar.classList.contains('sidebar-open')) {
+      closeSidebar();
+    }
+  });
 });

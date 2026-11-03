@@ -3,14 +3,38 @@
 {% block title %}Our Services & Categories - {{ shop.name }}{% endblock %}
 
 {% block content %}
-<div class="container section">
-  <div class="section-header">
-    <span class="section-kicker">WHAT WE OFFER</span>
-    <h1 class="section-title">In-Store Pharmacy Services</h1>
-    <p class="section-description">
-      Authentic medicines, wellness products, and personalized in-person assistance at our physical store in {{ shop.city }}.
-    </p>
+<!-- Services Hero Banner with Medical Doctor Background Image -->
+<div class="services-hero-banner">
+  <!-- Medical Doctor Background Image Layer -->
+  <div class="services-hero-bg-layer" style="background-image: url('{{ url_for('static', filename='images/services_banner.jpg') }}?v=1');"></div>
+  <!-- Subtle Gradient Blend Layer for Text Contrast -->
+  <div class="services-hero-gradient-layer"></div>
+
+  <div class="container services-hero-container">
+    <div class="services-hero-content">
+      <span class="services-hero-badge">
+        🏥 WHAT WE OFFER • IN-STORE HEALTHCARE
+      </span>
+      <h1 class="services-hero-title">
+        In-Store Pharmacy &amp; Healthcare Services
+      </h1>
+      <p class="services-hero-desc">
+        Authentic prescription medicines, genuine German homoeopathic dilutions, certified doctor consultations, and wholesale distribution at our physical store in {{ shop.city }}.
+      </p>
+      <div class="services-hero-actions">
+        <a href="https://wa.me/{{ clean_whatsapp }}?text=Hello%20Homeolaya%2C%20I%20would%20like%20to%20inquire%20about%20your%20pharmacy%20services." target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-lg">
+          💬 Check Stock on WhatsApp
+        </a>
+        <a href="{{ clean_phone }}" class="btn btn-outline btn-lg" style="background: #ffffff; border-color: #0d9488; color: #0f766e; box-shadow: var(--shadow-sm); font-weight: 700;">
+          📞 Call Pharmacy: {{ shop.phone }}
+        </a>
+      </div>
+    </div>
   </div>
+</div>
+
+<div class="services-page-body">
+  <div class="container section">
 
   <!-- Wholesale & Retail Distributor Highlight Banner -->
   <div style="background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border: 1.5px solid #a7f3d0; border-radius: var(--radius-lg); padding: 1.25rem 1.5rem; margin-bottom: 2rem; display: flex; align-items: flex-start; gap: 1rem; box-shadow: var(--shadow-sm);">
@@ -58,14 +82,14 @@
       <div class="feature-box-icon" style="color: #0d9488;">🩺</div>
       <h3 class="feature-box-title" style="color: #0f766e;">Dedicated B.H.M.S Doctors (Online &amp; Offline)</h3>
       <p class="feature-box-desc">
-        We have certified B.H.M.S homoeopathic doctors for online and offline consultations: <strong>100% Free Online Doctor Consultation</strong> via WhatsApp/Phone, and <strong>In-Store Clinical Doctor Consultations</strong> for in-person evaluations at our Malleswaram clinic.
+        We have certified B.H.M.S homoeopathic doctors for online and offline consultations: <strong>100% Free Online Doctor Consultation</strong> via WhatsApp/Phone, and <strong>In-Store Clinical Consultations with Dr. Komala GR (10+ Years Experience)</strong> at our Vidyaranyapura physical clinic.
       </p>
       <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
         <a href="{{ url_for('main.doctor_consultation') }}" class="btn btn-sm btn-primary" style="background-color: #0d9488; border-color: #0d9488;">
           Doctor Consultation &rarr;
         </a>
-        <a href="{{ clean_doctor_phone }}" class="btn btn-sm btn-outline" style="color: #0f766e; border-color: #0d9488;">
-          📞 Helpline: {{ doctor_phone }}
+        <a href="{{ url_for('main.doctor_consultation') }}?call=1" class="btn btn-sm btn-outline" style="color: #0f766e; border-color: #0d9488;">
+          📞 Call Doctor: {{ doctor_phone }}
         </a>
       </div>
     </div>
@@ -158,5 +182,6 @@
       </a>
     </div>
   </div>
+</div>
 </div>
 {% endblock %}

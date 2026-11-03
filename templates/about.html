@@ -3,139 +3,241 @@
 {% block title %}About Us - {{ shop.name }}{% endblock %}
 
 {% block content %}
-<div class="container section">
-  <div class="section-header" style="text-align: left; max-width: 100%; margin-bottom: 2.5rem;">
-    <div style="display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin-bottom: 0.85rem;">
-      <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: #ecfdf5; border: 1.5px solid #a7f3d0; color: #065f46; padding: 0.35rem 0.95rem; border-radius: 9999px; font-weight: 700; font-size: 0.88rem;">
-        <span>🌿</span> 25+ Years of Experience in the Field of Homoeopathy
+<!-- Modern About Hero Banner -->
+<div class="about-hero-banner">
+  <div class="container">
+    <div class="about-hero-header">
+      <div class="about-header-top">
+        <div class="about-kicker-badge">
+          <span>🏛️</span>
+          <span>ESTABLISHED IN MALLESHWARAM</span>
+        </div>
+        <div class="loc-status-pill {{ store_status.status_class }}">
+          <span class="loc-status-dot"></span>
+          <span>{{ store_status.status_text }}</span>
+        </div>
       </div>
-      <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: #f0fdfa; border: 1.5px solid #99f6e4; color: #0f766e; padding: 0.35rem 0.95rem; border-radius: 9999px; font-weight: 700; font-size: 0.88rem;">
-        <span>📦</span> 20+ Years of Experience as Distributor in Retail and Wholesale of Homoeopathy Medicine
+
+      <h1 class="about-hero-title">
+        About {{ shop.name }}
+      </h1>
+
+      <p class="about-hero-subtitle">
+        A legacy of authentic homoeopathic care, constitutional remedies, and certified pharmaceutical dispensing. Serving Malleswaram and Bengaluru families for over two decades.
+      </p>
+
+      <div class="about-hero-badges-row">
+        <div class="about-pill-tag">
+          <span>🌿</span> 25+ Years in Homoeopathy
+        </div>
+        <div class="about-pill-tag">
+          <span>📦</span> 20+ Years Wholesale &amp; Retail Distributor
+        </div>
+        <div class="about-pill-tag">
+          <span>📍</span> 7th Cross, Sampige Road
+        </div>
       </div>
     </div>
-    <span class="section-kicker" style="display: block;">COMMUNITY PHARMACY &amp; HERITAGE</span>
-    <h1 class="section-title">About {{ shop.name }}</h1>
-    <p class="section-description">
-      With over <strong>25+ years of experience in the field of homoeopathy</strong> and <strong>20+ years of experience as distributor in retail and wholesale of homoeopathy medicine</strong>, {{ shop.name }} is your trusted neighborhood destination for authentic German dilutions, genuine healthcare essentials, and personalized assistance in Malleswaram, Bengaluru.
-    </p>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Key Milestones Strip (4 Cards) -->
+  <div class="about-stats-strip">
+    <div class="about-stat-item">
+      <div class="about-stat-icon emerald">🌿</div>
+      <div>
+        <div class="about-stat-number">25+ Years</div>
+        <div class="about-stat-label">Field of Homoeopathy</div>
+      </div>
+    </div>
+
+    <div class="about-stat-item">
+      <div class="about-stat-icon teal">📦</div>
+      <div>
+        <div class="about-stat-number">20+ Years</div>
+        <div class="about-stat-label">Retail &amp; Wholesale Distributor</div>
+      </div>
+    </div>
+
+    <div class="about-stat-item">
+      <div class="about-stat-icon blue">📍</div>
+      <div>
+        <div class="about-stat-number">Malleshwaram</div>
+        <div class="about-stat-label">7th Cross, Sampige Road</div>
+      </div>
+    </div>
+
+    <div class="about-stat-item">
+      <div class="about-stat-icon amber">🛡️</div>
+      <div>
+        <div class="about-stat-number">100% Genuine</div>
+        <div class="about-stat-label">Sealed German Formulations</div>
+      </div>
+    </div>
   </div>
 
-  <div style="display: grid; grid-template-columns: 1fr; gap: 3rem; @media (min-width: 992px){ grid-template-columns: 1.2fr 0.8fr; }">
-    <div>
-      <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: var(--text-primary);">Our Heritage &amp; Experience</h2>
-      <p style="color: var(--text-secondary); margin-bottom: 1.25rem; font-size: 1.05rem; line-height: 1.7;">
-        Founded and nurtured with <strong>25+ years of experience in the field of homoeopathy</strong> alongside <strong>20+ years of experience as distributor in retail and wholesale of homoeopathy medicine</strong>, {{ shop.name }} has served generations of families across Malleswaram and Bengaluru with authentic, high-potency German dilutions, mother tinctures, biochemic salts, and reliable pharmaceutical care.
+  <!-- Main Content Layout (Story + Founder Card) -->
+  <div class="about-content-grid">
+    
+    <!-- Left Column: Story & Principles -->
+    <div class="about-narrative">
+      <h2>Our Heritage &amp; Decades of Care</h2>
+      <p>
+        Founded with a commitment to pure and effective natural healing, <strong>{{ shop.name }}</strong> has grown into a landmark homoeopathic dispensary at <strong>7th Cross, Sampige Road, Malleshwaram</strong>. With over <strong>25+ years of experience in the field of homoeopathy</strong> and <strong>20+ years of experience as a premier distributor in retail and wholesale</strong>, we have earned the trust of generations of families and healthcare practitioners across Karnataka.
       </p>
-      <p style="color: var(--text-secondary); margin-bottom: 1.25rem; line-height: 1.7;">
-        {{ shop.name }} operates as an independent, physical retail pharmacy located on 7th Cross, Sampige Road. We recognize that health needs are immediate, which is why we maintain a comprehensive inventory of genuine homoeopathic formulations from renowned manufacturers including Dr. Reckeweg, Dr. Willmar Schwabe Germany, and SBL, alongside essential wellness supplies.
+      <p>
+        We understand that genuine health outcomes depend on medicine purity and proper potency. That is why we source strictly factory-sealed, genuine homoeopathic formulations directly from certified global manufacturers including <strong>Dr. Reckeweg (Germany)</strong>, <strong>Dr. Willmar Schwabe</strong>, and <strong>SBL World Class Homoeopathy</strong>.
       </p>
 
-      <h2 style="font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem; color: var(--text-primary);">Store Philosophy</h2>
-      <p style="color: var(--text-secondary); margin-bottom: 1.25rem; line-height: 1.7;">
-        Our philosophy is founded on three core commitments:
-      </p>
-      <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem;">
-        <div style="background-color: var(--bg-surface); padding: 1.25rem; border-radius: var(--radius-md); border-left: 4px solid var(--primary); box-shadow: var(--shadow-sm);">
-          <strong style="color: var(--text-primary);">1. Genuine &amp; Uncompromised Quality</strong>
-          <p style="color: var(--text-secondary); font-size: 0.95rem; margin-top: 0.25rem;">
-            Every single medicine and medical consumable is procured strictly from licensed pharmaceutical distributors and held under temperature-appropriate storage conditions.
+      <h2 style="margin-top: 2rem;">Our Core Principles</h2>
+      <div class="about-values-grid">
+        <div class="about-value-card">
+          <h4><span>🛡️</span> 1. Authentic &amp; Uncompromised Quality</h4>
+          <p>
+            Every single medicine, dilution, mother tincture, and biochemic tissue salt is stored in optimal, temperature-regulated pharmacy conditions. We never compromise on product provenance.
           </p>
         </div>
-        <div style="background-color: var(--bg-surface); padding: 1.25rem; border-radius: var(--radius-md); border-left: 4px solid var(--primary); box-shadow: var(--shadow-sm);">
-          <strong style="color: var(--text-primary);">2. Responsible &amp; Safe Dispensing</strong>
-          <p style="color: var(--text-secondary); font-size: 0.95rem; margin-top: 0.25rem;">
-            We strictly observe statutory pharmacy laws. Prescription medications are dispensed only with a valid prescription from a registered medical practitioner.
+
+        <div class="about-value-card">
+          <h4><span>👨‍⚕️</span> 2. Experienced Pharmacist Guidance</h4>
+          <p>
+            Our seasoned staff assists patients with correct potencies, dosage forms (globules, drops, tablets), and usage guidelines, backed by free tele-health doctor consultation options.
           </p>
         </div>
-        <div style="background-color: var(--bg-surface); padding: 1.25rem; border-radius: var(--radius-md); border-left: 4px solid var(--primary); box-shadow: var(--shadow-sm);">
-          <strong style="color: var(--text-primary);">3. Neighborhood Accessibility</strong>
-          <p style="color: var(--text-secondary); font-size: 0.95rem; margin-top: 0.25rem;">
-            We assist customers promptly via direct phone call or WhatsApp to confirm in-store availability before making a trip.
+
+        <div class="about-value-card">
+          <h4><span>⚡</span> 3. Neighborhood Accessibility &amp; Quick Checks</h4>
+          <p>
+            Avoid unnecessary travel. Simply call or WhatsApp our counter to confirm stock availability, verify potencies, and reserve your medicines before visiting the store.
           </p>
         </div>
       </div>
 
-      <!-- Prescription Safety Disclaimer -->
-      <div class="medical-disclaimer" style="margin-top: 1rem;">
+      <!-- Regulatory & Safety Notice -->
+      <div class="medical-disclaimer" style="margin-top: 1.5rem;">
         <div class="disclaimer-icon">ℹ️</div>
         <div class="disclaimer-content">
-          <h4>Medical Consultation Notice</h4>
+          <h4>Prescription &amp; Clinical Guidance Notice</h4>
           <p>
-            {{ shop.name }} is a retail dispensary. Our staff does not diagnose conditions or prescribe medications. Please consult your physician for medical advice and present valid prescriptions during your visit.
+            {{ shop.name }} operates strictly in compliance with pharmaceutical regulations. Scheduled prescription medications are dispensed only upon presentation of a valid doctor's prescription at our store. Free doctor consultation is available for natural healthcare guidance.
           </p>
         </div>
       </div>
     </div>
 
-    <!-- Store & Pharmacist Information Card -->
+    <!-- Right Column: Store Profile & Founder Card -->
     <div>
-      <div style="background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-md);">
-        <div style="display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1.5rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border-color);">
-          <img src="{{ url_for('static', filename='images/profile.jpg') }}" alt="Store Owner & Founder" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; object-position: center top; border: 3px solid var(--primary); box-shadow: var(--shadow-sm);">
-          <div>
-            <span style="font-size: 0.75rem; color: var(--primary); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; display: block; margin-bottom: 0.2rem;">Founder &amp; Store Owner</span>
-            <strong style="font-size: 1.15rem; color: var(--text-primary); display: block;">{{ shop.owner_name if shop.owner_name and shop.owner_name != '[OWNER_NAME]' else 'Store Owner' }}</strong>
-            <span style="font-size: 0.85rem; color: #0d9488; font-weight: 600; display: block;">25+ Years in Homoeopathy</span>
-            <span style="font-size: 0.82rem; color: var(--text-muted);">20+ Years as Homoeopathic Distributor</span>
+      <div class="about-founder-card">
+        <div class="about-founder-header">
+          <div class="doctor-photo-wrap">
+            <button type="button" id="viewFounderPhotoBtn" class="doctor-photo-btn" title="Click to view profile photo" aria-label="View profile photo of {{ shop.owner_name }}">
+              <img src="{{ url_for('static', filename='images/profile.jpg') }}" alt="{{ shop.owner_name }} - Founder" class="about-founder-photo" style="display: block;">
+              <span class="doctor-photo-zoom-icon" aria-hidden="true">🔍</span>
+            </button>
+
+            <!-- J.D. Shankar Profile Popover Modal -->
+            <div id="founderPhotoModal" class="profile-popover doctor-popover" role="dialog" aria-label="{{ shop.owner_name }} Profile Photo" style="display: none;">
+              <button type="button" class="profile-popover-close" id="closeFounderPhotoBtn" aria-label="Close photo preview">&times;</button>
+              <div class="profile-popover-circle">
+                <img src="{{ url_for('static', filename='images/profile.jpg') }}" alt="{{ shop.owner_name }}" class="profile-popover-img" style="object-position: center top;">
+              </div>
+              <span class="profile-popover-name">{{ shop.owner_name }}</span>
+            </div>
+          </div>
+
+          <div class="about-founder-info">
+            <span class="about-founder-role">Founder &amp; Store Proprietor</span>
+            <strong class="about-founder-name">{{ shop.owner_name }}</strong>
+            <div class="about-founder-meta">
+              <span>🌿 25+ Years Experience</span><br>
+              <span>📦 Senior Homoeopathy Distributor</span>
+            </div>
           </div>
         </div>
 
-        <h3 style="font-size: 1.25rem; margin-bottom: 1.25rem; color: var(--text-primary); border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
-          🏪 Store Profile
-        </h3>
-
-        <div style="display: flex; flex-direction: column; gap: 1rem; font-size: 0.95rem;">
-          <div>
-            <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; display: block;">Pharmacy Name</span>
-            <strong style="color: var(--text-primary);">{{ shop.name }}</strong>
+        <div class="about-specs-list">
+          <div class="about-spec-row">
+            <span class="about-spec-label">Dispensary Name</span>
+            <span class="about-spec-val">{{ shop.name }}</span>
           </div>
 
-          <div>
-            <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; display: block;">Experience</span>
-            <strong style="color: #0f766e; font-size: 0.95rem; line-height: 1.4; display: block;">🌿 25+ Years of Experience in the Field of Homoeopathy</strong>
-          </div>
-
-          <div>
-            <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; display: block;">Distribution Expertise</span>
-            <strong style="color: #047857; font-size: 0.95rem; line-height: 1.4; display: block;">📦 20+ Years of Experience as Distributor in Retail and Wholesale of Homoeopathy Medicine</strong>
-          </div>
-
-          <div>
-            <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; display: block;">Store Owner / Proprietor</span>
-            <strong style="color: var(--text-primary);">{{ shop.owner_name }}</strong>
-          </div>
-
-          <div>
-            <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; display: block;">Store Address</span>
-            <span style="color: var(--text-secondary);">{{ shop.address }}</span>
+          <div class="about-spec-row">
+            <span class="about-spec-label">Location &amp; Landmark</span>
+            <span class="about-spec-val">7th Cross, Sampige Road</span>
+            <span class="about-spec-sub">{{ shop.address }}</span>
             {% if shop.landmark %}
-            <span style="font-size: 0.82rem; color: var(--primary); display: block; margin-top: 0.25rem; font-weight: 600;">📍 Landmark: {{ shop.landmark }}</span>
+            <span class="about-spec-sub" style="color: #0d9488; font-weight: 600;">🏛️ Landmark: {{ shop.landmark }}</span>
             {% endif %}
           </div>
 
-          <div>
-            <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; display: block;">Operating Hours</span>
-            <span style="color: var(--text-secondary);">{{ shop.opening_hours }}</span>
+          <div class="about-spec-row">
+            <span class="about-spec-label">Operating Hours</span>
+            <span class="about-spec-val">{{ shop.opening_hours }}</span>
           </div>
 
-          <div>
-            <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; display: block;">Store Type</span>
-            <span style="color: var(--primary); font-weight: 600;">Physical Walk-In Retail Pharmacy</span>
+          <div class="about-spec-row">
+            <span class="about-spec-label">Store Services</span>
+            <span class="about-spec-val" style="color: #0f766e;">Retail Dispensary • Wholesale Supply • Doctor Guidance</span>
           </div>
         </div>
 
-        <hr style="border: none; border-top: 1px solid var(--border-color); margin: 1.5rem 0;">
-
-        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-          <a href="{{ shop.google_maps_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width: 100%;">
-            📍 Navigate on Google Maps
+        <div class="about-founder-actions">
+          <a href="{{ shop.google_maps_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width: 100%; justify-content: center; display: flex; align-items: center; gap: 0.5rem; font-weight: 700;">
+            <span>📍</span>
+            <span>Get Directions in Google Maps</span>
           </a>
-          <a href="{{ clean_phone }}" class="btn btn-outline" style="width: 100%;">
-            📞 Call Pharmacist: {{ shop.phone }}
+          <a href="{{ clean_phone }}" class="btn btn-outline" style="width: 100%; text-align: center; justify-content: center; display: flex; align-items: center; gap: 0.45rem;">
+            <span>📞</span>
+            <span>Call Pharmacist: {{ shop.phone }}</span>
+          </a>
+          <a href="https://wa.me/{{ clean_whatsapp }}?text=Hello%20Shankar%20Homoeo%20Stores%2C%20I%20would%20like%20to%20inquire%20about%20medicine%20availability." target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp" style="width: 100%; text-align: center; justify-content: center; display: flex; align-items: center; gap: 0.45rem;">
+            <span>💬</span>
+            <span>WhatsApp Stock Enquiry</span>
           </a>
         </div>
       </div>
     </div>
+
   </div>
+
+  <!-- Authorized Homoeopathic Brands Showcase -->
+  <div class="about-brands-banner">
+    <div class="about-brands-headline">AUTHORIZED HOMOEOPATHIC PARTNERS</div>
+    <h3 class="about-brands-title">Genuine Brands Dispensed at Our Counter</h3>
+    <div class="about-brands-pills">
+      <div class="about-brand-tag"><span>🇩🇪</span> Dr. Reckeweg (Germany)</div>
+      <div class="about-brand-tag"><span>🇩🇪</span> Dr. Willmar Schwabe</div>
+      <div class="about-brand-tag"><span>🇮🇳</span> SBL World Class Homoeopathy</div>
+      <div class="about-brand-tag"><span>🌿</span> Bakson's Homoeopathy</div>
+      <div class="about-brand-tag"><span>💊</span> Wheezal Laboratories</div>
+      <div class="about-brand-tag"><span>🧪</span> B. Jain Pharmaceuticals</div>
+      <div class="about-brand-tag"><span>💧</span> Medisynth Chemicals</div>
+      <div class="about-brand-tag"><span>📦</span> Lord's Homoeopathic</div>
+    </div>
+  </div>
+
+  <!-- Doctor Consultation CTA Banner -->
+  <div class="loc-doctor-banner">
+    <div class="loc-doctor-content">
+      <div class="loc-doctor-badge">
+        <span>👨‍⚕️</span>
+        <span>Expert Doctor Consultation</span>
+      </div>
+      <h3 class="loc-doctor-title">Need Guidance on Remedies or Potencies?</h3>
+      <p class="loc-doctor-desc">
+        Connect with qualified B.H.M.S homoeopathic doctors for personalized health consultations, dosage recommendations, and chronic condition guidance. Available in store and online.
+      </p>
+    </div>
+    <div class="loc-doctor-actions">
+      <a href="{{ url_for('main.doctor_consultation') }}" class="btn btn-lg" style="background-color: #ffffff; color: #0f766e; font-weight: 700; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2); white-space: nowrap;">
+        Doctor Consultation &rarr;
+      </a>
+      <a href="{{ header_whatsapp_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-lg" style="white-space: nowrap;">
+        💬 WhatsApp Store
+      </a>
+    </div>
+  </div>
+
 </div>
 {% endblock %}

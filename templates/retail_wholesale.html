@@ -5,35 +5,49 @@
 {% block meta_description %}Authorized distributor with 20+ years experience in retail and wholesale of homoeopathy medicines in Malleswaram, Bangalore. Direct stockist of Dr. Reckeweg, Schwabe, and SBL for clinics, doctors, and walk-in customers.{% endblock %}
 
 {% block content %}
-<div class="container section">
-  <!-- Page Header / Hero -->
-  <div class="section-header" style="text-align: left; max-width: 100%; margin-bottom: 2.5rem;">
-    <div style="display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin-bottom: 0.85rem;">
-      <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: #ecfdf5; border: 1.5px solid #a7f3d0; color: #065f46; padding: 0.35rem 0.95rem; border-radius: 9999px; font-weight: 700; font-size: 0.9rem;">
-        <span>🌿</span> 20+ Years of Experience as Distributor in Retail and Wholesale of Homoeopathy Medicine
-      </div>
-      <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: #f0fdfa; border: 1.5px solid #99f6e4; color: #0f766e; padding: 0.35rem 0.95rem; border-radius: 9999px; font-weight: 700; font-size: 0.9rem;">
-        <span>🏢</span> Malleswaram, Bengaluru Direct Stockist
-      </div>
-    </div>
-    <span class="section-kicker" style="display: block;">DISTRIBUTION &amp; PHARMACY DISPENSARY</span>
-    <h1 class="section-title">Retail &amp; Wholesale Homoeopathic Medicine Distribution</h1>
-    <p class="section-description" style="max-width: 900px;">
-      Serving individual patients, certified homoeopathic physicians, healthcare clinics, and dispensaries across Bengaluru. As established stockists and distributors for over two decades, we provide authentic, sealed formulations from world-leading German and Indian manufacturers.
-    </p>
+<!-- Wholesale Hero Banner with Warehouse Background Image -->
+<div class="wholesale-hero-banner">
+  <!-- Warehouse Background Image Layer -->
+  <div class="wholesale-hero-bg-layer" style="background-image: url('{{ url_for('static', filename='images/wholesale_banner.jpg') }}?v=1');"></div>
+  <!-- Subtle Gradient Blend Layer for Text Contrast -->
+  <div class="wholesale-hero-gradient-layer"></div>
 
-    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem;">
-      <a href="https://wa.me/{{ clean_phone_digits }}?text=Hello%20Shankar%20Homoeo%20Stores,%20I%20am%20inquiring%20about%20Wholesale%20/%20Bulk%20Homoeopathy%20Medicine%20pricing%20and%20stock%20availability." target="_blank" rel="noopener noreferrer" class="btn btn-lg btn-whatsapp">
-        💬 WhatsApp Wholesale Inquiry
-      </a>
-      <a href="{{ clean_phone }}" class="btn btn-lg btn-primary">
-        📞 Call for Bulk Stock: {{ shop.phone }}
-      </a>
-      <a href="{{ shop.google_maps_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-lg btn-outline">
-        📍 Visit Our Store
-      </a>
+  <div class="container wholesale-hero-container">
+    <div class="wholesale-hero-content">
+      <div class="wholesale-hero-badge-group">
+        <div class="wholesale-hero-badge">
+          <span>🌿</span> 20+ Years of Experience as Distributor in Retail and Wholesale
+        </div>
+        <div class="wholesale-hero-badge badge-blue">
+          <span>📦</span> Direct Stockist &amp; Bulk Distribution
+        </div>
+      </div>
+
+      <h1 class="wholesale-hero-title">
+        Retail &amp; Wholesale Homoeopathic Medicine Distribution
+      </h1>
+
+      <p class="wholesale-hero-desc">
+        Serving individual patients, certified physicians, clinics, and dispensaries across Bengaluru &amp; Karnataka. Direct authorized stockist providing genuine sealed formulations from leading German and Indian manufacturers.
+      </p>
+
+      <div class="wholesale-hero-actions">
+        <a href="https://wa.me/{{ clean_whatsapp }}?text=Hello%20Shankar%20Homoeo%20Stores,%20I%20am%20inquiring%20about%20Wholesale%20/%20Bulk%20Homoeopathy%20Medicine%20pricing%20and%20stock%20availability." target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-lg">
+          💬 WhatsApp Wholesale Inquiry
+        </a>
+        <a href="{{ clean_phone }}" class="btn btn-outline btn-lg" style="background: #ffffff; border-color: #0d9488; color: #0f766e; box-shadow: var(--shadow-sm); font-weight: 700;">
+          📞 Call for Bulk Stock: {{ shop.phone }}
+        </a>
+        <a href="{{ shop.google_maps_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-lg" style="background: #ffffff; border-color: #cbd5e1; color: #1e293b; box-shadow: var(--shadow-sm); font-weight: 600;">
+          📍 Visit Our Store
+        </a>
+      </div>
     </div>
   </div>
+</div>
+
+<div class="wholesale-page-body">
+  <div class="container section">
 
   <!-- Dual Pillar Grid: Retail vs Wholesale -->
   <div style="display: grid; grid-template-columns: 1fr; gap: 2rem; margin-bottom: 3.5rem; @media (min-width: 992px){ grid-template-columns: 1fr 1fr; }">
@@ -102,7 +116,7 @@
         </li>
       </ul>
 
-      <a href="https://wa.me/{{ clean_phone_digits }}?text=Hello%20Shankar%20Homoeo%20Stores,%20I%20would%20like%20to%20request%20a%20Wholesale%20Price%20List%20for%20our%20clinic/pharmacy." target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp" style="width: 100%; justify-content: center;">
+      <a href="https://wa.me/{{ clean_whatsapp }}?text=Hello%20Shankar%20Homoeo%20Stores,%20I%20would%20like%20to%20request%20a%20Wholesale%20Price%20List%20for%20our%20clinic/pharmacy." target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp" style="width: 100%; justify-content: center;">
         Request Wholesale Price List &rarr;
       </a>
     </div>
@@ -211,7 +225,7 @@
     </p>
 
     <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-      <a href="https://wa.me/{{ clean_phone_digits }}?text=Hello%20Shankar%20Homoeo%20Stores,%20I%20want%20to%20discuss%20a%20bulk%20wholesale%20order." target="_blank" rel="noopener noreferrer" class="btn btn-lg btn-whatsapp" style="padding: 0.85rem 1.75rem;">
+      <a href="https://wa.me/{{ clean_whatsapp }}?text=Hello%20Shankar%20Homoeo%20Stores,%20I%20want%20to%20discuss%20a%20bulk%20wholesale%20order." target="_blank" rel="noopener noreferrer" class="btn btn-lg btn-whatsapp" style="padding: 0.85rem 1.75rem;">
         💬 Chat on WhatsApp
       </a>
       <a href="{{ clean_phone }}" class="btn btn-lg" style="background: #ffffff; color: #0f766e; font-weight: 700; padding: 0.85rem 1.75rem;">
@@ -233,5 +247,6 @@
       </p>
     </div>
   </div>
+</div>
 </div>
 {% endblock %}

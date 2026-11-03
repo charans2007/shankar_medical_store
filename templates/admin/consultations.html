@@ -16,6 +16,7 @@
           <th>Date / Time</th>
           <th>Patient Name</th>
           <th>Phone / Mode</th>
+          <th>Patient Address</th>
           <th>Age / Gender</th>
           <th>Health Concern</th>
           <th>Preferred Slot</th>
@@ -36,14 +37,34 @@
             <a href="tel:{{ c.phone }}" style="font-weight: 600;">{{ c.phone }}</a>
             <div style="font-size: 0.75rem; color: #0d9488; font-weight: 600;">{{ c.consultation_mode }}</div>
           </td>
-          <td style="font-size: 0.85rem; color: #475569;">
-            {{ c.age or '-' }} yrs / {{ c.gender or '-' }}
+          <td>
+            {% if c.address %}
+            <div style="font-size: 0.85rem; color: #0f172a; font-weight: 500; display: flex; align-items: flex-start; gap: 0.35rem; max-width: 220px;">
+              <span style="color: #0d9488;">📍</span>
+              <span>{{ c.address }}</span>
+            </div>
+            {% else %}
+            <span style="color: #94a3b8; font-size: 0.8rem;">-</span>
+            {% endif %}
           </td>
-          <td style="max-width: 280px;">
+          <td style="font-size: 0.85rem; color: #475569; white-space: nowrap;">
+            <strong style="color: #0f172a;">{{ c.age or '-' }}</strong> yrs
+            {% if c.gender and c.gender != 'Not Specified' %}
+            <span style="color: #64748b; font-size: 0.8rem;">({{ c.gender }})</span>
+            {% endif %}
+          </td>
+          <td style="max-width: 260px;">
             <div style="font-size: 0.875rem; color: #334155;">{{ c.health_concern }}</div>
           </td>
-          <td style="font-size: 0.8rem; color: #64748b;">
-            {{ c.preferred_time }}
+          <td style="font-size: 0.82rem; color: #334155; white-space: nowrap;">
+            {% if c.preferred_date %}
+            <div style="font-weight: 600; color: #0f172a; display: flex; align-items: center; gap: 0.3rem;">
+              <span>📅</span> {{ c.preferred_date }}
+            </div>
+            {% endif %}
+            <div style="color: #0d9488; font-weight: 600; display: flex; align-items: center; gap: 0.3rem; margin-top: 0.15rem;">
+              <span>⏰</span> {{ c.preferred_time or 'Immediate Call' }}
+            </div>
           </td>
           <td>
             {% if c.status == 'pending' %}
@@ -79,7 +100,7 @@
         </tr>
         {% else %}
         <tr>
-          <td colspan="8" style="text-align: center; color: #94a3b8; padding: 3rem;">
+          <td colspan="9" style="text-align: center; color: #94a3b8; padding: 3rem;">
             No doctor consultation requests recorded yet.
           </td>
         </tr>

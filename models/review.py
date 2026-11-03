@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from models import db
 
 class Review(db.Model):
@@ -14,8 +14,11 @@ class Review(db.Model):
     service_tag = db.Column(db.String(100), default='General Visit') # German Dilutions, Doctor Consultation, Customer Service, etc.
     reviewer_title = db.Column(db.String(100), default='Verified Customer') # Local Resident, Malleswaram Guide, etc.
     location = db.Column(db.String(100), default='Malleswaram, Bengaluru')
-    is_approved = db.Column(db.Boolean, default=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    is_approved = db.Column(db.Boolean, default=True, index=True)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), index=True)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
     def to_dict(self):
         return {

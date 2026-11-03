@@ -1,0 +1,459 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block title %}FAQ Questions &amp; Responses{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 1.75rem;">
+  <h1 style="font-size: 1.75rem; color: #0f172a; font-weight: 800; margin: 0 0 0.35rem;">
+    FAQ Questions &amp; Inquiries
+  </h1>
+  <p style="color: #64748b; font-size: 0.95rem; margin: 0;">
+    Review questions asked by visitors on the FAQ page and respond directly from here.
+  </p>
+</div>
+
+<!-- Metrics Overview Cards -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.75rem;">
+  <div class="admin-card" style="padding: 1.25rem; display: flex; align-items: center; justify-content: space-between;">
+    <div>
+      <span style="font-size: 0.8rem; color: #64748b; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Total Questions</span>
+      <div style="font-size: 1.75rem; font-weight: 800; color: #0f172a; margin-top: 0.25rem;">{{ counts.total }}</div>
+    </div>
+    <div style="width: 44px; height: 44px; border-radius: 10px; background: #e0f2fe; color: #0369a1; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">
+      ❓
+    </div>
+  </div>
+
+  <div class="admin-card" style="padding: 1.25rem; display: flex; align-items: center; justify-content: space-between; {% if counts.pending > 0 %}border-left: 4px solid #f59e0b;{% endif %}">
+    <div>
+      <span style="font-size: 0.8rem; color: #64748b; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Awaiting Response</span>
+      <div style="font-size: 1.75rem; font-weight: 800; color: {% if counts.pending > 0 %}#b45309{% else %}#0f172a{% endif %}; margin-top: 0.25rem;">{{ counts.pending }}</div>
+    </div>
+    <div style="width: 44px; height: 44px; border-radius: 10px; background: #fef3c7; color: #b45309; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">
+      ⏳
+    </div>
+  </div>
+
+  <div class="admin-card" style="padding: 1.25rem; display: flex; align-items: center; justify-content: space-between;">
+    <div>
+      <span style="font-size: 0.8rem; color: #64748b; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px;">Answered Questions</span>
+      <div style="font-size: 1.75rem; font-weight: 800; color: #15803d; margin-top: 0.25rem;">{{ counts.answered }}</div>
+    </div>
+    <div style="width: 44px; height: 44px; border-radius: 10px; background: #dcfce7; color: #15803d; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">
+      ✅
+    </div>
+  </div>
+</div>
+
+<!-- Filters Bar -->
+<div style="display: flex; gap: 0.5rem; margin-bottom: 1.25rem; flex-wrap: wrap;">
+  <a href="{{ url_for('admin.faq_questions', status='all') }}" class="btn btn-sm {% if status_filter == 'all' %}btn-primary{% else %}btn-outline{% endif %}" style="border-radius: 999px; padding: 0.4rem 0.9rem;">
+    All Questions ({{ counts.total }})
+  </a>
+  <a href="{{ url_for('admin.faq_questions', status='pending') }}" class="btn btn-sm {% if status_filter == 'pending' %}btn-primary{% else %}btn-outline{% endif %}" style="border-radius: 999px; padding: 0.4rem 0.9rem;">
+    ⏳ Pending Response ({{ counts.pending }})
+  </a>
+  <a href="{{ url_for('admin.faq_questions', status='answered') }}" class="btn btn-sm {% if status_filter == 'answered' %}btn-primary{% else %}btn-outline{% endif %}" style="border-radius: 999px; padding: 0.4rem 0.9rem;">
+    ✅ Answered ({{ counts.answered }})
+  </a>
+</div>
+
+<!-- Questions Table -->
+<div class="admin-card">
+  <div class="table-responsive">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Date / Time</th>
+          <th>Customer</th>
+          <th>Contact</th>
+          <th>Category</th>
+          <th>Question Asked</th>
+          <th>Admin Response</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for q in questions %}
+        <tr style="{% if q.status == 'pending' %}background-color: #fefce8;{% endif %}">
+          <td style="font-size: 0.8rem; color: #64748b; white-space: nowrap;">
+            {{ q.created_at.strftime('%Y-%m-%d %H:%M') }}
+          </td>
+          <td>
+            <strong>{{ q.name }}</strong>
+          </td>
+          <td style="white-space: nowrap;">
+            <div style="display: flex; align-items: center; gap: 0.35rem;">
+              <a href="tel:{{ q.phone }}" style="font-weight: 600; color: #0f172a; text-decoration: none;">
+                {{ q.phone }}
+              </a>
+              {% set clean_digits = q.phone|replace('+', '')|replace(' ', '')|replace('-', '') %}
+              <a href="https://wa.me/{{ clean_digits }}?text=Hello%20{{ q.name|urlencode }}%2C%20regarding%20your%20question%20at%20Shankar%20Homoeo%20Stores%3A" target="_blank" rel="noopener noreferrer" title="Chat on WhatsApp" style="text-decoration: none; font-size: 0.9rem;">
+                💬
+              </a>
+            </div>
+            {% if q.email %}
+            <div style="font-size: 0.75rem; color: #64748b; margin-top: 0.15rem;">
+              <a href="mailto:{{ q.email }}" style="color: #64748b; text-decoration: none;">✉️ {{ q.email }}</a>
+            </div>
+            {% endif %}
+          </td>
+          <td>
+            <span style="background-color: #e0f2fe; color: #0369a1; padding: 0.2rem 0.55rem; border-radius: 4px; font-size: 0.78rem; font-weight: 600; display: inline-block;">
+              {{ q.category or 'General Question' }}
+            </span>
+          </td>
+          <td style="max-width: 280px;">
+            <div style="font-size: 0.88rem; color: #1e293b; font-weight: 500; line-height: 1.45;">
+              {{ q.question }}
+            </div>
+          </td>
+          <td style="max-width: 280px;">
+            {% if q.admin_response %}
+            <div style="font-size: 0.85rem; color: #0f766e; background: #f0fdfa; border-left: 3px solid #0d9488; padding: 0.5rem 0.65rem; border-radius: 4px; line-height: 1.45;">
+              <div style="font-weight: 700; font-size: 0.75rem; color: #0f766e; margin-bottom: 0.2rem; display: flex; align-items: center; gap: 0.25rem;">
+                <span>👨‍⚕️ Pharmacist Answer</span>
+                {% if q.is_public %}
+                <span style="background: #ccfbf1; color: #0f766e; font-size: 0.68rem; padding: 0.1rem 0.35rem; border-radius: 3px;">Public</span>
+                {% endif %}
+              </div>
+              <div>{{ q.admin_response }}</div>
+              {% if q.responded_at %}
+              <div style="font-size: 0.7rem; color: #94a3b8; margin-top: 0.25rem;">
+                Answered: {{ q.responded_at.strftime('%b %d, %H:%M') }}
+              </div>
+              {% endif %}
+            </div>
+            {% else %}
+            <span style="color: #b45309; font-size: 0.8rem; font-style: italic; display: flex; align-items: center; gap: 0.3rem;">
+              <span>⏳</span> Awaiting Response
+            </span>
+            {% endif %}
+          </td>
+          <td>
+            {% if q.status == 'answered' %}
+            <span style="background-color: #d1fae5; color: #065f46; padding: 0.25rem 0.65rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700;">
+              Answered
+            </span>
+            {% else %}
+            <span style="background-color: #fef3c7; color: #92400e; padding: 0.25rem 0.65rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700;">
+              Pending
+            </span>
+            {% endif %}
+          </td>
+          <td>
+            <div style="display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap;">
+              <!-- Respond Button -->
+              <button type="button" class="btn btn-sm btn-primary open-respond-modal-btn" 
+                      data-id="{{ q.id }}"
+                      data-name="{{ q.name|e }}"
+                      data-phone="{{ q.phone|e }}"
+                      data-category="{{ q.category|e }}"
+                      data-question="{{ q.question|e }}"
+                      data-response="{{ (q.admin_response or '')|e }}"
+                      data-public="{{ '1' if q.is_public else '0' }}"
+                      style="padding: 0.3rem 0.65rem; font-size: 0.78rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.3rem; background-color: #0f766e; border-color: #0f766e;">
+                <span>✍️</span> {% if q.admin_response %}Edit{% else %}Answer{% endif %}
+              </button>
+
+              <!-- WhatsApp Quick Send -->
+              {% set clean_digits = q.phone|replace('+', '')|replace(' ', '')|replace('-', '') %}
+              {% if clean_digits|length == 10 %}{% set clean_digits = '91' ~ clean_digits %}{% endif %}
+              
+              {% if q.admin_response %}
+              {% set wa_reply_text = "Hello " ~ q.name ~ ",\n\nRegarding your question on Shankar Homoeo Stores:\n\"" ~ q.question ~ "\"\n\n👨‍⚕️ Official Pharmacist Answer:\n" ~ q.admin_response ~ "\n\n📍 Shankar Homoeo Stores, Malleshwaram, Bengaluru\n📞 Contact: +91 98866 61239" %}
+              <a href="https://wa.me/{{ clean_digits }}?text={{ wa_reply_text|urlencode }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-whatsapp" title="Send answer directly to customer's WhatsApp" style="padding: 0.3rem 0.65rem; font-size: 0.78rem; font-weight: 600; background-color: #25d366; color: #ffffff; text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem; border-radius: var(--radius-sm);">
+                <span>💬</span> <span>WhatsApp</span>
+              </a>
+              {% else %}
+              <button type="button" class="btn btn-sm btn-outline open-respond-modal-btn"
+                      data-id="{{ q.id }}"
+                      data-name="{{ q.name|e }}"
+                      data-phone="{{ q.phone|e }}"
+                      data-category="{{ q.category|e }}"
+                      data-question="{{ q.question|e }}"
+                      data-response=""
+                      data-public="1"
+                      title="Write answer and send to customer's WhatsApp" style="padding: 0.3rem 0.65rem; font-size: 0.78rem; font-weight: 600; color: #16a34a; border-color: #22c55e; display: inline-flex; align-items: center; gap: 0.3rem;">
+                <span>💬</span> <span>WhatsApp</span>
+              </button>
+              {% endif %}
+
+              <!-- Delete -->
+              <form method="POST" action="{{ url_for('admin.delete_faq_question', question_id=q.id) }}" class="confirm-delete-form" data-entity="FAQ Question" style="display: inline;">
+                <button type="submit" class="btn btn-sm btn-outline" title="Delete Question" style="color: #ef4444; padding: 0.3rem 0.45rem; font-size: 0.78rem;">
+                  🗑️
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="8" style="text-align: center; color: #94a3b8; padding: 3rem;">
+            No FAQ questions found matching this filter.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Admin Response Modal Dialog -->
+<div id="adminResponseModal" class="admin-modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="modalHeading">
+  <div class="admin-modal-dialog">
+    <button type="button" class="admin-modal-close" id="closeAdminResponseModalBtn" aria-label="Close">&times;</button>
+    
+    <div style="margin-bottom: 1.25rem; padding-right: 1.5rem;">
+      <span style="display: inline-block; background: #e0f2fe; color: #0369a1; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.65rem; border-radius: 9999px; text-transform: uppercase;">
+        Pharmacist / Admin Response
+      </span>
+      <h3 id="modalHeading" style="font-size: 1.35rem; font-weight: 800; color: #0f172a; margin: 0.35rem 0 0.15rem;">
+        Answer Question &amp; Send to WhatsApp
+      </h3>
+      <div id="modalCustomerMeta" style="font-size: 0.88rem; color: #64748b; margin-top: 0.25rem;"></div>
+    </div>
+
+    <!-- Customer Question Display Box -->
+    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; margin-bottom: 1.25rem;">
+      <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #64748b; margin-bottom: 0.35rem;">
+        Question Asked by Customer:
+      </div>
+      <div id="modalQuestionText" style="font-size: 0.95rem; color: #1e293b; line-height: 1.5; font-weight: 500;"></div>
+    </div>
+
+    <div id="modalAlertMessage" style="display: none; padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.85rem; font-weight: 600;"></div>
+
+    <!-- Response Form -->
+    <form id="respondFaqForm" method="POST" action="">
+      <input type="hidden" id="current_question_id" value="">
+      
+      <div style="margin-bottom: 1rem;">
+        <label for="admin_response_input" style="display: block; font-size: 0.88rem; font-weight: 600; color: #0f172a; margin-bottom: 0.4rem;">
+          Your Answer / Response <span style="color: #ef4444;">*</span>
+        </label>
+        <textarea id="admin_response_input" name="admin_response" rows="5" required 
+                  placeholder="Type the official pharmacist / store response here. (e.g. Yes, we have Dr. Reckeweg R41 in sealed bottles available in our store...)" 
+                  style="width: 100%; padding: 0.75rem; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; box-sizing: border-box; font-family: inherit; resize: vertical;"></textarea>
+      </div>
+
+      <div style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.6rem;">
+        <input type="checkbox" id="is_public_check" name="is_public" value="1" checked style="width: 18px; height: 18px; cursor: pointer;">
+        <label for="is_public_check" style="font-size: 0.88rem; color: #334155; cursor: pointer; user-select: none;">
+          Publish this question &amp; answer on public website FAQ page
+        </label>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; justify-content: flex-end; align-items: center; flex-wrap: wrap;">
+        <button type="button" class="btn btn-outline" id="cancelModalBtn" style="padding: 0.65rem 1.1rem;">
+          Cancel
+        </button>
+
+        <button type="submit" id="saveOnlySubmitBtn" class="btn btn-primary" style="background-color: #0f766e; border-color: #0f766e; padding: 0.65rem 1.25rem; font-weight: 700;">
+          <span>💾 Save in Portal Only</span>
+        </button>
+
+        <!-- Primary Action: Save and Send to Customer WhatsApp -->
+        <button type="button" id="saveAndSendWhatsAppBtn" class="btn btn-whatsapp" style="background-color: #25d366; color: #ffffff; border: none; font-weight: 700; padding: 0.65rem 1.4rem; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.35); cursor: pointer; border-radius: var(--radius-md);">
+          <span>💬</span>
+          <span>Save &amp; Send to WhatsApp</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+  .admin-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    box-sizing: border-box;
+    animation: adminFadeIn 0.2s ease-out;
+  }
+  @keyframes adminFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .admin-modal-dialog {
+    background: #ffffff;
+    border-radius: 14px;
+    width: 100%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 1.75rem;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    animation: adminSlideUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-sizing: border-box;
+  }
+  @keyframes adminSlideUp {
+    from { transform: translateY(15px) scale(0.98); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+  }
+  .admin-modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1.25rem;
+    background: none;
+    border: none;
+    font-size: 1.75rem;
+    line-height: 1;
+    color: #94a3b8;
+    cursor: pointer;
+  }
+  .admin-modal-close:hover {
+    color: #ef4444;
+  }
+</style>
+
+<script>
+  (function() {
+    const modal = document.getElementById('adminResponseModal');
+    const closeBtn = document.getElementById('closeAdminResponseModalBtn');
+    const cancelBtn = document.getElementById('cancelModalBtn');
+    const form = document.getElementById('respondFaqForm');
+    const metaBox = document.getElementById('modalCustomerMeta');
+    const questionTextBox = document.getElementById('modalQuestionText');
+    const responseInput = document.getElementById('admin_response_input');
+    const isPublicCheck = document.getElementById('is_public_check');
+    const alertMsg = document.getElementById('modalAlertMessage');
+    const currentIdInput = document.getElementById('current_question_id');
+    const saveAndSendWhatsAppBtn = document.getElementById('saveAndSendWhatsAppBtn');
+
+    function closeModal() {
+      if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+    }
+
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+
+    if (modal) {
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) closeModal();
+      });
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && modal && modal.style.display === 'flex') {
+        closeModal();
+      }
+    });
+
+    // Open modal and prefill details
+    document.querySelectorAll('.open-respond-modal-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const id = this.getAttribute('data-id');
+        const name = this.getAttribute('data-name');
+        const phone = this.getAttribute('data-phone');
+        const category = this.getAttribute('data-category');
+        const question = this.getAttribute('data-question');
+        const response = this.getAttribute('data-response');
+        const isPublic = this.getAttribute('data-public') === '1';
+
+        currentIdInput.value = id;
+        form.action = `/admin/faq-questions/${id}/respond`;
+        metaBox.innerHTML = `<strong>👤 ${name}</strong> &bull; 📱 ${phone} &bull; <em>${category}</em>`;
+        questionTextBox.textContent = question;
+        responseInput.value = response || '';
+        isPublicCheck.checked = isPublic;
+        if (alertMsg) alertMsg.style.display = 'none';
+
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => responseInput.focus(), 150);
+      });
+    });
+
+    // Handler for "Save & Send to WhatsApp"
+    if (saveAndSendWhatsAppBtn) {
+      saveAndSendWhatsAppBtn.addEventListener('click', async function(e) {
+        e.preventDefault();
+        const id = currentIdInput.value;
+        const responseText = responseInput.value.trim();
+        const isPublic = isPublicCheck.checked;
+
+        if (!responseText) {
+          showModalAlert('Please type an answer before sending to WhatsApp.', 'error');
+          responseInput.focus();
+          return;
+        }
+
+        saveAndSendWhatsAppBtn.disabled = true;
+        saveAndSendWhatsAppBtn.innerHTML = '<span>⏳</span> <span>Saving...</span>';
+
+        try {
+          const res = await fetch(`/admin/faq-questions/${id}/respond`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({
+              admin_response: responseText,
+              is_public: isPublic,
+              send_whatsapp: true
+            })
+          });
+
+          const data = await res.json();
+          if (res.ok && data.success) {
+            // Open customer's WhatsApp chat with pre-filled message
+            if (data.whatsapp_url) {
+              window.open(data.whatsapp_url, '_blank');
+            }
+            closeModal();
+            // Reload page to display the answered badge and answer
+            window.location.reload();
+          } else {
+            showModalAlert(data.message || 'Failed to save response. Please try again.', 'error');
+            resetWhatsAppBtn();
+          }
+        } catch (err) {
+          console.error(err);
+          showModalAlert('Network error occurred. Please try again.', 'error');
+          resetWhatsAppBtn();
+        }
+      });
+    }
+
+    function showModalAlert(text, type) {
+      if (!alertMsg) return;
+      alertMsg.textContent = text;
+      if (type === 'error') {
+        alertMsg.style.backgroundColor = '#fee2e2';
+        alertMsg.style.color = '#991b1b';
+        alertMsg.style.border = '1px solid #fca5a5';
+      } else {
+        alertMsg.style.backgroundColor = '#dcfce7';
+        alertMsg.style.color = '#15803d';
+        alertMsg.style.border = '1px solid #86efac';
+      }
+      alertMsg.style.display = 'block';
+    }
+
+    function resetWhatsAppBtn() {
+      if (saveAndSendWhatsAppBtn) {
+        saveAndSendWhatsAppBtn.disabled = false;
+        saveAndSendWhatsAppBtn.innerHTML = '<span>💬</span> <span>Save &amp; Send to WhatsApp</span>';
+      }
+    }
+  })();
+</script>
+{% endblock %}

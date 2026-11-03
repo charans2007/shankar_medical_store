@@ -19,7 +19,7 @@
   <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon/favicon.svg') }}">
 
   <!-- Styles -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=1.8">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=2.8">
   {% block extra_css %}{% endblock %}
 
   <!-- Schema.org Structured Data for Local Pharmacy / MedicalBusiness -->
@@ -62,7 +62,13 @@
   }
   </script>
 </head>
-<body>
+<body data-store-open="{{ 'true' if store_status.is_open else 'false' }}"
+      data-store-hours="{{ shop.opening_hours }}"
+      data-today-hours="{{ store_status.today_hours_text }}"
+      data-sub-text="{{ store_status.sub_text }}"
+      data-reopen-time="{{ store_status.reopen_time_text }}"
+      data-shop-phone="{{ shop.phone }}"
+      data-shop-whatsapp="{{ shop.whatsapp }}">
 
   <!-- Top Announcement Bar -->
   <div class="top-bar">
@@ -73,9 +79,12 @@
           {{ store_status.status_text }}
         </span>
         <span>• {{ store_status.today_hours_text }}</span>
+        {% if not store_status.is_open %}
+        <span class="top-bar-hours-alert">⚠️ Phone calls available during store hours only</span>
+        {% endif %}
       </div>
       <div class="top-bar-links">
-        <a href="{{ clean_phone }}" title="Call Pharmacy">
+        <a href="{{ clean_phone }}" title="Call Pharmacy {% if not store_status.is_open %}(During Store Hours Only){% endif %}">
           📞 <span>{{ shop.phone }}</span>
         </a>
         <a href="{{ shop.google_maps_url }}" target="_blank" rel="noopener noreferrer" title="Get Directions">
@@ -240,18 +249,39 @@
       <!-- Footer Bottom -->
       <div class="footer-bottom">
         <p>&copy; {{ current_year }} {{ shop.name }}. All rights reserved. | Physical Retail Pharmacy</p>
-        <p>
-          <a href="{{ url_for('admin.login') }}" style="color: #64748b; font-size: 0.8rem;">Staff Admin Login</a>
-        </p>
+        <div class="footer-staff-col">
+          <p style="margin: 0;">
+            <a href="{{ url_for('admin.login') }}" style="color: #64748b; font-size: 0.8rem;">Staff Admin Login</a>
+          </p>
+          <div class="footer-user-credit-container">
+            <button type="button" class="footer-user-credit" id="viewProfilePhotoBtn" title="View profile photo" aria-label="View profile photo of Charan S">
+              <span class="footer-user-prefix">Built by</span>
+              <div class="footer-avatar-wrapper">
+                <img src="{{ url_for('static', filename='images/charan.jpg') }}" alt="Charan S" class="footer-user-avatar">
+                <span class="footer-thunder-dot" title="Supercharged">⚡</span>
+              </div>
+              <span class="footer-user-name">Charan S</span>
+            </button>
+
+            <!-- Compact Profile Popover (Anchored, Not Full Screen) -->
+            <div id="profilePhotoModal" class="profile-popover" role="dialog" aria-label="Charan S Profile Photo" style="display: none;">
+              <button type="button" class="profile-popover-close" id="closeProfilePhotoBtn" aria-label="Close photo preview">&times;</button>
+              <div class="profile-popover-circle">
+                <img id="profilePhotoModalImg" src="{{ url_for('static', filename='images/charan.jpg') }}" alt="Charan S" class="profile-popover-img">
+              </div>
+              <span class="profile-popover-name">Charan S</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </footer>
 
   <!-- Fixed Mobile Bottom Action Bar -->
   <div class="mobile-bottom-bar" aria-label="Quick Actions">
-    <a href="{{ clean_phone }}" class="mobile-bar-btn bar-call">
+    <a href="{{ clean_phone }}" class="mobile-bar-btn bar-call {% if not store_status.is_open %}is-store-closed{% endif %}">
       <span class="bar-icon">📞</span>
-      <span>CALL</span>
+      <span>CALL{% if not store_status.is_open %} <small class="bar-closed-pill">Closed</small>{% endif %}</span>
     </a>
     <a href="{{ header_whatsapp_url }}" target="_blank" rel="noopener noreferrer" class="mobile-bar-btn bar-whatsapp">
       <span class="bar-icon">💬</span>
@@ -263,8 +293,66 @@
     </a>
   </div>
 
+  <!-- Store Closed Calling & Messaging Restriction Modal -->
+  <div id="storeClosedModal" class="store-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="storeModalTitle" style="display: none;">
+    <div class="store-modal-card">
+      <button type="button" class="store-modal-close" id="closeStoreModalBtn" aria-label="Close modal">&times;</button>
+      
+      <div class="store-modal-header">
+        <div class="store-modal-icon-badge">
+          <span class="store-modal-icon">🕒</span>
+        </div>
+        <div class="store-status-pill status-closed">
+          <span class="status-dot"></span> STORE IS CURRENTLY CLOSED
+        </div>
+        <h3 id="storeModalTitle" class="store-modal-title">Calls &amp; Messages Available During Store Hours Only</h3>
+      </div>
+      
+      <div class="store-modal-body">
+        <p class="store-modal-desc" id="storeModalDesc">
+          Our counter phone lines are attended to during physical store operating hours. You can send us a message on WhatsApp, and our team will attend to it promptly!
+        </p>
+
+        <div class="store-modal-schedule-card">
+          <div class="schedule-item">
+            <span class="schedule-label">🕒 Store Timings:</span>
+            <span class="schedule-val">{{ shop.opening_hours }}</span>
+          </div>
+          <div class="schedule-item">
+            <span class="schedule-label">📅 Today's Hours:</span>
+            <span class="schedule-val">{{ store_status.today_hours_text }}</span>
+          </div>
+          <div class="schedule-item highlight">
+            <span class="schedule-label">🔔 Reopens Next:</span>
+            <span class="schedule-val" id="storeModalReopenTime">
+              {% if store_status.reopen_time_text %}{{ store_status.reopen_time_text }}{% else %}During standard store hours{% endif %}
+            </span>
+          </div>
+        </div>
+
+        <div class="store-modal-alert">
+          <span>📍 In urgent need of medicines during open hours? We welcome you to visit our physical store in Bengaluru.</span>
+        </div>
+      </div>
+
+      <div class="store-modal-actions" style="display: flex; flex-direction: column; gap: 0.6rem;">
+        <a href="{{ header_whatsapp_url }}" target="_blank" rel="noopener noreferrer" class="btn" style="width: 100%; justify-content: center; background: #25d366; color: #ffffff; font-weight: 600;">
+          💬 Chat on WhatsApp
+        </a>
+        <div style="display: flex; gap: 0.5rem; width: 100%;">
+          <a href="{{ shop.google_maps_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="flex: 1; justify-content: center;">
+            📍 View Location
+          </a>
+          <button type="button" class="btn btn-primary" id="storeModalDismissBtn" style="flex: 1; justify-content: center;">
+            Understood
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Main JavaScript -->
-  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}?v=1.7"></script>
   {% block extra_js %}{% endblock %}
 </body>
 </html>

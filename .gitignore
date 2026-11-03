@@ -7,7 +7,8 @@ __pycache__/
 *$py.class
 
 # SQLite database
-database/*.db
+database/*.db-shm
+database/*.db-wal
 *.sqlite3
 
 # Environment files

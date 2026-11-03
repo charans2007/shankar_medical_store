@@ -44,13 +44,13 @@
     </div>
   </div>
 
-  <div class="stat-card">
-    <div class="stat-icon amber">✉️</div>
+  <a href="{{ url_for('admin.faq_questions') }}" class="stat-card" style="text-decoration: none; color: inherit;">
+    <div class="stat-icon purple" style="background: #f3e8ff; color: #7e22ce;">❓</div>
     <div class="stat-info">
-      <div class="stat-value">{{ unread_enquiries }}</div>
-      <div class="stat-label">Unread Enquiries (Total {{ total_enquiries }})</div>
+      <div class="stat-value">{{ pending_faq_questions }}</div>
+      <div class="stat-label">Pending Questions (Total {{ total_faq_questions }})</div>
     </div>
-  </div>
+  </a>
 </div>
 
 <div style="display: grid; grid-template-columns: 1fr; gap: 2rem; @media (min-width: 992px){ grid-template-columns: 1.2fr 0.8fr; }">

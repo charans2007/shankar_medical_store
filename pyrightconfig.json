@@ -1,0 +1,29 @@
+{
+  "include": [
+    "app.py",
+    "config.py",
+    "models",
+    "routes",
+    "test_app.py",
+    "seed_data.py",
+    "utils.py"
+  ],
+  "extraPaths": [
+    "./venv/lib/python3.12/site-packages",
+    ".",
+    "./models",
+    "./routes"
+  ],
+  "pythonVersion": "3.12",
+  "pythonPlatform": "Windows",
+  "typeCheckingMode": "basic",
+  "reportMissingImports": "none",
+  "reportMissingModuleSource": "none",
+  "reportCallIssue": "none",
+  "reportArgumentType": "none",
+  "reportOptionalMemberAccess": "none",
+  "reportAttributeAccessIssue": "none",
+  "reportGeneralTypeIssues": "none",
+  "reportUnusedImport": "none",
+  "reportUnusedVariable": "none"
+}

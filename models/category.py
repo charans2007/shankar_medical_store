@@ -11,10 +11,13 @@ class Category(db.Model):
     slug = db.Column(db.String(100), nullable=False, unique=True)
     description = db.Column(db.String(255), nullable=True)
     icon = db.Column(db.String(50), nullable=True, default='capsules')
-    display_order = db.Column(db.Integer, default=0)
+    display_order = db.Column(db.Integer, default=0, index=True)
 
     # Relationships
     products = db.relationship('Product', backref='category', lazy=True, cascade='all, delete-orphan')
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
     def to_dict(self):
         return {

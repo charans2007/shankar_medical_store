@@ -38,33 +38,55 @@ def get_store_status(shop):
     Calculate dynamic store status:
     - is_open: True / False
     - status_text: 'OPEN NOW' / 'CLOSED'
-    - today_hours_text: e.g. 'Today: 8:00 AM – 10:00 PM'
-    - next_status_text: e.g. 'Opens tomorrow at 8:00 AM' or 'Closes at 10:00 PM'
+    - today_hours_text: e.g. 'Today: 10:00 AM – 8:00 PM'
+    - sub_text: e.g. 'Opens today at 10:00 AM' or 'Open until 8:00 PM today'
+    - reopen_time_text: e.g. 'Today at 10:00 AM' or 'Tomorrow at 10:00 AM' or 'Monday at 10:00 AM'
     """
     now = datetime.now()
     day_of_week = now.weekday() # 0 = Monday, 6 = Sunday
     current_time_str = now.strftime('%H:%M')
     
     is_sunday = (day_of_week == 6)
+    is_saturday = (day_of_week == 5)
+    
+    weekday_open = (getattr(shop, 'weekday_open_time', '10:00') if shop else '10:00') or '10:00'
+    weekday_close = (getattr(shop, 'weekday_close_time', '20:00') if shop else '20:00') or '20:00'
+    formatted_weekday_open = format_time_12h(weekday_open)
+    formatted_weekday_close = format_time_12h(weekday_close)
+    weekday_hours_text = f"Monday – Saturday: {formatted_weekday_open} – {formatted_weekday_close}"
+    
+    is_sun_closed = (getattr(shop, 'is_sunday_closed', True) if shop else True)
+    if shop and shop.weekly_closure and 'sunday' in shop.weekly_closure.lower():
+        is_sun_closed = True
+        
+    sunday_open = (getattr(shop, 'sunday_open_time', '00:00') if shop else '00:00') or '00:00'
+    sunday_close = (getattr(shop, 'sunday_close_time', '00:00') if shop else '00:00') or '00:00'
+    sunday_hours_text = "Sunday: Closed (Weekly Holiday)" if is_sun_closed else f"Sunday: {format_time_12h(sunday_open)} – {format_time_12h(sunday_close)}"
     
     if is_sunday:
-        if getattr(shop, 'is_sunday_closed', False) or (shop.weekly_closure and 'sunday' in shop.weekly_closure.lower()):
+        if is_sun_closed:
             return {
                 'is_open': False,
                 'status_text': 'CLOSED',
                 'status_class': 'status-closed',
                 'badge_color': '#ef4444',
                 'today_hours_text': 'Today: Closed (Weekly Holiday)',
-                'sub_text': f"Opens Monday at {format_time_12h(shop.weekday_open_time)}"
+                'sub_text': f"Opens Monday at {formatted_weekday_open}",
+                'reopen_time_text': f"Monday at {formatted_weekday_open}",
+                'open_time': weekday_open,
+                'close_time': weekday_close,
+                'open_time_12h': formatted_weekday_open,
+                'close_time_12h': formatted_weekday_close,
+                'weekday_hours_text': weekday_hours_text,
+                'sunday_hours_text': sunday_hours_text
             }
-        open_time = getattr(shop, 'sunday_open_time', '09:00')
-        close_time = getattr(shop, 'sunday_close_time', '14:00')
+        open_time = sunday_open
+        close_time = sunday_close
     else:
-        open_time = getattr(shop, 'weekday_open_time', '08:00')
-        close_time = getattr(shop, 'weekday_close_time', '22:00')
+        open_time = weekday_open
+        close_time = weekday_close
         
     is_open = (open_time <= current_time_str < close_time)
-    
     formatted_open = format_time_12h(open_time)
     formatted_close = format_time_12h(close_time)
     today_hours_text = f"Today: {formatted_open} – {formatted_close}"
@@ -74,14 +96,21 @@ def get_store_status(shop):
         status_class = 'status-open'
         badge_color = '#10b981'
         sub_text = f"Open until {formatted_close} today"
+        reopen_time_text = ""
     else:
         status_text = 'CLOSED'
         status_class = 'status-closed'
         badge_color = '#ef4444'
         if current_time_str < open_time:
             sub_text = f"Opens today at {formatted_open}"
+            reopen_time_text = f"Today at {formatted_open}"
         else:
-            sub_text = "Closed for the day. Reopens tomorrow."
+            if is_saturday and is_sun_closed:
+                sub_text = f"Closed for the weekend. Reopens Monday at {formatted_weekday_open}."
+                reopen_time_text = f"Monday at {formatted_weekday_open}"
+            else:
+                sub_text = f"Closed for the day. Reopens tomorrow at {formatted_weekday_open}."
+                reopen_time_text = f"Tomorrow at {formatted_weekday_open}"
 
     return {
         'is_open': is_open,
@@ -89,7 +118,14 @@ def get_store_status(shop):
         'status_class': status_class,
         'badge_color': badge_color,
         'today_hours_text': today_hours_text,
-        'sub_text': sub_text
+        'sub_text': sub_text,
+        'reopen_time_text': reopen_time_text,
+        'open_time': open_time,
+        'close_time': close_time,
+        'open_time_12h': formatted_open,
+        'close_time_12h': formatted_close,
+        'weekday_hours_text': weekday_hours_text,
+        'sunday_hours_text': sunday_hours_text
     }
 
 def format_time_12h(time_str):
@@ -173,4 +209,38 @@ def async_send_problem_notification(name, phone, problem_type, message, shop_nam
     )
     thread.daemon = True
     thread.start()
+
+# ----------------- HIGH-CONCURRENCY IN-MEMORY CACHE -----------------
+_CACHE_LOCK = threading.Lock()
+_CACHE = {}
+
+def get_cached_value(key, ttl_seconds, fetcher_fn):
+    """
+    Thread-safe TTL in-memory cache for high-concurrency read operations.
+    Avoids redundant database queries across hundreds of simultaneous requests.
+    """
+    import time
+    now = time.time()
+    with _CACHE_LOCK:
+        if key in _CACHE:
+            val, expiry = _CACHE[key]
+            if now < expiry:
+                return val
+    
+    # Compute fresh value outside critical section
+    fresh_val = fetcher_fn()
+    
+    with _CACHE_LOCK:
+        _CACHE[key] = (fresh_val, now + ttl_seconds)
+    return fresh_val
+
+def clear_cache(key_prefix=None):
+    """Invalidate cached entries when admin makes updates."""
+    with _CACHE_LOCK:
+        if key_prefix:
+            keys_to_del = [k for k in _CACHE if k.startswith(key_prefix)]
+            for k in keys_to_del:
+                _CACHE.pop(k, None)
+        else:
+            _CACHE.clear()
 

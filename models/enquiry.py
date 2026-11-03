@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from models import db
 
 class Enquiry(db.Model):
@@ -12,8 +12,11 @@ class Enquiry(db.Model):
     phone = db.Column(db.String(20), nullable=False)
     message = db.Column(db.Text, nullable=False)
     product_name = db.Column(db.String(200), nullable=True)
-    status = db.Column(db.String(20), default='unread') # unread, read, replied
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    status = db.Column(db.String(20), default='unread', index=True) # unread, read, replied
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), index=True)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
     def to_dict(self):
         return {

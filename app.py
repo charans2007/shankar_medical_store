@@ -1,18 +1,45 @@
 import os
 from datetime import datetime
 from flask import Flask, render_template, request
+from sqlalchemy import event
+from sqlalchemy.engine import Engine
 from config import Config
 from models import db, Shop, Category
-from utils import get_store_status, clean_phone_for_tel, clean_whatsapp_number, generate_whatsapp_link
+from utils import get_store_status, clean_phone_for_tel, clean_whatsapp_number, generate_whatsapp_link, get_cached_value
 from seed_data import seed_database
 
+# Optimize SQLite for High Concurrency (WAL Mode, 30s timeout, 64MB cache)
+@event.listens_for(Engine, "connect")
+def set_sqlite_pragma(dbapi_connection, connection_record):
+    if hasattr(dbapi_connection, 'cursor'):
+        try:
+            cursor = dbapi_connection.cursor()
+            cursor.execute("PRAGMA journal_mode=WAL")
+            cursor.execute("PRAGMA busy_timeout=30000")
+            cursor.execute("PRAGMA synchronous=NORMAL")
+            cursor.execute("PRAGMA cache_size=-64000")
+            cursor.execute("PRAGMA temp_store=MEMORY")
+            cursor.close()
+        except Exception:
+            pass
+
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+
 def create_app(config_class=Config):
-    app = Flask(__name__)
+    app = Flask(
+        __name__,
+        template_folder=os.path.join(BASE_DIR, 'templates'),
+        static_folder=os.path.join(BASE_DIR, 'static'),
+        static_url_path='/static'
+    )
     app.config.from_object(config_class)
 
-    # Ensure database directory exists
-    db_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'database')
-    os.makedirs(db_dir, exist_ok=True)
+    # Ensure database directory exists if writable (e.g. locally)
+    try:
+        db_dir = os.path.join(BASE_DIR, 'database')
+        os.makedirs(db_dir, exist_ok=True)
+    except OSError:
+        pass
 
     # Initialize extensions
     db.init_app(app)
@@ -28,14 +55,24 @@ def create_app(config_class=Config):
     app.register_blueprint(contact_bp)
     app.register_blueprint(admin_bp)
 
-    # Global Context Processor: Makes shop info and live status available to all Jinja templates
+    # Global Context Processor: High-concurrency cached shop info and live status
     @app.context_processor
     def inject_global_shop_data():
-        try:
-            shop = Shop.query.first()
-        except Exception:
-            shop = None
-            
+        def fetch_shop():
+            try:
+                return Shop.query.first()
+            except Exception:
+                return None
+
+        def fetch_categories():
+            try:
+                return Category.query.order_by(Category.display_order.asc()).all()
+            except Exception:
+                return []
+
+        shop = get_cached_value('global_shop', 60, fetch_shop)
+        nav_categories = get_cached_value('global_categories', 60, fetch_categories)
+
         store_status = get_store_status(shop) if shop else {
             'is_open': False,
             'status_text': 'STATUS UNAVAILABLE',
@@ -45,19 +82,22 @@ def create_app(config_class=Config):
             'sub_text': 'Check store hours'
         }
 
-        # Categories for navigation dropdown
-        try:
-            nav_categories = Category.query.order_by(Category.display_order.asc()).all()
-        except Exception:
-            nav_categories = []
-
         # WhatsApp and Phone links for current shop
         whatsapp_num = shop.whatsapp if (shop and shop.whatsapp) else Config.WHATSAPP_NUMBER
         phone_num = shop.phone if (shop and shop.phone) else Config.PHONE_NUMBER
+        
+        # Free Doctor Consultation (Online Tele-Health): 9535717958
         doctor_phone_num = (shop.doctor_phone if (shop and getattr(shop, 'doctor_phone', None)) 
                             else Config.DOCTOR_CONSULTATION_PHONE)
         doctor_whatsapp_num = (shop.doctor_whatsapp if (shop and getattr(shop, 'doctor_whatsapp', None)) 
                               else Config.DOCTOR_CONSULTATION_WHATSAPP)
+        
+        # Physical Doctor Consultant (In-Person / Homeolaya): 8050604747
+        physical_doctor_phone_num = (shop.physical_store_phone if (shop and getattr(shop, 'physical_store_phone', None))
+                                     else getattr(Config, 'PHYSICAL_DOCTOR_PHONE', '+91 80506 04747'))
+        physical_doctor_whatsapp_num = (shop.physical_store_whatsapp if (shop and getattr(shop, 'physical_store_whatsapp', None))
+                                       else getattr(Config, 'PHYSICAL_DOCTOR_WHATSAPP', '918050604747'))
+        
         shop_title = shop.name if (shop and shop.name) else Config.SHOP_NAME
 
         return {
@@ -66,10 +106,16 @@ def create_app(config_class=Config):
             'nav_categories': nav_categories,
             'clean_phone': clean_phone_for_tel(phone_num),
             'clean_whatsapp': clean_whatsapp_number(whatsapp_num),
+            # Free Doctor Consultation (Online) - ONLY 9535717958
             'doctor_phone': doctor_phone_num,
             'clean_doctor_phone': clean_phone_for_tel(doctor_phone_num),
             'doctor_whatsapp': doctor_whatsapp_num,
             'clean_doctor_whatsapp': clean_whatsapp_number(doctor_whatsapp_num),
+            # Physical Doctor Consultant (In-Store / Dr. Komala GR) - ONLY 8050604747
+            'physical_doctor_phone': physical_doctor_phone_num,
+            'clean_physical_doctor_phone': clean_phone_for_tel(physical_doctor_phone_num),
+            'physical_doctor_whatsapp': physical_doctor_whatsapp_num,
+            'clean_physical_doctor_whatsapp': clean_whatsapp_number(physical_doctor_whatsapp_num),
             'header_whatsapp_url': generate_whatsapp_link(whatsapp_num, shop_name=shop_title, message_type='general'),
             'current_year': datetime.now().year,
             'generate_whatsapp_link': generate_whatsapp_link
@@ -92,9 +138,12 @@ def create_app(config_class=Config):
 
     # Auto-initialize and seed database on first run
     with app.app_context():
-        db.create_all()
-        if not Shop.query.first():
-            seed_database(app)
+        try:
+            db.create_all()
+            if not Shop.query.first():
+                seed_database(app)
+        except Exception as e:
+            app.logger.warning(f"Database initialization notice: {e}")
 
     return app
 
