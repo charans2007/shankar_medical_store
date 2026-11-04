@@ -26,7 +26,6 @@ def check_all_links():
     routes_to_test = [
         '/',
         '/about',
-        '/reviews',
         '/services',
         '/retail-wholesale',
         '/doctor-consultation',

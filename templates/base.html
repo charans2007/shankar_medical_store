@@ -53,11 +53,6 @@
       }
     ],
     "priceRange": "$$",
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.6",
-      "reviewCount": "105"
-    },
     "hasMap": "{{ shop.google_maps_url }}"
   }
   </script>
@@ -110,7 +105,6 @@
         <a href="{{ url_for('main.services') }}" class="nav-link {% if request.endpoint == 'main.services' %}active{% endif %}">Services</a>
         <a href="{{ url_for('main.retail_wholesale') }}" class="nav-link {% if request.endpoint == 'main.retail_wholesale' %}active{% endif %}">Retail &amp; Wholesale</a>
         <a href="{{ url_for('main.doctor_consultation') }}" class="nav-link {% if request.endpoint == 'main.doctor_consultation' %}active{% endif %}">Doctor Consultation</a>
-        <a href="{{ url_for('main.reviews') }}" class="nav-link {% if request.endpoint == 'main.reviews' %}active{% endif %}">Reviews</a>
         <a href="{{ url_for('main.location') }}" class="nav-link {% if request.endpoint == 'main.location' %}active{% endif %}">Location</a>
         <a href="{{ url_for('main.faq') }}" class="nav-link {% if request.endpoint == 'main.faq' %}active{% endif %}">FAQ</a>
         <a href="{{ url_for('contact.contact_page') }}" class="nav-link {% if request.endpoint == 'contact.contact_page' %}active{% endif %}">Contact</a>
@@ -147,7 +141,6 @@
       <a href="{{ url_for('main.services') }}" class="drawer-link {% if request.endpoint == 'main.services' %}active{% endif %}">🩺 Services</a>
       <a href="{{ url_for('main.retail_wholesale') }}" class="drawer-link {% if request.endpoint == 'main.retail_wholesale' %}active{% endif %}">📦 Retail &amp; Wholesale</a>
       <a href="{{ url_for('main.doctor_consultation') }}" class="drawer-link {% if request.endpoint == 'main.doctor_consultation' %}active{% endif %}">👨‍⚕️ Doctor Consultation</a>
-      <a href="{{ url_for('main.reviews') }}" class="drawer-link {% if request.endpoint == 'main.reviews' %}active{% endif %}">💬 Customer Reviews</a>
       <a href="{{ url_for('main.location') }}" class="drawer-link {% if request.endpoint == 'main.location' %}active{% endif %}">📍 Store Location &amp; Directions</a>
       <a href="{{ url_for('main.faq') }}" class="drawer-link {% if request.endpoint == 'main.faq' %}active{% endif %}">❓ Frequently Asked Questions</a>
       <a href="{{ url_for('contact.contact_page') }}" class="drawer-link {% if request.endpoint == 'contact.contact_page' %}active{% endif %}">📞 Contact Us</a>
@@ -206,7 +199,6 @@
             <li><a href="{{ url_for('main.services') }}">Store Services</a></li>
             <li><a href="{{ url_for('main.retail_wholesale') }}">Retail &amp; Wholesale</a></li>
             <li><a href="{{ url_for('main.doctor_consultation') }}">Online Doctor Consultation</a></li>
-            <li><a href="{{ url_for('main.reviews') }}">Customer Reviews</a></li>
             <li><a href="{{ url_for('main.location') }}">Location &amp; Maps</a></li>
             <li><a href="{{ url_for('main.faq') }}">FAQ</a></li>
             <li><a href="{{ url_for('contact.contact_page') }}">Contact Us</a></li>
